@@ -1,0 +1,108 @@
+/*
+ * Design tokens — TryEntitle "Field & Brass" (PRD §10.3 / §11.4)
+ *
+ * This is the ONLY file in the repository permitted to contain a raw hex value.
+ * Every component references a variable. A rebrand is a one-file change and an
+ * unapproved colour is trivially greppable in review.
+ *
+ * (The PRD wrote these in Tailwind v4 `@theme`. This build is hand-built Vue,
+ *  so the same tokens live as CSS custom properties on :root — identical names,
+ *  identical values.)
+ */
+
+:root {
+  /* ─── Palette: Field & Brass (PRD §10.3) ─────────────────────────── */
+  --color-ink-900: #0e1512; /* Primary text; dark section canvas            */
+  --color-ink-700: #1b2622; /* Elevated surfaces on dark; borders on dark   */
+  --color-graphite-500: #4f5a54; /* Secondary text (4.9:1 on paper — AA)    */
+  --color-graphite-300: #8a948e; /* Tertiary/disabled — non-essential only  */
+  --color-rule: #d9ddd5; /* Hairline rules, dividers, input borders         */
+  --color-paper: #f3f5f0; /* Page background                                */
+  --color-surface: #ffffff; /* Cards, panels                                */
+  --color-signal-600: #14594a; /* Primary action, links (7.2:1 on paper)    */
+  --color-signal-500: #1b7a63; /* Hover / active                            */
+  --color-signal-50: #e6f0ec; /* Tint fills, selected states               */
+  --color-brass-500: #b0862f; /* NON-TEXT only — 3.4:1 on paper            */
+  --color-brass-700: #7a5c18; /* Text-safe brass — 5.6:1 on paper          */
+  --color-brass-50: #f6efdd; /* Exception callout background               */
+
+  /* ─── Semantic aliases — components use these, never the scale ─────── */
+  --text-primary: var(--color-ink-900);
+  --text-secondary: var(--color-graphite-500);
+  /*
+   * Tertiary text on LIGHT surfaces resolves to graphite-500, not graphite-300.
+   * graphite-300 on paper is ~2.7:1 — it fails WCAG AA for text (NFR5), which
+   * an axe scan flags as a serious violation. graphite-300 remains correct on
+   * the dark canvas (footer), where it is referenced from the scale directly.
+   * Tertiary labels stay distinguishable through size, weight, and tracking.
+   */
+  --text-tertiary: var(--color-graphite-500);
+  --text-inverse: var(--color-paper);
+  --bg-canvas: var(--color-paper);
+  --bg-surface: var(--color-surface);
+  --bg-inverse: var(--color-ink-900);
+  --border-subtle: var(--color-rule);
+  --border-on-dark: var(--color-ink-700);
+  --action-primary: var(--color-signal-600);
+  --action-hover: var(--color-signal-500);
+  --action-tint: var(--color-signal-50);
+  --accent-exception: var(--color-brass-500); /* non-text */
+  --accent-exception-text: var(--color-brass-700); /* text-safe */
+  --accent-exception-bg: var(--color-brass-50);
+
+  /* ─── Space — 4px base (PRD §10.5) ─────────────────────────────────── */
+  --space-1: 0.25rem; /*  4 */
+  --space-2: 0.5rem; /*  8 */
+  --space-3: 0.75rem; /* 12 */
+  --space-4: 1rem; /* 16 */
+  --space-5: 1.5rem; /* 24 */
+  --space-6: 2rem; /* 32 */
+  --space-7: 3rem; /* 48 */
+  --space-8: 4rem; /* 64 */
+  --space-9: 6rem; /* 96 */
+  --space-10: 8rem; /* 128 */
+
+  /* ─── Layout (PRD §10.5) ───────────────────────────────────────────── */
+  --content-max: 1200px; /* content max-width  */
+  --page-max: 1440px; /* page max-width     */
+  --gutter: 20px; /* mobile gutter      */
+
+  /* ─── Shape (PRD §10.5) ────────────────────────────────────────────── */
+  --radius-sm: 2px; /* buttons, inputs */
+  --radius-md: 4px; /* cards           */
+
+  /* ─── Elevation — borders not shadows; one shadow for the mobile panel */
+  --shadow-overlay: 0 8px 32px rgba(14, 21, 18, 0.18);
+  /* Dimming layer behind the mobile menu panel — ink-900 at 40%. */
+  --scrim: rgba(14, 21, 18, 0.4);
+
+  /* ─── Motion (PRD §10.6) ───────────────────────────────────────────── */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --duration-fast: 160ms;
+  --duration-base: 240ms;
+
+  /* ─── Type families (PRD §10.4) ────────────────────────────────────── */
+  --font-display: 'Archivo Variable', 'Archivo', 'Arial Narrow', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', 'Menlo', monospace;
+
+  /* ─── Fluid type scale — clamp 360px → 1440px (PRD §10.4) ──────────── */
+  --text-display-xl: clamp(2.75rem, 1.55rem + 4.6vw, 4.5rem); /* Archivo 700 */
+  --text-display-lg: clamp(2rem, 1.35rem + 2.6vw, 3rem); /* Archivo 700 */
+  --text-heading-md: clamp(1.5rem, 1.2rem + 1.1vw, 1.875rem); /* Archivo 600 */
+  --text-heading-sm: 1.25rem; /* Plex Sans 600 */
+  --text-body-lg: 1.125rem;
+  --text-body: 1rem;
+  --text-body-sm: 0.875rem;
+  --text-label: 0.75rem;
+
+  --leading-display: 1.02;
+  --leading-heading: 1.1;
+  --leading-body: 1.6;
+  --tracking-display: -0.03em;
+  --tracking-label: 0.14em;
+  --measure: 68ch; /* max reading measure */
+
+  /* Sticky-header offset — kept in sync with SiteHeader compact height */
+  --header-height: 64px;
+}
