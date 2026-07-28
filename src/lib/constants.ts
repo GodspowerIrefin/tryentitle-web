@@ -36,10 +36,17 @@ export const CONTACT = {
 /**
  * Append a per-placement UTM tag so it is possible to learn which CTA converts
  * (PRD §11.6). `placement` is a free-form slug: hero | nav | closing | footer | …
+ *
+ * `extra` carries scheduler prefill values — the hours calculator passes its
+ * computed figure through as `a1` so the call opens with the visitor's own
+ * number already on the table (design spec §4.10).
  */
-export function bookingUrl(placement: string): string {
+export function bookingUrl(placement: string, extra?: Record<string, string>): string {
   const url = new URL(BOOKING_URL);
   url.searchParams.set('utm_source', 'website');
   url.searchParams.set('utm_content', placement);
+  for (const [key, value] of Object.entries(extra ?? {})) {
+    if (value) url.searchParams.set(key, value);
+  }
   return url.toString();
 }

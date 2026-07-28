@@ -21,7 +21,7 @@ const hasProof = props.items.length > 0
 </script>
 
 <template>
-  <Section v-if="hasProof" tone="surface" labelledby="proof-title" aria-label="What clients say">
+  <Section v-if="hasProof" tone="bond-raised" labelledby="proof-title" aria-label="What clients say">
     <Container>
       <Eyebrow id="proof-title">In their words</Eyebrow>
       <ul class="proof">
@@ -56,12 +56,12 @@ const hasProof = props.items.length > 0
   flex-direction: column;
   gap: var(--space-3);
   padding-inline-start: var(--space-4);
-  border-inline-start: 2px solid var(--accent-exception);
+  border-inline-start: 2px solid var(--seal);
 }
 
 .proof__quote {
   font-size: var(--text-body-lg);
-  color: var(--text-primary);
+  color: var(--text-on-bond);
 }
 
 .proof__attr {
@@ -74,7 +74,7 @@ const hasProof = props.items.length > 0
 }
 
 .proof__role {
-  color: var(--text-secondary);
+  color: var(--text-on-bond-muted);
   font-size: var(--text-body-sm);
 }
 </style>

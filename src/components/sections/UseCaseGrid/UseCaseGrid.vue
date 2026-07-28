@@ -36,9 +36,9 @@ withDefaults(
     /** Label above the outcome chips. */
     impactsLabel: string
     /** Surface tone for the band, so pages can keep tones alternating. */
-    tone?: 'canvas' | 'surface'
+    tone?: 'bond' | 'bond-raised'
   }>(),
-  { tone: 'surface' },
+  { tone: 'bond-raised' },
 )
 </script>
 
@@ -100,15 +100,15 @@ withDefaults(
   gap: var(--space-4);
   height: 100%;
   padding: var(--space-5);
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  background-color: var(--bond-raised);
+  border: 1px solid var(--rule-on-bond);
+  border-radius: var(--radius-card);
 }
 
 .usecase__title {
   font-family: var(--font-display);
-  font-size: var(--text-heading-md);
-  font-weight: 600;
+  font-size: var(--text-h3);
+  font-weight: 400;
   letter-spacing: var(--tracking-display);
 }
 
@@ -118,33 +118,33 @@ withDefaults(
   gap: var(--space-2);
   flex: 1 0 auto;
   padding-top: var(--space-4);
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid var(--rule-on-bond);
 }
 
 .usecase__label {
   font-family: var(--font-mono);
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: var(--text-on-bond-muted);
 }
 
 /* The deliverable reads in the brand signal colour, as on the process rail. */
 .usecase__label--build {
-  color: var(--action-primary);
+  color: var(--text-on-bond);
   margin-top: var(--space-3);
 }
 
 .usecase__problem {
-  color: var(--text-secondary);
+  color: var(--text-on-bond-muted);
   font-size: var(--text-body);
 }
 
 .usecase__build {
-  color: var(--text-primary);
+  color: var(--text-on-bond);
   font-size: var(--text-body);
   padding-inline-start: var(--space-4);
-  border-inline-start: 2px solid var(--action-primary);
+  border-inline-start: 2px solid var(--seal);
 }
 
 .usecase__impacts {
@@ -152,7 +152,7 @@ withDefaults(
   flex-direction: column;
   gap: var(--space-3);
   padding-top: var(--space-4);
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid var(--rule-on-bond);
 }
 
 .impacts {
@@ -166,15 +166,15 @@ withDefaults(
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-1) var(--space-3);
-  background-color: var(--action-tint);
-  border: 1px solid color-mix(in srgb, var(--action-primary) 18%, var(--border-subtle));
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
+  background-color: var(--seal-wash);
+  border: 1px solid color-mix(in srgb, var(--seal) 18%, var(--rule-on-bond));
+  border-radius: var(--radius-chip);
+  color: var(--text-on-bond);
   font-size: var(--text-body-sm);
 }
 
 .impact :deep(.icon) {
   flex: none;
-  color: var(--action-primary);
+  color: var(--text-on-bond);
 }
 </style>

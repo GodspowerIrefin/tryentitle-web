@@ -78,20 +78,20 @@ useHead(head)
 <style scoped>
 .legal-meta {
   font-family: var(--font-mono);
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: var(--text-on-bond-muted);
 }
 
 /* The exception accent: this page needs a human before it ships (PRD §10.3). */
 .legal-draft {
   margin-top: var(--space-4);
   padding: var(--space-4);
-  background-color: var(--accent-exception-bg);
-  border-inline-start: 2px solid var(--accent-exception);
-  border-radius: var(--radius-sm);
-  color: var(--accent-exception-text);
+  background-color: var(--seal-wash);
+  border-inline-start: 2px solid var(--seal);
+  border-radius: var(--radius-chip);
+  color: var(--seal-ink);
   font-size: var(--text-body-sm);
   max-width: var(--measure);
 }

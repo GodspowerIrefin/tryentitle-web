@@ -1,55 +1,90 @@
 /**
- * Home page copy (PRD §8.1 voice). Kept out of components so a copy change never
- * touches a section (PRD §11.3 rule 4). Final wording is a content task; this is
- * the PRD's plain-operational starting draft.
+ * Home page copy (design spec §4). Kept out of components so a copy change never
+ * touches a section (PRD §11.3 rule 4).
+ *
+ * Voice: plain, concrete, operational. Describes what happens to the WORK, not
+ * what technology is used. No "leverage", "seamless", or "revolutionize".
  */
 export const HOME_COPY = {
   hero: {
-    eyebrow: 'Workflow automation',
-    title: 'We redesign the work, then automate the repeatable parts.',
+    eyebrow: 'Operations, rebuilt',
+    title: 'Your team is doing work a workflow should be doing.',
     subhead:
-      'TryEntitle finds the manual, document-heavy work inside your business, rebuilds the workflow around it, and keeps a person on the judgment calls and exceptions.',
-    meta: ['Agents', 'Integrations', 'Human review'],
-    image: {
-      src: '/images/hero-tech.jpg',
-      alt: 'Laptop showing code on a desk beside a cup of coffee',
-    },
+      'TryEntitle finds the manual, document-heavy work buried in your operation, redesigns it, and automates it — with a person kept exactly where judgment is needed.',
+    meta: [
+      'No software to buy',
+      'Works with your current tools',
+      'You own every workflow we build',
+    ],
+    secondaryLabel: 'See how it works',
   },
+
+  systems: {
+    label: 'We plug into what you already run',
+  },
+
   painPoints: {
-    eyebrow: 'What we look for',
-    title: 'The work that quietly eats the week.',
-    intro: 'Not features — the things you can watch happen in the office every day.',
-    image: {
-      src: '/images/pain-systems.jpg',
-      alt: 'Rows of servers in a data center aisle',
-    },
+    eyebrow: 'Where the hours go',
+    title: 'Five leaks, in almost every operation we open up.',
+    intro: 'None of them look like a crisis. Together they cost you a full-time salary a year.',
   },
+
+  positioning: {
+    eyebrow: "What this isn't",
+    title: 'Not software you have to learn. Not a fixed package you have to fit into.',
+  },
+
   services: {
-    eyebrow: 'What we do',
-    title: 'Six ways we take work off your desk.',
-    intro: 'Scoped per client. You do not buy a package; you get a redesigned process.',
+    eyebrow: 'Services',
+    title: 'Six ways we take work off your team.',
+    intro: 'Most engagements start with one. They rarely stay there.',
   },
-  industries: {
-    eyebrow: 'Who it’s for',
-    title: 'Built around the documents your field actually runs on.',
-    intro: 'A starting set. If your work is document-heavy and repetitive, it likely applies.',
-    note: 'This list is not exhaustive.',
-  },
+
   process: {
-    eyebrow: 'What happens if we work together',
-    title: 'A short sequence, with you on the exceptions.',
-    intro: 'What we need from you, and what you get back, at each step.',
-    image: {
-      src: '/images/process-code.jpg',
-      alt: 'Close-up of code on a monitor',
-    },
+    eyebrow: 'The engagement',
+    title: "You'll know what you're committing to before you commit to it.",
   },
+
+  oversight: {
+    eyebrow: 'How we differ',
+    title: 'Full automation is a promise nobody keeps. We don’t make it.',
+    body: 'Most of the work in a document-heavy process is repetitive and safe to automate. The rest is judgment — the unusual claim, the client who replies with something nobody anticipated, the number that looks wrong. We automate the repeatable part completely, and route the rest to a person with the full context attached. That is why our workflows are still running six months later.',
+    automatedLabel: 'Automated',
+    humanLabel: 'Human review',
+    claims: ['Every decision logged', 'Every exception routed', 'Every workflow yours to keep'],
+  },
+
+  industries: {
+    eyebrow: 'Who this is for',
+    title: 'If your business runs on documents and deadlines, this applies.',
+    note: 'Not on the list? If your team handles documents, approvals, and deadlines by hand, the same approach applies.',
+    noteCta: 'Tell us what your week looks like',
+  },
+
+  calculator: {
+    eyebrow: 'Run the number',
+    title: 'What is manual work costing you this year?',
+    footnote:
+      'An estimate from your own inputs, not a benchmark. Bring it to the call and we will pressure-test it against your actual process.',
+  },
+
+  proof: {
+    eyebrow: 'Why trust us yet',
+    title: 'We’re new. Here’s what we’ll put in writing.',
+  },
+
+  fieldNotes: {
+    eyebrow: 'Field notes',
+    title: 'What we’re learning inside real operations.',
+  },
+
+  faq: {
+    eyebrow: 'Questions',
+    title: 'The things people ask before booking.',
+  },
+
   closing: {
-    title: 'Start with one workflow.',
-    body: 'A workflow review is a focused look at one manual process — what it costs you now, and what it would take to redesign it. No obligation, no package to buy.',
-    image: {
-      src: '/images/closing-infra.jpg',
-      alt: '',
-    },
+    title: 'Thirty minutes. Bring your worst process.',
+    body: 'No deck, no discovery gauntlet. You describe what your team does by hand, and we tell you what we’d automate first and roughly what it’d take. If it isn’t a fit, we’ll say that too.',
   },
 } as const

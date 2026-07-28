@@ -1,108 +1,154 @@
 /*
- * Design tokens — TryEntitle "Field & Brass" (PRD §10.3 / §11.4)
+ * Design tokens — TryEntitle "Paper Trail"
  *
  * This is the ONLY file in the repository permitted to contain a raw hex value.
- * Every component references a variable. A rebrand is a one-file change and an
- * unapproved colour is trivially greppable in review.
+ * Every component references a variable, so a rebrand is a one-file change and an
+ * unapproved colour is trivially greppable in review (PRD §11.4).
  *
- * (The PRD wrote these in Tailwind v4 `@theme`. This build is hand-built Vue,
- *  so the same tokens live as CSS custom properties on :root — identical names,
- *  identical values.)
+ * ─────────────────────────────────────────────────────────────────────────────
+ * THE CORE DEVICE
+ *
+ * The page alternates between two grounds as it scrolls: INK (dark — where the
+ * problem lives) and BOND (light paper — where the solution lives). Every
+ * section declares its band, and colour choices are band-dependent. That is why
+ * the semantic tokens below come in `-on-ink` / `-on-bond` pairs rather than as
+ * a single neutral ramp: a muted grey that reads correctly on paper is illegible
+ * on ink, and vice versa.
+ * ─────────────────────────────────────────────────────────────────────────────
+ *
+ * CONTRAST CORRECTIONS TO THE DESIGN SPEC (§6 Accessibility)
+ *
+ * The spec's palette needs three adjustments to clear WCAG AA (4.5:1 body text).
+ * Measured against the spec's own grounds:
+ *
+ *  1. `--seal` #C8933A on bond is 1.9:1. The spec says darken to #A9782B for
+ *     text — that reaches only 3.52:1, which passes for LARGE text (3:1) but
+ *     still fails body copy. `--seal-ink` #8A6220 (4.95:1) is used for small
+ *     text on bond; #A9782B is kept as `--seal-text-lg` for headline-size use.
+ *  2. `--graphite` #5A6672 is correct on bond (5.27:1) but only 2.99:1 on ink.
+ *     `--muted-on-ink` #97A3AF (6.83:1) carries muted text on dark bands.
+ *  3. `--redline` #D0503F on ink is 4.08:1 — under AA, and the spec uses it for
+ *     small mono stat chips. `--redline-text` #E8836F is used whenever redline
+ *     carries words (6.6:1 on ink, 5.1:1 on the tinted chip fill it actually sits
+ *     on); #D0503F remains for rules, fills, and icon strokes.
+ *
+ * Seal on ink (6.43:1) and verify on ink (6.00:1) pass as-is. Verify on bond is
+ * 2.63:1 and is therefore FILL-ONLY on light bands.
  */
 
 :root {
-  /* ─── Palette: Field & Brass (PRD §10.3) ─────────────────────────── */
-  --color-ink-900: #0e1512; /* Primary text; dark section canvas            */
-  --color-ink-700: #1b2622; /* Elevated surfaces on dark; borders on dark   */
-  --color-graphite-500: #4f5a54; /* Secondary text (4.9:1 on paper — AA)    */
-  --color-graphite-300: #8a948e; /* Tertiary/disabled — non-essential only  */
-  --color-rule: #d9ddd5; /* Hairline rules, dividers, input borders         */
-  --color-paper: #f3f5f0; /* Page background                                */
-  --color-surface: #ffffff; /* Cards, panels                                */
-  --color-signal-600: #14594a; /* Primary action, links (7.2:1 on paper)    */
-  --color-signal-500: #1b7a63; /* Hover / active                            */
-  --color-signal-50: #e6f0ec; /* Tint fills, selected states               */
-  --color-brass-500: #b0862f; /* NON-TEXT only — 3.4:1 on paper            */
-  --color-brass-700: #7a5c18; /* Text-safe brass — 5.6:1 on paper          */
-  --color-brass-50: #f6efdd; /* Exception callout background               */
+  /* ─── Grounds ──────────────────────────────────────────────────────── */
+  --ink: #131a22; /* Primary dark ground; nav on scroll; footer            */
+  --ink-raised: #1c2733; /* Cards, tabs, panels on dark bands             */
+  --bond: #f2f3f0; /* Light paper ground — cool bond, deliberately not cream */
+  --bond-raised: #ffffff; /* Cards on light bands                          */
+
+  /* ─── Accents ──────────────────────────────────────────────────────── */
+  --seal: #c8933a; /* Notary-seal ochre. Fills, rules, rail marker         */
+  --seal-text-lg: #a9782b; /* 3.52:1 on bond — LARGE text only (≥24px)    */
+  --seal-ink: #8a6220; /* 4.95:1 on bond — safe for body-size text        */
+  --seal-wash: #f5ecdc; /* Faint ochre tint for chips on bond             */
+
+  --verify: #2fa98c; /* Completion, "automated" states. Fill-only on bond  */
+  --verify-wash: #e4f4ef;
+
+  --redline: #d0503f; /* BEFORE-state only. Fills, rules — never decorative */
+  --redline-text: #e8836f; /* redline when it carries words: 6.6:1 on ink, and
+                              5.1:1 on its own 12%-tinted chip fill, where the
+                              previous #e0705c measured only 4.29:1 */
+  --redline-wash: #fbe9e6;
+
+  --graphite: #5a6672; /* Muted body text and rules ON BOND (5.27:1)       */
+  --muted-on-ink: #97a3af; /* Muted body text ON INK (6.83:1)              */
 
   /* ─── Semantic aliases — components use these, never the scale ─────── */
-  --text-primary: var(--color-ink-900);
-  --text-secondary: var(--color-graphite-500);
-  /*
-   * Tertiary text on LIGHT surfaces resolves to graphite-500, not graphite-300.
-   * graphite-300 on paper is ~2.7:1 — it fails WCAG AA for text (NFR5), which
-   * an axe scan flags as a serious violation. graphite-300 remains correct on
-   * the dark canvas (footer), where it is referenced from the scale directly.
-   * Tertiary labels stay distinguishable through size, weight, and tracking.
-   */
-  --text-tertiary: var(--color-graphite-500);
-  --text-inverse: var(--color-paper);
-  --bg-canvas: var(--color-paper);
-  --bg-surface: var(--color-surface);
-  --bg-inverse: var(--color-ink-900);
-  --border-subtle: var(--color-rule);
-  --border-on-dark: var(--color-ink-700);
-  --action-primary: var(--color-signal-600);
-  --action-hover: var(--color-signal-500);
-  --action-tint: var(--color-signal-50);
-  --accent-exception: var(--color-brass-500); /* non-text */
-  --accent-exception-text: var(--color-brass-700); /* text-safe */
-  --accent-exception-bg: var(--color-brass-50);
+  --text-on-bond: var(--ink); /* 13.9:1                                    */
+  --text-on-bond-muted: var(--graphite); /* 5.27:1                         */
+  --text-on-ink: var(--bond); /* 16.7:1                                    */
+  --text-on-ink-muted: var(--muted-on-ink); /* 6.83:1                      */
 
-  /* ─── Space — 4px base (PRD §10.5) ─────────────────────────────────── */
-  --space-1: 0.25rem; /*  4 */
-  --space-2: 0.5rem; /*  8 */
-  --space-3: 0.75rem; /* 12 */
-  --space-4: 1rem; /* 16 */
-  --space-5: 1.5rem; /* 24 */
-  --space-6: 2rem; /* 32 */
-  --space-7: 3rem; /* 48 */
-  --space-8: 4rem; /* 64 */
-  --space-9: 6rem; /* 96 */
-  --space-10: 8rem; /* 128 */
+  --rule-on-bond: rgba(90, 102, 114, 0.18);
+  --rule-on-ink: rgba(242, 243, 240, 0.14);
+  --rule-hover: rgba(200, 147, 58, 0.4); /* seal @40% — card hover border  */
 
-  /* ─── Layout (PRD §10.5) ───────────────────────────────────────────── */
-  --content-max: 1200px; /* content max-width  */
-  --page-max: 1440px; /* page max-width     */
-  --gutter: 20px; /* mobile gutter      */
+  /* The single action colour. Ink text sits on it (8.6:1); it is never the
+     colour of text itself on a light ground. */
+  --action: var(--seal);
+  --on-action: var(--ink);
 
-  /* ─── Shape (PRD §10.5) ────────────────────────────────────────────── */
-  --radius-sm: 2px; /* buttons, inputs */
-  --radius-md: 4px; /* cards           */
+  /* ─── Space — 4px base ─────────────────────────────────────────────── */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
 
-  /* ─── Elevation — borders not shadows; one shadow for the mobile panel */
-  --shadow-overlay: 0 8px 32px rgba(14, 21, 18, 0.18);
-  /* Dimming layer behind the mobile menu panel — ink-900 at 40%. */
-  --scrim: rgba(14, 21, 18, 0.4);
+  /* Section rhythm — 72px mobile → 128px desktop (spec §1 Layout) */
+  --section-rhythm: clamp(4.5rem, 3rem + 6.5vw, 8rem);
+  --section-rhythm-compact: clamp(3rem, 2rem + 4vw, 5rem);
 
-  /* ─── Motion (PRD §10.6) ───────────────────────────────────────────── */
-  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
-  --duration-fast: 160ms;
+  /* ─── Layout ───────────────────────────────────────────────────────── */
+  --content-max: 1240px;
+  --page-max: 1440px;
+  --gutter: 16px; /* 24px from the `md` breakpoint up (see globals.css)    */
+
+  /* ─── Shape ────────────────────────────────────────────────────────── */
+  /* Near-square cards read as documents; the pill is reserved for buttons so
+     the one soft shape on the page is the thing to press (spec §1). */
+  --radius-chip: 2px;
+  --radius-card: 4px;
+  --radius-pill: 999px;
+
+  /* ─── Elevation ────────────────────────────────────────────────────── */
+  --shadow-card: 0 1px 2px rgba(19, 26, 34, 0.04);
+  --shadow-lift: 0 12px 32px rgba(19, 26, 34, 0.12);
+  --shadow-overlay: 0 8px 40px rgba(19, 26, 34, 0.32);
+  --scrim: rgba(19, 26, 34, 0.6);
+
+  /* ─── Motion ───────────────────────────────────────────────────────── */
+  /* Spec §2: 180ms cubic-bezier(0.2, 0.8, 0.2, 1) for card interactions. */
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --duration-fast: 180ms;
   --duration-base: 240ms;
+  --duration-slow: 400ms;
 
-  /* ─── Type families (PRD §10.4) ────────────────────────────────────── */
-  --font-display: 'Archivo Variable', 'Archivo', 'Arial Narrow', system-ui, sans-serif;
-  --font-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* ─── Type families ────────────────────────────────────────────────── */
+  --font-display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', 'Arial Narrow',
+    system-ui, sans-serif;
+  --font-body: 'Instrument Sans Variable', 'Instrument Sans', system-ui, -apple-system,
+    'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', 'Menlo', monospace;
 
-  /* ─── Fluid type scale — clamp 360px → 1440px (PRD §10.4) ──────────── */
-  --text-display-xl: clamp(2.75rem, 1.55rem + 4.6vw, 4.5rem); /* Archivo 700 */
-  --text-display-lg: clamp(2rem, 1.35rem + 2.6vw, 3rem); /* Archivo 700 */
-  --text-heading-md: clamp(1.5rem, 1.2rem + 1.1vw, 1.875rem); /* Archivo 600 */
-  --text-heading-sm: 1.25rem; /* Plex Sans 600 */
-  --text-body-lg: 1.125rem;
-  --text-body: 1rem;
-  --text-body-sm: 0.875rem;
-  --text-label: 0.75rem;
+  /* ─── Type scale — spec §1, mobile → desktop ───────────────────────── */
+  /*
+   * H1 floors at 48px, not the spec's 64px.
+   *
+   * At 360×640 a 64px headline runs four lines (≈270px) and pushes the hero CTA
+   * below the fold, which fails FR7 — a launch blocker — while the 64px figure is
+   * a design preference. The spec's own §6 requires verifying at 360, so the
+   * blocker wins. It still reaches the full 72px from ~1150px up, which is where
+   * the headline is actually doing its work.
+   */
+  --text-h1: clamp(3rem, 1.85rem + 5.1vw, 4.5rem); /*    48 → 72 */
+  --text-h2: clamp(2.125rem, 1.7rem + 1.9vw, 2.75rem); /* 34 → 44 */
+  --text-h3: clamp(1.3125rem, 1.2rem + 0.5vw, 1.5rem); /* 21 → 24 */
+  --text-body-lg: clamp(1.0625rem, 1rem + 0.28vw, 1.1875rem); /* 17 → 19 */
+  --text-body: clamp(0.9375rem, 0.9rem + 0.17vw, 1rem); /*  15 → 16 */
+  --text-body-sm: 0.875rem; /* captions, meta lines, attributions */
+  --text-utility: clamp(0.6875rem, 0.66rem + 0.12vw, 0.75rem); /* 11 → 12 */
 
-  --leading-display: 1.02;
-  --leading-heading: 1.1;
+  --leading-display: 1.05;
+  --leading-heading: 1.25; /* sub-display headings and long-form h2/h3 */
   --leading-body: 1.6;
   --tracking-display: -0.03em;
-  --tracking-label: 0.14em;
-  --measure: 68ch; /* max reading measure */
+  --tracking-utility: 0.08em;
+  --measure: 68ch;
 
-  /* Sticky-header offset — kept in sync with SiteHeader compact height */
   --header-height: 64px;
+  --header-height-tall: 88px;
 }

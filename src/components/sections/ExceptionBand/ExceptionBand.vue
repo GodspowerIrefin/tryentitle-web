@@ -35,7 +35,7 @@ defineProps<{
 </script>
 
 <template>
-  <Section tone="canvas" labelledby="exception-title">
+  <Section tone="bond" labelledby="exception-title">
     <Container>
       <SectionHeader :eyebrow="eyebrow" :title="title" title-id="exception-title" />
 
@@ -78,9 +78,9 @@ defineProps<{
   display: flex;
   justify-content: center;
   padding: var(--space-5);
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  background-color: var(--bond-raised);
+  border: 1px solid var(--rule-on-bond);
+  border-radius: var(--radius-card);
 }
 
 .band__panels {
@@ -100,30 +100,30 @@ defineProps<{
   flex-direction: column;
   gap: var(--space-3);
   padding: var(--space-5);
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  background-color: var(--bond-raised);
+  border: 1px solid var(--rule-on-bond);
+  border-radius: var(--radius-card);
 }
 
 .panel--human {
-  background-color: var(--accent-exception-bg);
-  border-color: color-mix(in srgb, var(--accent-exception) 40%, var(--border-subtle));
-  border-inline-start: 2px solid var(--accent-exception);
+  background-color: var(--seal-wash);
+  border-color: color-mix(in srgb, var(--seal) 40%, var(--rule-on-bond));
+  border-inline-start: 2px solid var(--seal);
 }
 
 .panel__label {
   font-family: var(--font-mono);
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: var(--text-on-bond-muted);
 }
 
 .panel__label--human {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  color: var(--accent-exception-text);
+  color: var(--seal-ink);
 }
 
 .systems {
@@ -134,21 +134,21 @@ defineProps<{
 
 .system {
   padding: var(--space-1) var(--space-3);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  background-color: var(--bg-canvas);
+  border: 1px solid var(--rule-on-bond);
+  border-radius: var(--radius-chip);
+  background-color: var(--bond);
   font-family: var(--font-mono);
   font-size: var(--text-body-sm);
-  color: var(--text-primary);
+  color: var(--text-on-bond);
 }
 
 .panel__note {
-  color: var(--text-secondary);
+  color: var(--text-on-bond-muted);
   font-size: var(--text-body-sm);
 }
 
 .panel__human {
-  color: var(--accent-exception-text);
+  color: var(--seal-ink);
   font-size: var(--text-body);
 }
 </style>

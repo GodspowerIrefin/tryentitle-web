@@ -1,29 +1,23 @@
 import type { Color } from 'three'
+import type { ThreeModule } from './useThreeScene'
 
 /**
- * Read Field & Brass token colours at runtime so Three.js materials stay bound
- * to the single source of truth in tokens.css (PRD §11.4) — no hex is duplicated
- * into the 3D code.
+ * Read a design token out of the live stylesheet and hand it to Three.js as a
+ * Color.
+ *
+ * Scenes must not carry hex values (PRD §11.3 rule 5) — tokens.css is the only
+ * file allowed to. Resolving through `getComputedStyle` means a palette change in
+ * tokens.css reaches the 3D scene with no code change, and an unapproved colour
+ * in a scene stays greppable.
+ *
+ * @param token Token name WITHOUT the leading dashes, e.g. `seal`.
  */
-export type TokenName =
-  | 'color-ink-900'
-  | 'color-ink-700'
-  | 'color-graphite-500'
-  | 'color-graphite-300'
-  | 'color-rule'
-  | 'color-paper'
-  | 'color-surface'
-  | 'color-signal-600'
-  | 'color-signal-500'
-  | 'color-brass-500'
-  | 'color-brass-700'
-
-export function tokenHex(name: TokenName): string {
-  if (typeof window === 'undefined') return '#000000'
-  return getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim() || '#000000'
-}
-
-/** Build a THREE.Color from a token. Pass the THREE module so this stays lazy. */
-export function tokenColor(THREE: typeof import('three'), name: TokenName): Color {
-  return new THREE.Color(tokenHex(name))
+export function tokenColor(THREE: ThreeModule, token: string): Color {
+  const raw = getComputedStyle(document.documentElement).getPropertyValue(`--${token}`).trim()
+  if (!raw) {
+    // A renamed token would otherwise surface as silent black geometry.
+    console.warn(`[three] token --${token} not found in tokens.css`)
+    return new THREE.Color(0x888888)
+  }
+  return new THREE.Color(raw)
 }

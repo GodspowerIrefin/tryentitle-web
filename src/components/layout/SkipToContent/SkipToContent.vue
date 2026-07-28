@@ -21,16 +21,16 @@
   top: var(--space-3);
   z-index: 100;
   transform: translateY(-150%);
-  background-color: var(--action-primary);
-  color: var(--text-inverse);
+  background-color: var(--seal);
+  color: var(--text-on-ink);
   padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-chip);
   font-weight: 600;
   transition: transform var(--duration-fast) var(--ease-standard);
 }
 
 .skip:focus {
   transform: translateY(0);
-  color: var(--text-inverse);
+  color: var(--text-on-ink);
 }
 </style>

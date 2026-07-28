@@ -9,21 +9,31 @@ import { SITE_NAME, SITE_TAGLINE } from '../src/lib/constants'
  * Open Graph card generation (PRD FR5 / §11.7).
  *
  * Renders "a static branded card per section type" at build time, in the site's
- * own typography (Archivo + IBM Plex Mono) and palette. Never an AI-generated
- * image, never stock art — type, rules, and the brass exception mark only
- * (PRD §10.2, §10.8).
+ * own typography (Bricolage Grotesque + IBM Plex Mono) and palette. Never an
+ * AI-generated image, never stock art — type, rules, and the seal mark only.
  *
  * Palette values are parsed from styles/tokens.css so this generator cannot
  * drift from the design tokens (PRD §11.4 single source of truth).
+ *
+ * NOTE: because the palette is looked up by token NAME, renaming a token in
+ * tokens.css silently yields `undefined` here and satori fails with an opaque
+ * "Cannot read properties of undefined" error. `colour()` below turns that into
+ * a named, actionable failure instead.
  */
 
 const root = (p: string) => fileURLToPath(new URL(`../${p}`, import.meta.url))
 
-/** Parse `--color-name: #hex;` declarations out of tokens.css. */
+/**
+ * Parse `--name: #hex;` declarations out of tokens.css.
+ *
+ * Matches ANY token whose value is a literal hex — the palette is no longer
+ * namespaced under `--color-*`, so anchoring on that prefix would silently return
+ * an empty palette and every colour would come back undefined.
+ */
 function loadPalette(): Record<string, string> {
   const css = readFileSync(root('src/styles/tokens.css'), 'utf-8')
   const palette: Record<string, string> = {}
-  for (const [, name, hex] of css.matchAll(/--(color-[\w-]+):\s*(#[0-9a-fA-F]{3,8});/g)) {
+  for (const [, name, hex] of css.matchAll(/--([\w-]+):\s*(#[0-9a-fA-F]{3,8});/g)) {
     palette[name!] = hex!
   }
   return palette
@@ -45,7 +55,7 @@ interface CardSpec {
 const CARDS: CardSpec[] = [
   { name: 'default', eyebrow: SITE_NAME, title: SITE_TAGLINE },
   { name: 'home', eyebrow: 'Operations, not software', title: SITE_TAGLINE },
-  { name: 'services', eyebrow: 'Services', title: 'Six ways we take work off your desk.' },
+  { name: 'services', eyebrow: 'Services', title: 'Six ways we take work off your team.' },
   {
     name: 'industries',
     eyebrow: 'Industries',
@@ -62,13 +72,25 @@ function cardElement(spec: CardSpec, c: Record<string, string>): Record<string, 
     props: { style: { display: 'flex', ...style }, children },
   })
 
+  /** Look up a token, failing loudly if it has been renamed or removed. */
+  const colour = (token: string): string => {
+    const value = c[token]
+    if (!value) {
+      throw new Error(
+        `OG card: token --${token} is missing from src/styles/tokens.css. ` +
+          `Update vite/og.ts to match the current palette.`,
+      )
+    }
+    return value
+  }
+
   return div(
     {
       width: '100%',
       height: '100%',
       flexDirection: 'column',
       justifyContent: 'space-between',
-      backgroundColor: c['color-paper'],
+      backgroundColor: colour('bond'),
       padding: '72px',
       fontFamily: 'IBM Plex Mono',
     },
@@ -79,60 +101,57 @@ function cardElement(spec: CardSpec, c: Record<string, string>): Record<string, 
           fontSize: 24,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
-          color: c['color-graphite-500'],
+          color: colour('graphite'),
         },
         spec.eyebrow.toUpperCase(),
       ),
 
-      // Headline — Archivo, tight display setting
+      // Headline — Bricolage Grotesque at display leading
       div(
         {
-          fontFamily: 'Archivo',
+          fontFamily: 'Bricolage Grotesque',
           fontSize: 68,
-          fontWeight: 700,
+          fontWeight: 600,
           lineHeight: 1.05,
           letterSpacing: '-0.03em',
-          color: c['color-ink-900'],
+          color: colour('ink'),
           maxWidth: '900px',
         },
         spec.title,
       ),
 
-      // Footer rule: wordmark + the brass exception mark
+      // Footer rule: wordmark + the seal mark
       div(
         {
           alignItems: 'center',
           justifyContent: 'space-between',
-          borderTop: `2px solid ${c['color-rule']}`,
+          borderTop: `1px solid ${colour('graphite')}`,
           paddingTop: '28px',
         },
         [
+          div({ alignItems: 'center', gap: '10px' }, [
+            div(
+              {
+                fontFamily: 'Bricolage Grotesque',
+                fontSize: 32,
+                fontWeight: 600,
+                letterSpacing: '-0.02em',
+                color: colour('ink'),
+              },
+              SITE_NAME,
+            ),
+            div(
+              {
+                width: '12px',
+                height: '12px',
+                borderRadius: '6px',
+                backgroundColor: colour('seal'),
+              },
+              '',
+            ),
+          ]),
           div(
-            { alignItems: 'flex-end', gap: '6px' },
-            [
-              div(
-                {
-                  fontFamily: 'Archivo',
-                  fontSize: 30,
-                  fontWeight: 700,
-                  letterSpacing: '-0.02em',
-                  color: c['color-ink-900'],
-                },
-                SITE_NAME,
-              ),
-              div(
-                {
-                  width: '10px',
-                  height: '10px',
-                  backgroundColor: c['color-brass-500'],
-                  marginBottom: '6px',
-                },
-                '',
-              ),
-            ],
-          ),
-          div(
-            { fontSize: 22, letterSpacing: '0.12em', color: c['color-signal-600'] },
+            { fontSize: 22, letterSpacing: '0.12em', color: colour('graphite') },
             'TRYENTITLE.COM',
           ),
         ],
@@ -147,8 +166,20 @@ export async function generateOgImages(outDir: string): Promise<void> {
   mkdirSync(dir, { recursive: true })
 
   const fonts = [
-    { name: 'Archivo', data: font('@fontsource/archivo', 'archivo-latin-700-normal.woff'), weight: 700 as const, style: 'normal' as const },
-    { name: 'IBM Plex Mono', data: font('@fontsource/ibm-plex-mono', 'ibm-plex-mono-latin-500-normal.woff'), weight: 500 as const, style: 'normal' as const },
+    {
+      name: 'Bricolage Grotesque',
+      // NOTE: the .woff from the STATIC package, not the variable .woff2 —
+      // satori parses woff but not woff2, and fails opaquely on the latter.
+      data: font('@fontsource/bricolage-grotesque', 'bricolage-grotesque-latin-600-normal.woff'),
+      weight: 600 as const,
+      style: 'normal' as const,
+    },
+    {
+      name: 'IBM Plex Mono',
+      data: font('@fontsource/ibm-plex-mono', 'ibm-plex-mono-latin-500-normal.woff'),
+      weight: 500 as const,
+      style: 'normal' as const,
+    },
   ]
 
   for (const spec of CARDS) {

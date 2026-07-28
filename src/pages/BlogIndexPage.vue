@@ -43,7 +43,7 @@ useHead(
   <Section labelledby="blog-title">
     <Container>
       <Eyebrow>Blog</Eyebrow>
-      <Heading id="blog-title" :level="1" size="display-lg">
+      <Heading id="blog-title" :level="1" size="h2">
         Notes on how work actually moves.
       </Heading>
 
@@ -77,16 +77,16 @@ useHead(
   gap: var(--space-4);
   margin-top: var(--space-6);
   padding-top: var(--space-6);
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid var(--rule-on-bond);
   max-width: var(--measure);
 }
 
 .blog__empty-lead {
   font-size: var(--text-body-lg);
-  color: var(--text-primary);
+  color: var(--text-on-bond);
 }
 
 .blog__empty-body {
-  color: var(--text-secondary);
+  color: var(--text-on-bond-muted);
 }
 </style>

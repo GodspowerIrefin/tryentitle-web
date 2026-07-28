@@ -56,8 +56,8 @@ const year = new Date().getFullYear()
 
 <style scoped>
 .footer {
-  background-color: var(--bg-inverse);
-  color: var(--text-inverse);
+  background-color: var(--ink);
+  color: var(--text-on-ink);
   padding-block: clamp(3rem, 6vw, 5rem);
 }
 
@@ -80,12 +80,15 @@ const year = new Date().getFullYear()
   max-width: 30ch;
 }
 
+/* The wordmark is not running text — the global link underline does not
+   belong on it. */
 .footer__logo {
   display: inline-flex;
+  text-decoration: none;
 }
 
 .footer__tagline {
-  color: var(--color-graphite-300);
+  color: var(--text-on-ink-muted);
   font-size: var(--text-body-sm);
   line-height: 1.5;
 }
@@ -105,10 +108,10 @@ const year = new Date().getFullYear()
 .footer__heading {
   font-family: var(--font-mono);
   font-weight: 500;
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--color-graphite-300);
+  color: var(--text-on-ink-muted);
   margin-bottom: var(--space-3);
 }
 
@@ -119,12 +122,20 @@ const year = new Date().getFullYear()
 }
 
 .footer__link {
-  color: var(--text-inverse);
+  color: var(--text-on-ink);
   font-size: var(--text-body-sm);
+  text-decoration: none;
 }
 
+/*
+ * Seal IS legible as text here. It is 1.9:1 on bond but 6.4:1 on ink, so the dark
+ * footer is one of the few surfaces where the accent may colour text rather than
+ * fill a shape.
+ */
 .footer__link:hover {
-  color: var(--color-brass-500);
+  color: var(--seal);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .footer__bottom {
@@ -134,8 +145,8 @@ const year = new Date().getFullYear()
   gap: var(--space-2);
   margin-top: var(--space-8);
   padding-top: var(--space-5);
-  border-top: 1px solid var(--border-on-dark);
-  color: var(--color-graphite-300);
+  border-top: 1px solid var(--rule-on-ink);
+  color: var(--text-on-ink-muted);
   font-size: var(--text-body-sm);
 }
 </style>

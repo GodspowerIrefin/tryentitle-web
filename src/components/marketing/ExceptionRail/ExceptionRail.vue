@@ -141,48 +141,47 @@ const SYNC_X = nodes[3]!.x
 .rail {
   width: 100%;
   height: auto;
-  max-width: 680px;
 }
 
 /* Dark-stage variant: light strokes/labels on ink; brass stays the accent. */
 .rail--dark .rail-flow,
 .rail--dark .rail-node {
-  stroke: var(--color-graphite-300);
+  stroke: var(--muted-on-ink);
 }
 .rail--dark .rail-arrowhead {
-  fill: var(--color-graphite-300);
+  fill: var(--muted-on-ink);
 }
 .rail--dark .rail-node {
   fill: transparent;
 }
 .rail--dark .rail-label {
-  fill: var(--color-rule);
+  fill: var(--bond);
 }
 .rail--dark .rail-index {
-  fill: var(--color-graphite-300);
+  fill: var(--muted-on-ink);
 }
 
 .rail-flow {
-  stroke: var(--color-graphite-300);
+  stroke: var(--rule-on-bond);
   stroke-width: 1.5;
 }
 
 .rail-arrowhead {
-  fill: var(--color-graphite-300);
+  fill: var(--rule-on-bond);
 }
 
 .rail-arrowhead--brass {
-  fill: var(--accent-exception);
+  fill: var(--seal);
 }
 
 .rail-node {
-  fill: var(--bg-surface);
-  stroke: var(--text-primary);
+  fill: var(--bond-raised);
+  stroke: var(--text-on-bond);
   stroke-width: 1.5;
 }
 
 .rail-node-dot {
-  fill: var(--color-graphite-300);
+  fill: var(--rule-on-bond);
 }
 
 .rail-index {
@@ -190,25 +189,25 @@ const SYNC_X = nodes[3]!.x
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.1em;
-  fill: var(--text-tertiary);
+  fill: var(--text-on-bond-muted);
 }
 
 .rail-label {
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.12em;
-  fill: var(--text-secondary);
+  fill: var(--text-on-bond-muted);
 }
 
 /* The exception path — brass, non-text (PRD §10.3) */
 .rail-junction {
-  fill: var(--accent-exception);
+  fill: var(--seal);
 }
 
 .rail-branch,
 .rail-return {
   fill: none;
-  stroke: var(--accent-exception);
+  stroke: var(--seal);
   stroke-width: 1.5;
 }
 
@@ -217,13 +216,13 @@ const SYNC_X = nodes[3]!.x
 }
 
 .rail-review {
-  fill: var(--accent-exception-bg);
-  stroke: var(--accent-exception);
+  fill: var(--seal-wash);
+  stroke: var(--seal);
   stroke-width: 1.5;
 }
 
 .rail-review-dot {
-  fill: var(--accent-exception);
+  fill: var(--seal);
 }
 
 .rail-review-text {
@@ -231,6 +230,6 @@ const SYNC_X = nodes[3]!.x
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.14em;
-  fill: var(--accent-exception-text);
+  fill: var(--seal-ink);
 }
 </style>

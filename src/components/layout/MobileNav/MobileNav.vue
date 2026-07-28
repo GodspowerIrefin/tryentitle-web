@@ -12,6 +12,11 @@
  *   trigger on close (handled by the parent via the `close` event).
  * - The booking CTA is pinned inside the panel and never scrolls out of reach.
  * - Background scroll is locked while the panel is open.
+ * - The rest of the app is marked `inert` while open, so background content is
+ *   removed from the accessibility tree, from tab order, and from hit-testing.
+ *   `aria-modal` alone only advises screen readers; it leaves the background
+ *   live for everything else (and an axe scan flags contrast on content sitting
+ *   under the 40% scrim, which is real — that text is genuinely unreadable).
  */
 import { nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
@@ -54,6 +59,17 @@ function onKeydown(e: KeyboardEvent) {
   }
 }
 
+/**
+ * Toggle `inert` on the app root. The panel is teleported to <body>, so it is a
+ * SIBLING of #app and stays interactive while everything behind it goes inert.
+ */
+function setBackgroundInert(inert: boolean) {
+  const app = document.getElementById('app')
+  if (!app) return
+  if (inert) app.setAttribute('inert', '')
+  else app.removeAttribute('inert')
+}
+
 watch(
   () => props.open,
   async (isOpen) => {
@@ -61,11 +77,13 @@ watch(
     if (isOpen) {
       document.body.style.overflow = 'hidden'
       document.addEventListener('keydown', onKeydown)
+      setBackgroundInert(true)
       await nextTick()
       focusables()[0]?.focus()
     } else {
       document.body.style.overflow = ''
       document.removeEventListener('keydown', onKeydown)
+      setBackgroundInert(false)
     }
   },
 )
@@ -74,6 +92,7 @@ onBeforeUnmount(() => {
   if (typeof document !== 'undefined') {
     document.body.style.overflow = ''
     document.removeEventListener('keydown', onKeydown)
+    setBackgroundInert(false)
   }
 })
 </script>
@@ -132,7 +151,7 @@ onBeforeUnmount(() => {
   flex-direction: column;
   width: min(90vw, 360px);
   height: 100dvh;
-  background-color: var(--bg-surface);
+  background-color: var(--bond-raised);
   box-shadow: var(--shadow-overlay);
   padding: var(--space-4);
 }
@@ -142,21 +161,21 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: space-between;
   padding-block: var(--space-2) var(--space-4);
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--rule-on-bond);
 }
 
 .panel__label {
   font-family: var(--font-mono);
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--text-secondary);
+  color: var(--text-on-bond-muted);
 }
 
 .panel__close {
   display: inline-flex;
   padding: var(--space-2);
-  color: var(--text-primary);
+  color: var(--text-on-bond);
 }
 
 .panel__nav {
@@ -170,20 +189,20 @@ onBeforeUnmount(() => {
 
 .panel__link {
   font-family: var(--font-display);
-  font-size: var(--text-heading-md);
-  font-weight: 600;
-  color: var(--text-primary);
+  font-size: var(--text-h3);
+  font-weight: 400;
+  color: var(--text-on-bond);
   padding-block: var(--space-2);
 }
 
 .panel__link:hover {
-  color: var(--action-primary);
+  color: var(--text-on-bond);
 }
 
 /* CTA pinned to the bottom of the panel, never scrolls out of reach */
 .panel__cta {
   padding-top: var(--space-4);
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid var(--rule-on-bond);
 }
 
 .panel__cta :deep(.btn) {

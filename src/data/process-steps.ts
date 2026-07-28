@@ -1,44 +1,58 @@
 /**
- * The engagement process for the home "what happens if I engage" section
- * (PRD FR11 / US3). Ordered steps, each naming what TryEntitle needs from the
- * client (`clientInput`) and what TryEntitle delivers (`output`), plus where a
- * human stays in the loop (`human`).
+ * "How an engagement runs" (design spec §4.7, PRD FR11 / US3).
  *
- * This is the one place numbering is used on the home page — the process
- * genuinely is a sequence and order carries information (PRD §10.7).
+ * Ordered steps with a timing marker each. Numbering is legitimate here because
+ * it is a real sequence and order carries information — it is used here and only
+ * here on the home page.
+ *
+ * Step 02 carries the risk reversal that the whole page leans on: walk away and
+ * you keep the map. That is the single most persuasive line available to a
+ * company with no track record, so it stays in the step copy rather than being
+ * buried in the commitments section alone.
  */
 export interface ProcessStep {
   title: string
-  /** What TryEntitle needs from the client at this step. */
-  clientInput: string
-  /** What TryEntitle delivers at this step. */
+  /** What happens at this step, in plain language. */
+  detail: string
+  /** Timing marker — Day 0, Week 1, Weeks 2–4, Ongoing. */
+  timing: string
+  /** What the client walks away holding after this step. */
   output: string
-  /** Where a human stays in the loop, if applicable at this step. */
-  human?: string
+  /**
+   * A pull-out guarantee. Only one step carries one, deliberately: it is the
+   * strongest risk-reversal available to a company with no track record, and
+   * burying it mid-paragraph wasted it.
+   */
+  note?: string
 }
 
 export const PROCESS_STEPS: ProcessStep[] = [
   {
     title: 'Workflow review',
-    clientInput: 'A walkthrough of how one process runs today, plus a few sample documents.',
-    output: 'A map of how work actually moves, and a shortlist of what to automate, change, or leave alone.',
+    detail:
+      'A 30-minute call. We ask what your team does by hand and where things stall. No slides.',
+    timing: 'Day 0',
+    output: 'A shortlist of what to fix first',
   },
   {
-    title: 'Design',
-    clientInput: 'Your constraints, deadlines, and the systems the work has to pass through.',
-    output: 'A redesigned workflow with defined handoffs and the exact points where a human decides.',
-    human: 'You sign off on the design and the rules for what counts as an exception.',
+    title: 'Process map & scope',
+    detail:
+      'We document the real workflow, show you where the hours are, and price a fixed scope.',
+    timing: 'Week 1',
+    output: 'A process map and a fixed price',
+    note: 'Walk away here and you keep the map.',
   },
   {
-    title: 'Build',
-    clientInput: 'Sandbox or credentialed access to the systems involved.',
-    output: 'The automated steps, wired between your systems, with a review queue at each exception.',
-    human: 'Your team reviews exceptions in the queue; the routine path runs on its own.',
+    title: 'Build & pilot',
+    detail:
+      'We build it, run it alongside your current process, and tune it against real cases — not test data.',
+    timing: 'Weeks 2–4',
+    output: 'A working workflow, proven on real cases',
   },
   {
-    title: 'Run and refine',
-    clientInput: 'The exceptions your team resolves and any changes in how you work.',
-    output: 'Reporting on where work still slows down, and adjustments to the workflow over time.',
-    human: 'Judgment calls stay with your team; the automation carries the repeatable parts.',
+    title: 'Run & watch',
+    detail: 'It goes live. We stay on the exceptions and report on what it’s saving you.',
+    timing: 'Ongoing',
+    output: 'Reporting, and a person on the exceptions',
   },
 ]

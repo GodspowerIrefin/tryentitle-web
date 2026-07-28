@@ -7,20 +7,23 @@
  * structurally prevents the most common marketing-build bug: competing spacing
  * rules that cancel or double up.
  *
- * `tone="inverse"` paints the dark canvas. Per PRD §10.3 this is used for
- * exactly two bands site-wide (closing CTA and footer) so the shift to dark
- * reads as punctuation, not decoration.
+ * Section also declares the BAND. The page alternates between `ink` (dark —
+ * where the problem lives) and `bond` (light paper — where the solution lives),
+ * and the visitor scrolls from mess into order (design spec §1).
  *
- * Renders a <section> with the given aria-labelledby wiring left to the caller.
+ * `tone="ink"` adds the `.on-ink` class, which is the single hook every other
+ * component uses to pick band-correct text, rule, and accent colours. Any
+ * component that renders on both bands should style against `.on-ink`, never
+ * re-declare its own dark variant.
  *
- * @example <Section tone="inverse"><Container>…</Container></Section>
+ * @example <Section tone="ink"><Container>…</Container></Section>
  */
 import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    /** Surface tone. `canvas` (paper) default, `surface` (white), `inverse` (ink). */
-    tone?: 'canvas' | 'surface' | 'inverse'
+    /** Which ground this band paints. `bond` is light paper, `ink` is dark. */
+    tone?: 'bond' | 'bond-raised' | 'ink' | 'ink-raised'
     /** Tighten the vertical rhythm for dense, secondary bands. */
     density?: 'default' | 'compact'
     /** Landmark element to render. Defaults to a plain section. */
@@ -28,13 +31,16 @@ const props = withDefaults(
     /** id of the heading that labels this region, for aria-labelledby. */
     labelledby?: string
   }>(),
-  { tone: 'canvas', density: 'default', as: 'section' },
+  { tone: 'bond', density: 'default', as: 'section' },
 )
+
+const isInk = computed(() => props.tone === 'ink' || props.tone === 'ink-raised')
 
 const classes = computed(() => [
   'section',
   `section--${props.tone}`,
   props.density === 'compact' ? 'section--compact' : null,
+  isInk.value ? 'on-ink' : null,
 ])
 </script>
 
@@ -46,26 +52,32 @@ const classes = computed(() => [
 
 <style scoped>
 .section {
-  /* The single definition of section rhythm (PRD §10.5). */
-  padding-block: clamp(4rem, 8vw, 8rem);
+  /* The single definition of section rhythm — 72px mobile → 128px desktop. */
+  padding-block: var(--section-rhythm);
+  position: relative;
 }
 
 .section--compact {
-  padding-block: clamp(2.5rem, 5vw, 4rem);
+  padding-block: var(--section-rhythm-compact);
 }
 
-.section--canvas {
-  background-color: var(--bg-canvas);
-  color: var(--text-primary);
+.section--bond {
+  background-color: var(--bond);
+  color: var(--text-on-bond);
 }
 
-.section--surface {
-  background-color: var(--bg-surface);
-  color: var(--text-primary);
+.section--bond-raised {
+  background-color: var(--bond-raised);
+  color: var(--text-on-bond);
 }
 
-.section--inverse {
-  background-color: var(--bg-inverse);
-  color: var(--text-inverse);
+.section--ink {
+  background-color: var(--ink);
+  color: var(--text-on-ink);
+}
+
+.section--ink-raised {
+  background-color: var(--ink-raised);
+  color: var(--text-on-ink);
 }
 </style>

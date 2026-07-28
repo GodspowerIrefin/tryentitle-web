@@ -28,7 +28,7 @@ useHead(
     <Container>
       <div class="notfound">
         <Eyebrow>Error 404</Eyebrow>
-        <Heading :level="1" size="display-lg">This page isn’t here.</Heading>
+        <Heading :level="1" size="h2">This page isn’t here.</Heading>
         <p class="notfound__body">
           The link may be old or mistyped. Head back home, or book a workflow review and we’ll
           point you the right way.
@@ -51,7 +51,7 @@ useHead(
 }
 
 .notfound__body {
-  color: var(--text-secondary);
+  color: var(--text-on-bond-muted);
   font-size: var(--text-body-lg);
 }
 

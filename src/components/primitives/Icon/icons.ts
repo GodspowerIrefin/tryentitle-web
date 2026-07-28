@@ -15,6 +15,18 @@ export type IconName =
   | 'users'
   | 'menu'
   | 'close'
+  // Industry glyphs — one per target sector (design spec §9 card anatomy)
+  | 'pulse'
+  | 'scale'
+  | 'shield'
+  | 'calculator'
+  | 'building'
+  | 'hardhat'
+  | 'briefcase'
+  // UI glyphs
+  | 'plus'
+  | 'minus'
+  | 'map'
 
 export const ICON_PATHS: Record<IconName, string> = {
   'arrow-right': 'M5 12h14M13 6l6 6-6 6',
@@ -30,4 +42,18 @@ export const ICON_PATHS: Record<IconName, string> = {
     'M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 20a6 6 0 0 1 12 0M16 5.5a3 3 0 0 1 0 5.8M18 20a6 6 0 0 0-4-5.6',
   menu: 'M4 7h16M4 12h16M4 17h16',
   close: 'M6 6l12 12M18 6 6 18',
+
+  // ─── Industry glyphs ───────────────────────────────────────────────────
+  pulse: 'M3 12h3l2-5 4 10 2-5h7',
+  scale: 'M12 4v16M7 20h10M12 7 5 9l3 5a3.5 3.5 0 0 0 6-2zM12 7l7 2-3 5a3.5 3.5 0 0 1-6-2z',
+  shield: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z',
+  calculator: 'M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h3',
+  building: 'M4 21V6l7-3 7 3v15M4 21h16M9 9h.01M13 9h.01M9 13h.01M13 13h.01M10 21v-4h4v4',
+  hardhat: 'M3 17h18M4 17v-2a8 8 0 0 1 16 0v2M10 5h4v4M8 8V6M16 8V6',
+  briefcase: 'M3 8h18v12H3zM9 8V5h6v3M3 13h18',
+
+  // ─── UI glyphs ─────────────────────────────────────────────────────────
+  plus: 'M12 5v14M5 12h14',
+  minus: 'M5 12h14',
+  map: 'M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3zM9 3v15M15 6v15',
 }

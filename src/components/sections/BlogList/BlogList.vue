@@ -76,21 +76,21 @@ const pages = computed(() => Array.from({ length: totalPages.value }, (_, i) => 
   display: flex;
   gap: var(--space-2);
   font-family: var(--font-mono);
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: var(--text-on-bond-muted);
 }
 
 .post__title {
   font-family: var(--font-display);
-  font-size: var(--text-heading-md);
-  font-weight: 600;
+  font-size: var(--text-h3);
+  font-weight: 400;
   letter-spacing: var(--tracking-display);
 }
 
 .post__excerpt {
-  color: var(--text-secondary);
+  color: var(--text-on-bond-muted);
 }
 
 .pager {
@@ -105,15 +105,15 @@ const pages = computed(() => Array.from({ length: totalPages.value }, (_, i) => 
   justify-content: center;
   min-width: 2.25rem;
   height: 2.25rem;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--rule-on-bond);
+  border-radius: var(--radius-chip);
   font-family: var(--font-mono);
   font-size: var(--text-body-sm);
-  color: var(--text-primary);
+  color: var(--text-on-bond);
 }
 
 .pager__link--active {
-  border-color: var(--action-primary);
-  color: var(--action-primary);
+  border-color: var(--text-on-bond);
+  color: var(--text-on-bond);
 }
 </style>

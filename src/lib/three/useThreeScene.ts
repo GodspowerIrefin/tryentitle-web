@@ -3,21 +3,25 @@ import { onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
 /**
  * useThreeScene — the single, safe home for every Three.js lifecycle on the site.
  *
- * Design constraints (this project deliberately trades some of the PRD's JS
- * budget for the 3D look — "look first, lazy-load 3D"):
- * - **Client-only + lazy.** `three` is dynamically imported in `onMounted`, so
- *   it never touches SSR and lands in its own code-split chunk fetched after
- *   first paint. Static routes keep their small budget; the 3D chunk is extra.
- * - **Reduced motion is honoured absolutely.** Under `prefers-reduced-motion`
- *   the scene never initialises; the caller's static fallback stays on screen.
+ * This project trades some of the PRD's JS budget (NFR2) for one 3D moment in the
+ * services band. That trade is only defensible if the cost is strictly contained,
+ * so this hook enforces the containment:
+ *
+ * - **Client-only, lazy, and DEFERRED UNTIL NEAR VIEWPORT.** `three` is imported
+ *   dynamically, and not on mount — only once the canvas is within `rootMargin`
+ *   of the viewport. The chunk therefore never competes with LCP, and a visitor
+ *   who bounces from the hero never downloads it at all.
+ * - **Reduced motion is honoured absolutely.** Under `prefers-reduced-motion` the
+ *   scene never initialises; the caller's static fallback stays on screen.
  * - **Cheap when unseen.** The RAF loop pauses when the canvas scrolls offscreen
- *   (IntersectionObserver) and when the tab is hidden (visibilitychange).
+ *   and when the tab is hidden.
  * - **DPR capped** at 2 so retina phones do not render 3–4× the pixels.
  * - **Everything is disposed** on unmount: geometries, materials, the renderer,
  *   the RAF, and all observers. No leaked GL contexts across route changes.
  *
  * The builder receives the `three` module plus a ready scene/camera/renderer and
- * returns a controller with `update(elapsed, dt)` and `dispose()`.
+ * returns a controller with `update(elapsed, dt)`, optional `resize`, and
+ * `dispose`.
  */
 
 export type ThreeModule = typeof import('three')
@@ -44,12 +48,11 @@ export interface SceneController {
 export type SceneBuilder = (ctx: SceneContext) => SceneController
 
 export interface UseThreeSceneOptions {
-  /** Vertical field of view in degrees. */
   fov?: number
-  /** Camera z distance. */
   cameraZ?: number
-  /** Clear-alpha; keep 0 so the paper/ink background shows through. */
   alpha?: boolean
+  /** How early to start loading, relative to the viewport. */
+  rootMargin?: string
 }
 
 export function useThreeScene(
@@ -64,10 +67,11 @@ export function useThreeScene(
   let controller: SceneController | null = null
   let raf = 0
   let resizeObserver: ResizeObserver | null = null
-  let intersectionObserver: IntersectionObserver | null = null
+  let visibilityObserver: IntersectionObserver | null = null
+  let loadObserver: IntersectionObserver | null = null
   let running = false
-  let visible = true
-  let onScreen = true
+  let tabVisible = true
+  let onScreen = false
   let last = 0
   let start = 0
   let disposed = false
@@ -89,7 +93,7 @@ export function useThreeScene(
   }
 
   function play() {
-    if (running || !renderer || onScreen === false || !visible) return
+    if (running || !renderer || !onScreen || !tabVisible) return
     running = true
     last = performance.now()
     raf = requestAnimationFrame(loop)
@@ -101,19 +105,20 @@ export function useThreeScene(
     raf = 0
   }
 
-  function updateVisibility() {
-    if (onScreen && visible) play()
+  function syncPlayState() {
+    if (onScreen && tabVisible) play()
     else pause()
   }
 
   function onDocVisibility() {
-    visible = document.visibilityState === 'visible'
-    updateVisibility()
+    tabVisible = document.visibilityState === 'visible'
+    syncPlayState()
   }
 
-  onMounted(async () => {
+  /** Boot the renderer. Called once, the first time the canvas nears the fold. */
+  async function init() {
     const canvas = canvasRef.value
-    if (!canvas || prefersReducedMotion()) return
+    if (!canvas || disposed || renderer) return
 
     let THREE: ThreeModule
     try {
@@ -151,7 +156,6 @@ export function useThreeScene(
     start = performance.now()
     active.value = true
 
-    // Resize with the parent element.
     resizeObserver = new ResizeObserver((entries) => {
       const box = entries[0]?.contentRect
       if (!box || !renderer) return
@@ -164,25 +168,46 @@ export function useThreeScene(
     })
     resizeObserver.observe(parent)
 
-    // Pause when scrolled offscreen.
-    intersectionObserver = new IntersectionObserver(
+    // Pause the loop when the canvas leaves the viewport.
+    visibilityObserver = new IntersectionObserver(
       (entries) => {
         onScreen = entries[0]?.isIntersecting ?? true
-        updateVisibility()
+        syncPlayState()
       },
       { threshold: 0 },
     )
-    intersectionObserver.observe(canvas)
+    visibilityObserver.observe(canvas)
 
     document.addEventListener('visibilitychange', onDocVisibility)
+    onScreen = true
     play()
+  }
+
+  onMounted(() => {
+    const canvas = canvasRef.value
+    if (!canvas || prefersReducedMotion()) return
+
+    // Defer the `three` import until the canvas is close to the fold. This is
+    // the difference between the 3D chunk costing every visitor and costing only
+    // the ones who scroll far enough to see it.
+    loadObserver = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return
+        loadObserver?.disconnect()
+        loadObserver = null
+        void init()
+      },
+      { rootMargin: options.rootMargin ?? '400px 0px' },
+    )
+    loadObserver.observe(canvas)
   })
 
   onBeforeUnmount(() => {
     disposed = true
     pause()
+    loadObserver?.disconnect()
     resizeObserver?.disconnect()
-    intersectionObserver?.disconnect()
+    visibilityObserver?.disconnect()
     if (typeof document !== 'undefined') {
       document.removeEventListener('visibilitychange', onDocVisibility)
     }

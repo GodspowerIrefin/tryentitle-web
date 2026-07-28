@@ -84,9 +84,9 @@ useHead(head)
   display: flex;
   gap: var(--space-2);
   font-family: var(--font-mono);
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: var(--text-on-bond-muted);
 }
 </style>

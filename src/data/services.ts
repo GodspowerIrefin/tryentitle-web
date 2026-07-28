@@ -1,17 +1,25 @@
 /**
- * The six core services — canonical names and one-line definitions (PRD §8.2).
+ * The six core services (design spec §4.6, PRD §8.2).
  *
  * THE SIX NAMES ARE FIXED. They must match across nav, home, services, footer,
- * and metadata. Copy below is the PRD's starting draft; final wording is a
- * content task, but `name` and `slug` do not change without a PRD update.
+ * and metadata. `name` and `slug` do not change without a PRD update.
+ *
+ * Each entry carries three things the sticky tab rail needs: a `headline` (the
+ * outcome, in the customer's terms), a `summary` (the one-line promise), and
+ * `chips` (concrete examples, so the abstract service name lands on something
+ * the reader recognises from their own week).
  */
 import type { IconName } from '../components/primitives/Icon/icons'
 
 export interface ServiceSummary {
   slug: string
   name: string
-  /** One-line definition — plain, operational, no jargon (PRD §8.1). */
+  /** Outcome headline shown in the rail panel. */
+  headline: string
+  /** One-line promise — plain, operational, no jargon (PRD §8.1). */
   summary: string
+  /** Concrete examples rendered as record chips. */
+  chips: readonly string[]
   /** Glyph from the shared icon set. */
   icon: IconName
 }
@@ -20,43 +28,55 @@ export const SERVICES: ServiceSummary[] = [
   {
     slug: 'workflow-strategy-assessment',
     name: 'Workflow Strategy Assessment',
+    headline: "Find out what's actually costing you",
     summary:
-      'We map how work actually moves through your business and identify what should be automated, changed, or left alone.',
-    icon: 'activity',
+      'We map your real process — not the one in the handbook — and rank every step by hours, risk, and how automatable it is. You get the map whether or not you work with us.',
+    chips: ['Process map', 'Hours by step', 'Automation ranking'],
+    icon: 'map',
   },
   {
     slug: 'workflow-agents',
     name: 'Workflow Agents',
+    headline: 'Software that does the steps, not just the reminders',
     summary:
-      'Automated steps that carry work between systems and people, with defined handoffs when judgment is required.',
+      'Automated workers that read, decide, and act inside your existing tools, with rules you set and an approval gate wherever you want one.',
+    chips: ['Rules you set', 'Approval gates', 'Runs in your tools'],
     icon: 'repeat',
   },
   {
     slug: 'document-operations',
     name: 'Document Operations',
+    headline: 'Turn paperwork into structured data',
     summary:
-      'Intake, extraction, validation, and filing for the documents your business runs on.',
+      'Intake forms, contracts, claims, invoices, and reports — read, extracted, validated, and filed into your system in the right place, first time.',
+    chips: ['Intake forms', 'Contracts', 'Claims', 'Invoices'],
     icon: 'document',
   },
   {
     slug: 'customer-operations',
     name: 'Customer Operations',
+    headline: 'Nothing sits in an inbox again',
     summary:
-      'The work that happens around a customer — requests, follow-ups, status, scheduling.',
+      "Intake, scheduling, follow-ups, status updates, and handoffs, running on a visible queue instead of one person's memory.",
+    chips: ['Intake', 'Scheduling', 'Follow-ups', 'Status updates'],
     icon: 'users',
   },
   {
     slug: 'internal-operations',
     name: 'Internal Operations',
+    headline: 'Onboarding, approvals, and reporting that run themselves',
     summary:
-      'Approvals, reporting, reconciliation, and the handoffs between your own teams.',
+      'The routing, the chasing, and the Monday spreadsheet — handled, with a dashboard that’s actually current.',
+    chips: ['Approvals', 'Onboarding', 'Reconciliation', 'Reporting'],
     icon: 'inbox',
   },
   {
     slug: 'integrations-process-intelligence',
     name: 'Integrations & Process Intelligence',
+    headline: 'Your systems, finally talking',
     summary:
-      'Connecting the systems you already pay for, and reporting on where work slows down.',
+      'We connect what you already pay for, then instrument it so you can see where work slows down before it becomes a problem.',
+    chips: ['System connections', 'Bottleneck reporting', 'Cycle times'],
     icon: 'plug',
   },
 ]

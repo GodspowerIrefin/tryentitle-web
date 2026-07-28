@@ -1,18 +1,27 @@
 import type { IconName } from '@/components/primitives/Icon'
 
 /**
- * Operational pain points for the home page (PRD FR8).
+ * "The cost of manual work" — five leaks (design spec §4.4, PRD FR8).
  *
  * Each is stated as an OBSERVABLE SYMPTOM — something you would watch happen in
- * the office — not as a feature or a technology. Voice per PRD §8.1: plain,
- * concrete, operational. The set names at minimum manual intake, inbox handoffs,
- * duplicate data entry, slow approvals, and manual reporting.
+ * the office — not as a feature or a technology.
+ *
+ * STAT CHIP NOTE. The spec sketches two of these as figures ("~6 hrs/wk",
+ * "4.2 DAY LAG"). They are written as structural observations instead. TryEntitle
+ * has no measured client data, and the spec's own instruction is to publish only
+ * your own observed ranges and "never cite a source you don't have" (§4.4). The
+ * three chips that ARE kept verbatim — no queue, 3× entry, monthly rebuild —
+ * describe the shape of the process rather than a measurement, so they are true
+ * by inspection. Replace the qualitative two with real ranges once there is an
+ * engagement to draw them from.
  */
 export interface PainPoint {
   id: string
   label: string
   symptom: string
   icon: IconName
+  /** Mono stat chip pinned to the card corner. */
+  stat: string
 }
 
 export const PAIN_POINTS: PainPoint[] = [
@@ -20,35 +29,40 @@ export const PAIN_POINTS: PainPoint[] = [
     id: 'manual-intake',
     label: 'Manual intake',
     symptom:
-      'Forms and requests arrive by email and get retyped into your system of record, one field at a time.',
+      'Client information arrives by email, PDF, phone, and portal — then someone types it into your system by hand.',
     icon: 'inbox',
+    stat: 'Retyped by hand',
   },
   {
     id: 'inbox-handoffs',
     label: 'Inbox handoffs',
     symptom:
-      'Work only moves forward when someone remembers to forward the thread to the next person.',
+      "Work lives in someone's inbox. If they're out, it stops. Nobody can see the queue.",
     icon: 'repeat',
+    stat: 'No queue',
   },
   {
-    id: 'duplicate-data-entry',
-    label: 'Duplicate data entry',
+    id: 'duplicate-entry',
+    label: 'Duplicate entry',
     symptom:
-      'The same client details get keyed into three systems that don’t talk to each other.',
+      'The same details get entered into three systems, and the third one is always slightly wrong.',
     icon: 'document',
+    stat: '3× entry',
   },
   {
     id: 'slow-approvals',
     label: 'Slow approvals',
     symptom:
-      'Requests sit for days because no one can see what is waiting on them or whose turn it is.',
+      'A file waits days for a signature that takes ninety seconds, because nobody knows it’s waiting.',
     icon: 'clock',
+    stat: 'Days, not minutes',
   },
   {
     id: 'manual-reporting',
     label: 'Manual reporting',
     symptom:
-      'Someone rebuilds the same report every week, copying numbers between tabs by hand.',
+      'Someone rebuilds the same spreadsheet every Monday because the data won’t come out clean.',
     icon: 'activity',
+    stat: 'Monthly rebuild',
   },
 ]

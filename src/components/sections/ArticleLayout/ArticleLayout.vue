@@ -19,7 +19,6 @@ import Container from '@/components/primitives/Container'
 import Eyebrow from '@/components/primitives/Eyebrow'
 import Heading from '@/components/primitives/Heading'
 import Prose from '@/components/primitives/Prose'
-import AmbientScene from '@/components/three/AmbientScene.vue'
 import type { TocEntry } from '@/types/content'
 
 interface Crumb {
@@ -46,10 +45,6 @@ const showToc = computed(() => props.toc.length > 2)
   <Section labelledby="article-title">
     <Container>
       <div class="article-top">
-        <div class="article__ambient" aria-hidden="true">
-          <AmbientScene tone="light" />
-        </div>
-
         <nav class="crumbs" aria-label="Breadcrumb">
           <ol>
             <li v-for="(crumb, i) in breadcrumbs" :key="i">
@@ -61,7 +56,7 @@ const showToc = computed(() => props.toc.length > 2)
 
         <header class="article-head">
           <Eyebrow>{{ eyebrow }}</Eyebrow>
-          <Heading id="article-title" :level="1" size="display-lg">{{ title }}</Heading>
+          <Heading id="article-title" :level="1" size="h2">{{ title }}</Heading>
           <p v-if="lead" class="article-head__lead">{{ lead }}</p>
           <div class="article-head__meta">
             <slot name="meta" />
@@ -86,23 +81,9 @@ const showToc = computed(() => props.toc.length > 2)
 </template>
 
 <style scoped>
-/* Header region carries a faint ambient 3D network; the body stays clean so it
-   never sits behind running text, and the sticky TOC is unaffected. */
 .article-top {
   position: relative;
   isolation: isolate;
-  /* Clip the ambient bleed so it never widens the document (NFR1). The sticky
-     TOC lives in .article-body, outside this wrapper, so it is unaffected. */
-  overflow: hidden;
-}
-
-.article__ambient {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 130%;
-  z-index: 0;
-  opacity: 0.6;
-  mask-image: linear-gradient(to bottom, black 0%, transparent 78%);
 }
 
 .article-top > .crumbs,
@@ -116,24 +97,24 @@ const showToc = computed(() => props.toc.length > 2)
   flex-wrap: wrap;
   gap: var(--space-2);
   font-family: var(--font-mono);
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: var(--text-on-bond-muted);
 }
 
 .crumbs li:not(:last-child)::after {
   content: '/';
   margin-inline-start: var(--space-2);
-  color: var(--border-subtle);
+  color: var(--rule-on-bond);
 }
 
 .crumbs a {
-  color: var(--text-secondary);
+  color: var(--text-on-bond-muted);
 }
 
 .crumbs a:hover {
-  color: var(--action-primary);
+  color: var(--text-on-bond);
 }
 
 .article-head {
@@ -146,7 +127,7 @@ const showToc = computed(() => props.toc.length > 2)
 
 .article-head__lead {
   font-size: var(--text-body-lg);
-  color: var(--text-secondary);
+  color: var(--text-on-bond-muted);
 }
 
 .article-head__meta:empty {
@@ -173,10 +154,10 @@ const showToc = computed(() => props.toc.length > 2)
 
 .toc__label {
   font-family: var(--font-mono);
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: var(--text-on-bond-muted);
   margin-bottom: var(--space-3);
 }
 
@@ -184,7 +165,7 @@ const showToc = computed(() => props.toc.length > 2)
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  border-inline-start: 1px solid var(--border-subtle);
+  border-inline-start: 1px solid var(--rule-on-bond);
 }
 
 .toc li {
@@ -196,11 +177,11 @@ const showToc = computed(() => props.toc.length > 2)
 }
 
 .toc a {
-  color: var(--text-secondary);
+  color: var(--text-on-bond-muted);
   font-size: var(--text-body-sm);
 }
 
 .toc a:hover {
-  color: var(--action-primary);
+  color: var(--text-on-bond);
 }
 </style>

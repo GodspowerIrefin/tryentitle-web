@@ -28,11 +28,19 @@ const props = withDefaults(
     label?: string
     /** Show the trailing arrow. On by default. */
     withIcon?: boolean
+    /**
+     * Optional note handed to the scheduler as its first custom answer (`a1`),
+     * so the call can open with context the visitor already produced — the hours
+     * calculator uses this to pass its computed figure through (§4.10).
+     */
+    prefill?: string
   }>(),
   { variant: 'primary', size: 'md', withIcon: true },
 )
 
-const href = computed(() => bookingUrl(props.placement))
+const href = computed(() =>
+  bookingUrl(props.placement, props.prefill ? { a1: props.prefill } : undefined),
+)
 const text = computed(() => props.label ?? BOOKING_LABEL)
 </script>
 
