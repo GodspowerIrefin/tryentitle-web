@@ -46,6 +46,11 @@ export const routes: RouteRecordRaw[] = [
     name: 'blog-post',
     component: () => import('@/pages/BlogPostPage.vue'),
   },
+  {
+    path: '/faq',
+    name: 'faq',
+    component: () => import('@/pages/FaqPage.vue'),
+  },
 
   // The four legal documents share one long-form template (PRD §11.2 route
   // group equivalent); the slug selects the document from the content layer.

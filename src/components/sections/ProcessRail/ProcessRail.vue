@@ -59,7 +59,14 @@ function marker(i: number): string {
       />
 
       <ol class="track">
-        <li v-for="(step, i) in steps" :key="step.title" class="step" data-reveal>
+        <!--
+          `data-reveal` brings the card in; `data-scrub` additionally publishes
+          this card's arrival as `--enter`, which the connector below keys off so
+          the rail draws itself between the steps as you scroll rather than being
+          there all at once. The two systems are independent and compose: reveal
+          fires once on a threshold, scrub tracks continuously.
+        -->
+        <li v-for="(step, i) in steps" :key="step.title" class="step" data-reveal data-scrub>
           <div class="step__head">
             <span class="step__node mono-label" aria-hidden="true">{{ marker(i) }}</span>
             <span class="step__timing mono-label">{{ step.timing }}</span>
@@ -235,6 +242,11 @@ function marker(i: number): string {
     height: 2px;
     background-color: var(--seal);
     opacity: 0.45;
+    /* Draws left-to-right as the card arrives, so the sequence assembles in
+       reading order. `--enter` defaults to 1, so with no motion layer the
+       connector is simply present and full-length. */
+    transform-origin: left center;
+    scale: var(--enter, 1) 1;
   }
 }
 
@@ -249,6 +261,10 @@ function marker(i: number): string {
     height: var(--space-4);
     background-color: var(--seal);
     opacity: 0.45;
+    /* Same draw-in as the desktop connector, along the axis the rail follows
+       here — downward, from the card it leaves. */
+    transform-origin: center top;
+    scale: 1 var(--enter, 1);
   }
 }
 </style>

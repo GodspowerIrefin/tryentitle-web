@@ -16,6 +16,21 @@ import SiteFooter from '@/components/layout/SiteFooter'
 <template>
   <SkipToContent />
   <SiteHeader />
+  <!--
+    Route transition: the incoming page rises into place. Driven by a class that
+    main.ts toggles on this element (`.route-entering` in motion.css), NOT by
+    Vue's <Transition>.
+
+    That is deliberate and load-bearing. <Transition> requires its child to have
+    exactly ONE root element, and every page here is a fragment of sibling
+    <Section> bands by design — HomePage alone returns fourteen. Wrapping a
+    fragment in <Transition> silently renders nothing, and wrapping each page in
+    a div to satisfy it would insert a box between <main> and the bands that the
+    layout does not account for. Animating the landmark itself sidesteps both.
+
+    Enter-only and transform-only: holding the outgoing page on screen delays the
+    new one for nothing gained, and fading text is what this site does not do.
+  -->
   <main id="main" tabindex="-1">
     <RouterView />
   </main>

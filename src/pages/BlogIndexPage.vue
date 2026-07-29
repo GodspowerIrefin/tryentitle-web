@@ -1,38 +1,24 @@
 <script setup lang="ts">
 /**
- * Blog index (PRD FR16, FR18).
+ * Insights index (/blog).
  *
- * Paginated at 10 posts per page, newest first. With zero published posts it
- * renders an honest empty state — it does not 404 and it never shows fake posts.
- * The route stays linked from the header and footer either way.
+ * Card grid of TryEntitle notes and curated external reading. Click opens an
+ * in-page reader — no fake posts, no empty-state stall while content exists.
  */
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import Section from '@/components/primitives/Section'
 import Container from '@/components/primitives/Container'
 import Eyebrow from '@/components/primitives/Eyebrow'
 import Heading from '@/components/primitives/Heading'
-import BlogList from '@/components/sections/BlogList'
-import BookingButton from '@/components/marketing/BookingButton'
-import { blogPosts } from '@/lib/content'
+import InsightsGrid from '@/components/sections/InsightsGrid'
+import { insightsNewestFirst } from '@/data/insights'
 import { buildHead } from '@/lib/metadata'
-
-const PER_PAGE = 10
-
-const route = useRoute()
-const page = computed(() => {
-  const n = Number(route.query.page ?? 1)
-  return Number.isFinite(n) && n > 0 ? Math.floor(n) : 1
-})
-
-const hasPosts = computed(() => blogPosts.length > 0)
 
 useHead(
   buildHead({
-    title: 'Blog',
+    title: 'Insights',
     description:
-      'Notes on operations, document workflows, and where automation helps — and where it does not.',
+      'Notes on operations, document workflows, and where automation helps — plus curated external reading.',
     path: '/blog',
     image: '/og/blog.png',
   }),
@@ -40,53 +26,56 @@ useHead(
 </script>
 
 <template>
-  <Section labelledby="blog-title">
+  <Section labelledby="insights-title" class="insights">
     <Container>
-      <Eyebrow>Blog</Eyebrow>
-      <Heading id="blog-title" :level="1" size="h2">
-        Notes on how work actually moves.
-      </Heading>
-
-      <div v-if="hasPosts" class="blog__list">
-        <BlogList :posts="blogPosts" :page="page" :per-page="PER_PAGE" />
+      <div class="insights__intro">
+        <Eyebrow>Insights</Eyebrow>
+        <Heading id="insights-title" :level="1" size="h2">
+          Notes on how work actually moves.
+        </Heading>
+        <p class="insights__lead">
+          TryEntitle field notes mixed with external reading worth your time. Open a card to read —
+          external pieces link out to the publisher.
+        </p>
       </div>
 
-      <!-- Honest empty state (FR18): no fake posts, no skeleton cards. -->
-      <div v-else class="blog__empty">
-        <p class="blog__empty-lead">We haven’t published anything here yet.</p>
-        <p class="blog__empty-body">
-          When we do, it will be specific — how a particular document workflow gets rebuilt, what
-          it costs, and what stays with a person. Until then, the fastest way to get something
-          useful is a conversation about your own workflow.
-        </p>
-        <BookingButton placement="blog-empty" />
+      <div class="insights__list">
+        <InsightsGrid :insights="insightsNewestFirst" />
       </div>
     </Container>
   </Section>
 </template>
 
 <style scoped>
-.blog__list {
-  margin-top: var(--space-8);
+.insights {
+  position: relative;
+  overflow: clip;
 }
 
-.blog__empty {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-4);
-  margin-top: var(--space-6);
-  padding-top: var(--space-6);
-  border-top: 1px solid var(--rule-on-bond);
-  max-width: var(--measure);
+.insights::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: min(28rem, 55vh);
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 80% at 12% 0%, var(--seal-wash), transparent 60%),
+    radial-gradient(ellipse 55% 70% at 88% 10%, var(--verify-wash), transparent 55%);
 }
 
-.blog__empty-lead {
-  font-size: var(--text-body-lg);
-  color: var(--text-on-bond);
+.insights__intro {
+  position: relative;
+  max-width: 40rem;
 }
 
-.blog__empty-body {
+.insights__lead {
+  margin-top: var(--space-4);
   color: var(--text-on-bond-muted);
+  font-size: var(--text-body-lg);
+}
+
+.insights__list {
+  position: relative;
+  margin-top: var(--space-8);
 }
 </style>

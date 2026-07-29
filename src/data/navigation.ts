@@ -1,7 +1,7 @@
 /**
  * Navigation model (PRD §6.1).
  *
- * Header: Services, Industries, Blog + the primary CTA (rendered separately as a
+ * Header: Services, Industries, Insights + the primary CTA (rendered separately as a
  * BookingButton, not as a nav link, so it stays visually distinct).
  *
  * Footer groups: Solutions (the 6 services), Industries (the 7 industries),
@@ -20,6 +20,7 @@ export interface NavLink {
 }
 
 export const PRIMARY_NAV: NavLink[] = [
+  { label: 'Home', to: '/' },
   { label: 'Services', to: '/services' },
   { label: 'Industries', to: '/industries' },
   { label: 'Blog', to: '/blog' },
@@ -46,7 +47,8 @@ export const FOOTER_GROUPS: FooterGroup[] = [
     // same footer, which is the only component permitted to know the booking URL.
     heading: 'Company',
     links: [
-      { label: 'Blog', to: '/blog' },
+      { label: 'Insights', to: '/blog' },
+      { label: 'FAQ', to: '/faq' },
       { label: 'Contact', to: `mailto:${CONTACT.general}`, external: true },
     ],
   },

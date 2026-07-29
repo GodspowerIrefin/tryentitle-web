@@ -36,6 +36,7 @@ useHead({
     :title="INDUSTRIES_PAGE.title"
     :intro="INDUSTRIES_PAGE.intro"
     :note="INDUSTRIES_PAGE.note"
+    :note-cta="INDUSTRIES_PAGE.noteCta"
     :items="INDUSTRIES"
     :level="1"
   />

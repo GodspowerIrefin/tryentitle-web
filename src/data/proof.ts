@@ -57,8 +57,3 @@ export const PROOF_COMMITMENTS: ProofCommitment[] = [
  * Ship ONLY what is true today. Anything aspirational must say so in the label
  * itself (e.g. "SOC 2 — in progress"), never by implication.
  */
-export const COMPLIANCE_MARKERS: readonly string[] = [
-  'DPA available',
-  'HIPAA-conscious workflows',
-  'SOC 2 — roadmap, not yet certified',
-]

@@ -8,15 +8,9 @@
 export const HOME_COPY = {
   hero: {
     eyebrow: 'Operations, rebuilt',
-    title: 'Your team is doing work a workflow should be doing.',
+    title: 'Workflows that move business forward.',
     subhead:
-      'TryEntitle finds the manual, document-heavy work buried in your operation, redesigns it, and automates it — with a person kept exactly where judgment is needed.',
-    meta: [
-      'No software to buy',
-      'Works with your current tools',
-      'You own every workflow we build',
-    ],
-    secondaryLabel: 'See how it works',
+      'Manual processes are slowing your team down and costing you money. We redesign your workflows and automate the repetitive parts, so your people can focus on the decisions that actually need them.',
   },
 
   systems: {
@@ -25,7 +19,7 @@ export const HOME_COPY = {
 
   painPoints: {
     eyebrow: 'Where the hours go',
-    title: 'Five leaks, in almost every operation we open up.',
+    title: 'Six places the week quietly disappears.',
     intro: 'None of them look like a crisis. Together they cost you a full-time salary a year.',
   },
 
@@ -51,13 +45,12 @@ export const HOME_COPY = {
     body: 'Most of the work in a document-heavy process is repetitive and safe to automate. The rest is judgment — the unusual claim, the client who replies with something nobody anticipated, the number that looks wrong. We automate the repeatable part completely, and route the rest to a person with the full context attached. That is why our workflows are still running six months later.',
     automatedLabel: 'Automated',
     humanLabel: 'Human review',
-    claims: ['Every decision logged', 'Every exception routed', 'Every workflow yours to keep'],
   },
 
   industries: {
     eyebrow: 'Who this is for',
     title: 'If your business runs on documents and deadlines, this applies.',
-    note: 'Not on the list? If your team handles documents, approvals, and deadlines by hand, the same approach applies.',
+    note: 'If your team handles documents, approvals, and deadlines by hand, the same approach applies.',
     noteCta: 'Tell us what your week looks like',
   },
 
@@ -65,7 +58,7 @@ export const HOME_COPY = {
     eyebrow: 'Run the number',
     title: 'What is manual work costing you this year?',
     footnote:
-      'An estimate from your own inputs, not a benchmark. Bring it to the call and we will pressure-test it against your actual process.',
+      "An estimate from your own inputs, not a benchmark — we'll pressure-test it against your real process on the call.",
   },
 
   proof: {

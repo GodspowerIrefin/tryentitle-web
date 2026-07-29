@@ -15,7 +15,7 @@
  *   6  How an engagement runs       bond   de-risk the commitment
  *   7  Human oversight layer        ink    the differentiator
  *   8  Industries                   bond   self-identification
- *   9  Hours calculator             ink    convert intent into a number
+ *   9  Hours calculator             bond   convert intent into a number
  *  10  Proof commitments            bond   credibility substitute
  *  11  Testimonials                 bond   renders nothing until real (FR12)
  *  12  Field notes                  bond   renders nothing until posts exist
@@ -47,8 +47,8 @@ import { POSITIONING } from '@/data/positioning'
 import { SERVICES } from '@/data/services'
 import { INDUSTRIES } from '@/data/industries'
 import { PROCESS_STEPS } from '@/data/process-steps'
-import { COMPLIANCE_MARKERS, PROOF_COMMITMENTS } from '@/data/proof'
-import { FAQ_ITEMS } from '@/data/faq'
+import { PROOF_COMMITMENTS } from '@/data/proof'
+import { HOME_FAQ } from '@/data/faq'
 import { TESTIMONIALS } from '@/lib/proof'
 
 import { buildHead, jsonLd } from '@/lib/metadata'
@@ -69,7 +69,7 @@ useHead({
     path: '/',
     image: '/og/home.png',
   }),
-  script: [jsonLd(organizationSchema()), jsonLd(faqSchema(FAQ_ITEMS))],
+  script: [jsonLd(organizationSchema()), jsonLd(faqSchema(HOME_FAQ))],
 })
 </script>
 
@@ -78,11 +78,9 @@ useHead({
     :eyebrow="HOME_COPY.hero.eyebrow"
     :title="HOME_COPY.hero.title"
     :subhead="HOME_COPY.hero.subhead"
-    :meta="HOME_COPY.hero.meta"
-    :secondary-label="HOME_COPY.hero.secondaryLabel"
   />
 
-  <SystemsMarquee :label="HOME_COPY.systems.label" />
+  <!-- <SystemsMarquee :label="HOME_COPY.systems.label" /> -->
 
   <PainPoints
     :eyebrow="HOME_COPY.painPoints.eyebrow"
@@ -116,7 +114,6 @@ useHead({
     :body="HOME_COPY.oversight.body"
     :automated-label="HOME_COPY.oversight.automatedLabel"
     :human-label="HOME_COPY.oversight.humanLabel"
-    :claims="HOME_COPY.oversight.claims"
     :examples="EXCEPTION_EXAMPLES"
   />
 
@@ -138,7 +135,6 @@ useHead({
     :eyebrow="HOME_COPY.proof.eyebrow"
     :title="HOME_COPY.proof.title"
     :items="PROOF_COMMITMENTS"
-    :markers="COMPLIANCE_MARKERS"
   />
 
   <ProofStrip :items="TESTIMONIALS" />
@@ -146,7 +142,9 @@ useHead({
   <FaqAccordion
     :eyebrow="HOME_COPY.faq.eyebrow"
     :title="HOME_COPY.faq.title"
-    :items="FAQ_ITEMS"
+    :items="HOME_FAQ"
+    more-href="/faq"
+    more-label="See all questions"
   />
 
   <ClosingCta :title="HOME_COPY.closing.title" :body="HOME_COPY.closing.body" />

@@ -29,6 +29,7 @@ export const ROUTES: string[] = [
   '/services',
   '/industries',
   '/blog',
+  '/faq',
   ...SERVICE_SLUGS.map((s) => `/services/${s}`),
   ...INDUSTRY_SLUGS.map((s) => `/industries/${s}`),
   ...LEGAL_SLUGS.map((s) => `/${s}`),

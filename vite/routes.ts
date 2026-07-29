@@ -68,6 +68,7 @@ export function indexableRoutes(): string[] {
       '/services',
       '/industries',
       '/blog',
+      '/faq',
       ...detailPaths(),
       ...reviewedLegalSlugs().map((slug) => `/${slug}`),
     ]),

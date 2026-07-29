@@ -3,19 +3,17 @@ import type { IconName } from '../components/primitives/Icon/icons'
 /**
  * The seven target industries (design spec §4.9, PRD §8.3 / FR10).
  *
- * Names and slugs are fixed. Each `blurb` names the workflow you would fix
- * first, in that field's own artifacts — generic industry copy actively damages
- * credibility with an ops lead who works in that field daily (PRD §17 risk).
+ * Names and slugs are fixed. Each entry lists the concrete workflows we handle
+ * in that field — generic industry copy actively damages credibility with an
+ * ops lead who works there daily (PRD §17 risk).
  *
  * The list is explicitly NOT exhaustive; the section renders a note saying so.
- *
- * Cards carry an ICON, not a photograph: the spec's card anatomy is built on a
- * 40px icon tile (§2), and both the spec and PRD §10.8 rule out stock imagery.
  */
 export interface IndustrySummary {
   slug: string
   name: string
-  blurb: string
+  /** Concrete workflows shown when the industry dropdown opens. */
+  workflows: readonly string[]
   icon: IconName
 }
 
@@ -23,50 +21,79 @@ export const INDUSTRIES: IndustrySummary[] = [
   {
     slug: 'healthcare',
     name: 'Healthcare',
-    blurb:
-      'Patient intake, prior authorizations, and referral paperwork — captured once, routed correctly, HIPAA-conscious throughout.',
+    workflows: [
+      'Patient intake',
+      'Insurance verification',
+      'Prior authorization',
+      'Referral processing',
+      'Appointment routing',
+    ],
     icon: 'pulse',
   },
   {
     slug: 'legal',
     name: 'Legal',
-    blurb:
-      'Client intake, document review prep, matter setup, and billing capture — without a paralegal re-typing the same details four times.',
+    workflows: [
+      'Matter intake',
+      'Conflict checks',
+      'Client onboarding',
+      'Document review',
+      'Billing entry sync',
+    ],
     icon: 'scale',
   },
   {
     slug: 'insurance',
     name: 'Insurance',
-    blurb:
-      'Claims intake, document collection, and status updates handled automatically, with adjusters seeing only what needs a human call.',
+    workflows: [
+      'Claims intake',
+      'Policy validation',
+      'Adjuster assignment',
+      'Renewal processing',
+    ],
     icon: 'shield',
   },
   {
     slug: 'accounting',
     name: 'Accounting',
-    blurb:
-      'Client document chasing, onboarding packets, and reconciliation prep — so busy season stops meaning night shifts.',
+    workflows: [
+      'Client document collection',
+      'Data entry from statements',
+      'Approval routing',
+      'Recurring report generation',
+    ],
     icon: 'calculator',
   },
   {
     slug: 'real-estate-property-management',
-    name: 'Real Estate & Property Management',
-    blurb:
-      'Applications, lease packets, maintenance requests, and owner reporting, routed and filed the moment they arrive.',
+    name: 'Real Estate',
+    workflows: [
+      'Transaction document handling',
+      'Client onboarding',
+      'Closing coordination',
+    ],
     icon: 'building',
   },
   {
     slug: 'construction',
     name: 'Construction',
-    blurb:
-      'Bids, submittals, change orders, and compliance documents tracked across every job without a single WhatsApp thread.',
+    workflows: [
+      'Permit tracking',
+      'Subcontractor document collection',
+      'Invoice processing',
+      'Change order routing',
+    ],
     icon: 'hardhat',
   },
   {
     slug: 'professional-services',
     name: 'Professional Services',
-    blurb:
-      'Proposals, onboarding, project intake, and recurring client reporting, running without a project manager babysitting them.',
+    workflows: [
+      'Client intake',
+      'Proposal and contract routing',
+      'Recurring reporting',
+      'Billing sync',
+    ],
     icon: 'briefcase',
   },
 ]

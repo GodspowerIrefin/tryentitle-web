@@ -32,15 +32,34 @@ withDefaults(
 
 <template>
   <Section tone="ink" class="closing-band" labelledby="closing-title">
-    <Container>
+    <!--
+      Parallax backdrop. Decorative only — it carries no information, so it is
+      `aria-hidden`, and it is held far enough back that every contrast ratio in
+      the band is still measured against flat ink (see the scrim in the styles).
+
+      `data-parallax` drifts it against the scroll; `.parallax-frame` oversizes
+      and clips the image so the drift never exposes an edge. Both resolve to a
+      static, correctly-positioned image when the motion layer is absent.
+    -->
+    <div class="closing__backdrop parallax-frame" aria-hidden="true">
+      <img
+        src="/images/closing-infra.jpg"
+        alt=""
+        loading="lazy"
+        decoding="async"
+        data-parallax="0.12"
+      />
+    </div>
+
+    <Container class="closing__container">
       <div class="closing" data-reveal>
-        <Heading id="closing-title" :level="2" size="h1" class="closing__title">
+        <Heading id="closing-title" :level="2" size="h1" class="closing__title" data-split-lines>
           {{ title }}
         </Heading>
         <p class="closing__body">{{ body }}</p>
 
         <div class="closing__action">
-          <BookingButton :placement="placement" size="lg" />
+          <BookingButton :placement="placement" size="lg" data-magnetic />
         </div>
 
         <p class="closing__alt">
@@ -53,6 +72,46 @@ withDefaults(
 </template>
 
 <style scoped>
+/*
+ * The band clips its own backdrop. Without this the oversized parallax image
+ * bleeds past the section edges and, at the bottom of the page, extends the
+ * document into a horizontal or vertical overflow (NFR1).
+ */
+.closing-band {
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.closing__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+/*
+ * Two things hold the contrast: the image is dimmed, and a near-opaque ink scrim
+ * sits over it. The scrim is what makes this safe — headline and body copy are
+ * effectively still on flat `--ink`, so the band's measured ratios are unchanged
+ * from the plain version and no accessibility exemption is needed for the image.
+ */
+.closing__backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: color-mix(in srgb, var(--ink) 88%, transparent);
+}
+
+.closing__backdrop img {
+  filter: grayscale(1) contrast(1.1);
+  opacity: 0.5;
+}
+
+/* Establishes the stacking context the negative-z backdrop sits behind. */
+.closing__container {
+  position: relative;
+  z-index: 1;
+}
+
 .closing {
   display: flex;
   flex-direction: column;

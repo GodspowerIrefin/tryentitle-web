@@ -19,7 +19,7 @@ export interface ServiceSummary {
   /** One-line promise — plain, operational, no jargon (PRD §8.1). */
   summary: string
   /** Concrete examples rendered as record chips. */
-  chips: readonly string[]
+  chips?: readonly string[]
   /** Glyph from the shared icon set. */
   icon: IconName
 }
@@ -28,55 +28,54 @@ export const SERVICES: ServiceSummary[] = [
   {
     slug: 'workflow-strategy-assessment',
     name: 'Workflow Strategy Assessment',
-    headline: "Find out what's actually costing you",
+    headline: 'A full map before anything is built',
     summary:
-      'We map your real process — not the one in the handbook — and rank every step by hours, risk, and how automatable it is. You get the map whether or not you work with us.',
-    chips: ['Process map', 'Hours by step', 'Automation ranking'],
+      'A full map of your current process, showing exactly where the bottlenecks are, before anything is built.',
     icon: 'map',
   },
   {
     slug: 'workflow-agents',
     name: 'Workflow Agents',
-    headline: 'Software that does the steps, not just the reminders',
+    headline: 'Repetitive work handled; judgment stays human',
     summary:
-      'Automated workers that read, decide, and act inside your existing tools, with rules you set and an approval gate wherever you want one.',
-    chips: ['Rules you set', 'Approval gates', 'Runs in your tools'],
+      'Agents handle the repetitive parts of your workflow — reading, deciding, routing — so people only step in where real judgment is needed.',
+    chips: ['Reading', 'Deciding', 'Routing'],
     icon: 'repeat',
   },
   {
     slug: 'document-operations',
     name: 'Document Operations',
-    headline: 'Turn paperwork into structured data',
+    headline: 'Read, sorted, and entered — automatically',
     summary:
-      'Intake forms, contracts, claims, invoices, and reports — read, extracted, validated, and filed into your system in the right place, first time.',
-    chips: ['Intake forms', 'Contracts', 'Claims', 'Invoices'],
+      'Documents are read, sorted, and entered into your system automatically and accurately, every time.',
+    chips: ['Read', 'Sorted', 'Entered'],
     icon: 'document',
   },
   {
     slug: 'customer-operations',
     name: 'Customer Operations',
-    headline: 'Nothing sits in an inbox again',
+    headline: 'Onboarding without the chase',
     summary:
-      "Intake, scheduling, follow-ups, status updates, and handoffs, running on a visible queue instead of one person's memory.",
-    chips: ['Intake', 'Scheduling', 'Follow-ups', 'Status updates'],
+      'Onboarding runs from first submission to a fully ready file, without manual follow-up.',
+    chips: ['First submission', 'Ready file', 'No chase'],
     icon: 'users',
   },
   {
     slug: 'internal-operations',
     name: 'Internal Operations',
-    headline: 'Onboarding, approvals, and reporting that run themselves',
+    headline: 'Routing, approvals, and live reports',
     summary:
-      'The routing, the chasing, and the Monday spreadsheet — handled, with a dashboard that’s actually current.',
-    chips: ['Approvals', 'Onboarding', 'Reconciliation', 'Reporting'],
+      'Requests route automatically with a full approval trail, and reports stay current — pulled directly from your systems.',
+    chips: ['Auto-routing', 'Approval trail', 'Live reports'],
     icon: 'inbox',
   },
   {
     slug: 'integrations-process-intelligence',
     name: 'Integrations & Process Intelligence',
-    headline: 'Your systems, finally talking',
+    headline: 'Systems in sync, work in view',
     summary:
-      'We connect what you already pay for, then instrument it so you can see where work slows down before it becomes a problem.',
-    chips: ['System connections', 'Bottleneck reporting', 'Cycle times'],
+      'Your systems sync automatically, and you get real visibility into how work is moving.',
+    chips: ['Auto sync', 'Visibility', 'How work moves'],
     icon: 'plug',
   },
 ]

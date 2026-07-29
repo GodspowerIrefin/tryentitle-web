@@ -13,8 +13,9 @@ export const INDUSTRIES_PAGE = {
   eyebrow: 'Industries',
   title: 'Built around the documents your field runs on.',
   intro:
-    'We start from the real artifacts of your work — the forms, packets, and filings you handle every day — not a generic template.',
-  note: 'This list is not exhaustive. If your work is document-heavy and repetitive, it likely applies.',
+    'Open a field to see the workflows. Click through for how we redesign them — with a person on the exceptions.',
+  note: 'If your work is document-heavy and repetitive, it likely applies.',
+  noteCta: 'Tell us what your week looks like',
 } as const
 
 /**

@@ -47,8 +47,15 @@ function defaultSizeForLevel(level: number): string {
 
 <style scoped>
 .heading {
-  color: inherit;
+  /* Explicit band colour — `inherit` looked fine on paper but resolved as
+     transparent in some composed contexts (split-line spans inside a sticky
+     services stage), so the title vanished. */
+  color: var(--text-on-bond);
   text-wrap: balance;
+}
+
+.on-ink .heading {
+  color: var(--text-on-ink);
 }
 
 .heading--h1,

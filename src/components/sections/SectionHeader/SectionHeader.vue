@@ -37,7 +37,21 @@ defineProps<{
   <div class="section-header" :class="{ 'section-header--split': aside }" data-reveal>
     <div class="section-header__lead">
       <Eyebrow>{{ eyebrow }}</Eyebrow>
-      <Heading :id="titleId" :level="level ?? 2" size="h2">{{ title }}</Heading>
+      <!--
+        `data-split-lines` opts this heading into the line-mask entrance: the
+        motion layer splits it into its real visual lines and each slides up from
+        behind its own clip as the section arrives. Because it sits inside the
+        `data-reveal` block above, it shares that block's single trigger rather
+        than firing on a threshold of its own — heading and supporting copy
+        arrive together instead of drifting apart.
+
+        The full string is preserved as an aria-label by the splitter, so this
+        stays one heading to assistive tech. With JS off, or under reduced
+        motion, the attribute is inert and the heading renders as plain text.
+      -->
+      <Heading :id="titleId" :level="level ?? 2" size="h2" data-split-lines>
+        {{ title }}
+      </Heading>
       <p v-if="intro" class="section-header__intro">{{ intro }}</p>
     </div>
     <p v-if="aside" class="section-header__aside">{{ aside }}</p>

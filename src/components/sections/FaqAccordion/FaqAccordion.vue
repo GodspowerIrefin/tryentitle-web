@@ -3,25 +3,14 @@
  * FaqAccordion — Bond band (design spec §4.13)
  *
  * Clears the last objections before the closing CTA. Single-open accordion with
- * a seal +/× marker and a height ease.
+ * a seal +/× marker. Home passes a short set plus `moreHref` to `/faq`; the FAQ
+ * page passes the full list.
  *
- * Accessibility contract:
- * - Each question is a real <button> inside an <h3>, carrying `aria-expanded` and
- *   `aria-controls`; the panel is `role="region"` labelled by its button, which is
- *   the standard ARIA accordion shape. Screen-reader users can navigate the
- *   questions by heading.
- * - NOT a <dl>: a definition list may not contain a `role="region"`, so the
- *   dt/dd version failed axe's `definition-list` rule. Headings are also the
- *   better semantic here — these are sections of content, not term/definition
- *   pairs.
- * - Single-open is a design choice, not a keyboard trap: every panel is reachable
- *   and Enter/Space toggles. Nothing is hidden from find-in-page that the user
- *   cannot then open.
- * - The +/× marker is `aria-hidden`; state is conveyed by `aria-expanded`.
- *
- * Presentational; items arrive via props (PRD §11.3 rule 3).
+ * Accessibility: each question is a real <button> inside an <h3> with
+ * `aria-expanded` / `aria-controls`; the panel is `role="region"`.
  */
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import Section from '@/components/primitives/Section'
 import Container from '@/components/primitives/Container'
 import Icon from '@/components/primitives/Icon'
@@ -32,9 +21,11 @@ defineProps<{
   eyebrow: string
   title: string
   items: readonly FaqItem[]
+  /** Optional link to the full FAQ page (home short set only). */
+  moreHref?: string
+  moreLabel?: string
 }>()
 
-/** Index of the open panel; null means all closed. */
 const openIndex = ref<number | null>(0)
 
 function toggle(index: number) {
@@ -46,7 +37,13 @@ function toggle(index: number) {
   <Section tone="bond" labelledby="faq-title">
     <Container>
       <div class="faq-layout">
-        <SectionHeader :eyebrow="eyebrow" :title="title" title-id="faq-title" />
+        <div class="faq-layout__head">
+          <SectionHeader :eyebrow="eyebrow" :title="title" title-id="faq-title" />
+          <RouterLink v-if="moreHref" :to="moreHref" class="faq-more">
+            {{ moreLabel ?? 'See all questions' }}
+            <Icon name="arrow-right" :size="16" />
+          </RouterLink>
+        </div>
 
         <div class="faq">
           <div v-for="(item, i) in items" :key="item.question" class="faq__item" data-reveal>
@@ -71,11 +68,14 @@ function toggle(index: number) {
             <div
               :id="`faq-a-${i}`"
               class="faq__answer"
+              :class="{ 'is-open': openIndex === i }"
               role="region"
               :aria-labelledby="`faq-q-${i}`"
-              :hidden="openIndex !== i"
+              :inert="openIndex !== i"
             >
-              <p>{{ item.answer }}</p>
+              <div class="faq__answer-inner">
+                <p>{{ item.answer }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -96,6 +96,29 @@ function toggle(index: number) {
     gap: var(--space-9);
     align-items: start;
   }
+}
+
+.faq-layout__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  align-items: flex-start;
+}
+
+.faq-more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--seal-ink);
+}
+
+.faq-more:hover {
+  color: var(--text-on-bond);
 }
 
 .faq {
@@ -135,13 +158,32 @@ function toggle(index: number) {
 }
 
 .faq__answer {
-  padding-bottom: var(--space-5);
-  color: var(--text-on-bond-muted);
-  max-width: var(--measure);
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-slow) var(--ease-standard);
 }
 
-/* `hidden` must win over the flex/grid display the panel would otherwise take. */
-.faq__answer[hidden] {
-  display: none;
+.faq__answer.is-open {
+  grid-template-rows: 1fr;
+}
+
+.faq__answer-inner {
+  overflow: hidden;
+  min-height: 0;
+  color: var(--text-on-bond-muted);
+  max-width: var(--measure);
+  padding-bottom: 0;
+  transition: padding-bottom var(--duration-slow) var(--ease-standard);
+}
+
+.faq__answer.is-open .faq__answer-inner {
+  padding-bottom: var(--space-5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq__answer,
+  .faq__answer-inner {
+    transition: none;
+  }
 }
 </style>
