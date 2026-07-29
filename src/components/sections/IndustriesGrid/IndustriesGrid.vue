@@ -2,32 +2,15 @@
 /**
  * IndustriesGrid — Bond band (design spec §4.9, PRD FR10)
  *
- * Self-identification. Seven industries, each naming the workflow you would fix
- * first in that field's own artifacts — generic industry copy actively damages
- * credibility with an ops lead who works in that field daily (PRD §17 risk).
+ * Accordion of industries. Each row opens to a numbered workflow index — a
+ * vertical rail of plain labels, not chips — plus a link to the industry detail
+ * page. Ends with the required "not on the list?" invitation (FR10).
  *
- * DESIGN NOTE — why this is a dense list and not a filtered card grid.
- * The first pass ran 1582px, the tallest section on the page, and spent that
- * height saying the same thing twice:
- *
- *  1. A row of EIGHT filter chips named all seven industries, and the grid below
- *     then named them again. With only seven always-visible items the filter had
- *     almost no work to do — narrowing to one industry revealed a card the reader
- *     could already see — so it cost a full row and a live region to save nobody
- *     anything. Removed.
- *  2. Seven cards in a three-column grid left an ORPHAN final row: one card, two
- *     empty cells. Two columns take seven rows to 4 + 3, and the eighth cell
- *     carries the "not on the list?" invitation — so the ragged corner becomes
- *     the place the FR10 note lives, instead of a separate block below it.
- *  3. "See the workflows →" repeated seven times when the whole row is already a
- *     link. One arrow per row now, which is also less to read.
- *
- * Result is roughly half the height with nothing removed but duplication.
- *
- * Accessibility: each row is a single link wrapping icon, name, and workflow
- * line, so there is one tab stop per industry and the accessible name is the
- * whole row rather than seven identical "see the workflows" links.
+ * Accessibility: each industry is a real <button> inside an <h3> with
+ * `aria-expanded` / `aria-controls`; the panel is `role="region"`. The detail
+ * link is a separate focusable control inside the open panel.
  */
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import Section from '@/components/primitives/Section'
 import Container from '@/components/primitives/Container'
@@ -45,6 +28,17 @@ defineProps<{
   items: IndustrySummary[]
   level?: 1 | 2 | 3
 }>()
+
+/** Index of the open panel; null means all closed. */
+const openIndex = ref<number | null>(0)
+
+function toggle(index: number) {
+  openIndex.value = openIndex.value === index ? null : index
+}
+
+function marker(i: number): string {
+  return String(i + 1).padStart(2, '0')
+}
 </script>
 
 <template>
@@ -56,36 +50,57 @@ defineProps<{
         title-id="industries-title"
         :aside="
           intro ??
-          'Seven fields we know the paperwork of. Each one names the workflow we would fix first.'
+          'Seven fields we know the paperwork of. Open one to see the workflows — then go deeper for the full picture.'
         "
         :level="level"
       />
 
-      <ul class="fields">
-        <li v-for="industry in items" :key="industry.slug" data-reveal>
-          <RouterLink :to="`/industries/${industry.slug}`" class="field">
-            <span class="field__icon" aria-hidden="true">
-              <Icon :name="industry.icon" :size="18" />
-            </span>
-            <span class="field__text">
-              <span class="field__name">{{ industry.name }}</span>
-              <span class="field__blurb">{{ industry.blurb }}</span>
-            </span>
-            <Icon name="arrow-up-right" :size="16" class="field__arrow" />
-          </RouterLink>
-        </li>
+      <ul class="industries">
+        <li v-for="(industry, i) in items" :key="industry.slug" class="industry" data-reveal>
+          <h3 class="industry__heading">
+            <button
+              :id="`industry-q-${industry.slug}`"
+              type="button"
+              class="industry__trigger"
+              :aria-expanded="openIndex === i"
+              :aria-controls="`industry-a-${industry.slug}`"
+              @click="toggle(i)"
+            >
+              <span class="industry__icon" aria-hidden="true">
+                <Icon :name="industry.icon" :size="18" />
+              </span>
+              <span class="industry__name">{{ industry.name }}</span>
+              <Icon
+                :name="openIndex === i ? 'minus' : 'plus'"
+                :size="18"
+                class="industry__marker"
+                aria-hidden="true"
+              />
+            </button>
+          </h3>
 
-        <!-- The eighth cell. FR10 requires the "not exhaustive" note, and the
-             two-column grid leaves exactly one slot for it — so the note lands
-             inside the set it is qualifying rather than trailing beneath it. -->
-        <li class="invite" data-reveal>
-          <p class="invite__text">{{ note }}</p>
-          <BookingButton
-            v-if="noteCta"
-            placement="industries-note"
-            variant="secondary"
-            :label="noteCta"
-          />
+          <div
+            :id="`industry-a-${industry.slug}`"
+            class="industry__panel"
+            :class="{ 'is-open': openIndex === i }"
+            role="region"
+            :aria-labelledby="`industry-q-${industry.slug}`"
+            :inert="openIndex !== i"
+          >
+            <div class="industry__panel-inner">
+              <ol class="workflows">
+                <li v-for="(workflow, wi) in industry.workflows" :key="workflow" class="workflow">
+                  <span class="workflow__index" aria-hidden="true">{{ marker(wi) }}</span>
+                  <span class="workflow__label">{{ workflow }}</span>
+                </li>
+              </ol>
+
+              <RouterLink :to="`/industries/${industry.slug}`" class="industry__more">
+                More about {{ industry.name }}
+                <Icon name="arrow-right" :size="16" />
+              </RouterLink>
+            </div>
+          </div>
         </li>
       </ul>
     </Container>
@@ -93,56 +108,36 @@ defineProps<{
 </template>
 
 <style scoped>
-.fields {
-  display: grid;
-  gap: var(--space-3);
+.industries {
+  display: flex;
+  flex-direction: column;
   margin-top: var(--space-8);
-  grid-template-columns: 1fr;
+  border-top: 1px solid var(--rule-on-bond);
 }
 
-/*
- * REQUIRED. Grid items default to `min-width: auto`, which stops a track
- * shrinking below its content's min-content width. Without this the single
- * column at 360px resolved to 350px inside a 328px container and pushed the
- * whole page into horizontal scroll (NFR1) — the row was wider than its own
- * parent. `min-width: 0` lets the track take the container's width and the copy
- * wrap inside it.
- */
-.fields > li {
+.industry {
+  border-bottom: 1px solid var(--rule-on-bond);
   min-width: 0;
 }
 
-@media (min-width: 820px) {
-  .fields {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: var(--space-4);
-  }
+.industry__heading {
+  margin: 0;
+  font: inherit;
+  letter-spacing: normal;
 }
 
-/* ─── Row ────────────────────────────────────────────────────────────── */
-.field {
+.industry__trigger {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: start;
+  align-items: center;
   gap: var(--space-4);
-  height: 100%;
-  padding: var(--space-4) var(--space-5);
-  background-color: var(--bond-raised);
-  border: 1px solid var(--rule-on-bond);
-  border-radius: var(--radius-card);
-  color: inherit;
-  text-decoration: none;
-  transition:
-    border-color var(--duration-fast) var(--ease-standard),
-    box-shadow var(--duration-fast) var(--ease-standard);
+  width: 100%;
+  padding-block: var(--space-4);
+  text-align: start;
+  color: var(--text-on-bond);
 }
 
-.field:hover {
-  border-color: var(--rule-hover);
-  box-shadow: var(--shadow-card);
-}
-
-.field__icon {
+.industry__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -154,57 +149,141 @@ defineProps<{
   color: var(--seal);
 }
 
-.field__text {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  min-width: 0;
-}
-
-.field__name {
-  font-weight: 600;
+.industry__name {
+  font-family: var(--font-body);
   font-size: var(--text-body-lg);
+  font-weight: 600;
   line-height: 1.3;
 }
 
-.field__blurb {
-  color: var(--text-on-bond-muted);
-  font-size: var(--text-body);
-}
-
-.field__arrow {
+.industry__marker {
   flex: none;
-  margin-top: var(--space-1);
-  color: var(--text-on-bond-muted);
-  transition:
-    transform var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard);
+  color: var(--seal-ink);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .field:hover .field__arrow {
-    transform: translate(2px, -2px);
-    color: var(--seal-ink);
+.industry__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-slow) var(--ease-standard);
+}
+
+.industry__panel.is-open {
+  grid-template-rows: 1fr;
+}
+
+.industry__panel-inner {
+  overflow: hidden;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+  padding-inline-start: calc(34px + var(--space-4));
+  padding-bottom: 0;
+  transition: padding-bottom var(--duration-slow) var(--ease-standard);
+}
+
+.industry__panel.is-open .industry__panel-inner {
+  padding-bottom: var(--space-6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .industry__panel,
+  .industry__panel-inner {
+    transition: none;
   }
 }
 
-/* ─── The invitation cell ────────────────────────────────────────────── */
+/* Numbered workflow index — a process rail, not a chip cluster. */
+.workflows {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 36rem;
+}
+
+.workflow {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: baseline;
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--rule-on-bond);
+}
+
+.workflow:last-child {
+  border-bottom: none;
+}
+
+.workflow__index {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  color: var(--text-on-bond-muted);
+}
+
+/* Hairline rail down the marker column, connecting the steps. */
+.workflow__index::before {
+  content: '';
+  position: absolute;
+  left: 0.7rem;
+  top: 1.35rem;
+  bottom: calc(-1 * var(--space-3) - 1px);
+  width: 1px;
+  background-color: var(--rule-on-bond);
+}
+
+.workflow:last-child .workflow__index::before {
+  display: none;
+}
+
+.workflow__label {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  color: var(--text-on-bond);
+  line-height: 1.45;
+}
+
+.industry__more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--seal-ink);
+  text-decoration: none;
+}
+
+.industry__more:hover {
+  color: var(--text-on-bond);
+}
+
 .invite {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: flex-start;
-  gap: var(--space-4);
-  padding: var(--space-5);
-  border: 1px dashed var(--border-strong, var(--rule-on-bond));
-  border-radius: var(--radius-card);
-  /* Dashed and unfilled so it reads as an open slot in the set — the one place
-     a reader who does not see themselves is invited in. */
-  background-color: transparent;
+  gap: var(--space-3);
+  margin-top: var(--space-7);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--rule-on-bond);
+}
+
+.invite__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--seal-ink);
 }
 
 .invite__text {
   color: var(--text-on-bond-muted);
   font-size: var(--text-body);
+  max-width: 48ch;
 }
 </style>

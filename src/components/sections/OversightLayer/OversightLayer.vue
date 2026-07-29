@@ -30,7 +30,6 @@ const props = defineProps<{
   body: string
   automatedLabel: string
   humanLabel: string
-  claims: readonly string[]
   /** Concrete exception examples revealed from the gold segment. */
   examples?: readonly string[]
 }>()
@@ -89,10 +88,6 @@ const hasExamples = () => Boolean(props.examples?.length)
               <Icon name="users" :size="16" />
               <span>{{ example }}</span>
             </li>
-          </ul>
-
-          <ul class="oversight__claims">
-            <li v-for="claim in claims" :key="claim" class="mono-label">{{ claim }}</li>
           </ul>
         </div>
       </div>

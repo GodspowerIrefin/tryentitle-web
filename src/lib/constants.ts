@@ -8,20 +8,20 @@
  */
 
 /** Canonical production origin. Update alongside D2 (domain/DNS). */
-export const SITE_URL = 'https://tryentitle.com';
+export const SITE_URL = 'https://tryentitle.com'
 
-export const SITE_NAME = 'TryEntitle';
+export const SITE_NAME = 'TryEntitle'
 
-export const SITE_TAGLINE = 'Workflow redesign and automation, with a human on the exceptions.';
+export const SITE_TAGLINE = 'Workflow redesign and automation, with a human on the exceptions.'
 
 /**
  * The single booking destination for the entire site.
  * [DECISION NEEDED · PRD D1] — replace <handle> with the real Calendly event.
  */
-export const BOOKING_URL = 'https://calendly.com/tryentitle/workflow-review';
+export const BOOKING_URL = 'https://calendly.com/tryentitle/workflow-review'
 
 /** Human-readable label for the primary action, reused across placements. */
-export const BOOKING_LABEL = 'Book a workflow review';
+export const BOOKING_LABEL = 'Book Now'
 
 /**
  * Contact addresses surfaced in legal pages and the footer.
@@ -31,7 +31,7 @@ export const CONTACT = {
   general: 'hello@tryentitle.com',
   privacy: 'privacy@tryentitle.com',
   security: 'security@tryentitle.com',
-} as const;
+} as const
 
 /**
  * Append a per-placement UTM tag so it is possible to learn which CTA converts
@@ -42,11 +42,11 @@ export const CONTACT = {
  * number already on the table (design spec §4.10).
  */
 export function bookingUrl(placement: string, extra?: Record<string, string>): string {
-  const url = new URL(BOOKING_URL);
-  url.searchParams.set('utm_source', 'website');
-  url.searchParams.set('utm_content', placement);
+  const url = new URL(BOOKING_URL)
+  url.searchParams.set('utm_source', 'website')
+  url.searchParams.set('utm_content', placement)
   for (const [key, value] of Object.entries(extra ?? {})) {
-    if (value) url.searchParams.set(key, value);
+    if (value) url.searchParams.set(key, value)
   }
-  return url.toString();
+  return url.toString()
 }

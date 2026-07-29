@@ -18,27 +18,60 @@ import Logo from '@/components/layout/Logo'
 import MobileNav from '@/components/layout/MobileNav'
 import BookingButton from '@/components/marketing/BookingButton'
 import { PRIMARY_NAV } from '@/data/navigation'
+import { onScrollFrame } from '@/lib/motion'
 
 const compact = ref(false)
 const menuOpen = ref(false)
 const toggleBtn = ref<HTMLButtonElement | null>(null)
+const header = ref<HTMLElement | null>(null)
 /** 0–1 scroll position, drives the seal progress line along the bottom edge. */
 const progress = ref(0)
+/** True while the bar is parked off the top edge. */
+const hidden = ref(false)
 
-function onScroll() {
-  compact.value = window.scrollY > 40
-  const scrollable = document.documentElement.scrollHeight - window.innerHeight
-  // Guard the divide: a page shorter than the viewport has nothing to progress
-  // through, and 0/0 would put NaN into a style binding.
-  progress.value = scrollable > 0 ? Math.min(1, window.scrollY / scrollable) : 0
-}
+/** Distance scrolled before the bar may retract, in px. */
+const HIDE_AFTER = 320
+
+let stopFrame: (() => void) | null = null
 
 onMounted(() => {
-  onScroll()
-  window.addEventListener('scroll', onScroll, { passive: true })
+  /*
+   * Read from the shared scroll clock rather than a scroll listener of this
+   * component's own. The clock already computes position, progress and
+   * direction once per frame for the whole page, so the header line is
+   * guaranteed to agree with the parallax and pinned panels about where the page
+   * is — and there is one listener on the document instead of one per consumer.
+   */
+  stopFrame = onScrollFrame(({ y, progress: p, direction }) => {
+    compact.value = y > 40
+    progress.value = p
+
+    /*
+     * Retract on the way down, return on the way up — the standard reading
+     * gesture: out of the way while reading, back the instant the visitor looks
+     * for navigation.
+     *
+     * Three guards keep it from ever trapping anyone:
+     *  - Never retracts within the first HIDE_AFTER px, so the bar is always
+     *    there at the top of a page where visitors expect to find it.
+     *  - Never retracts while the mobile panel is open — the panel's close
+     *    button lives in this bar, and hiding it would strand the visitor.
+     *  - Never retracts while focus is inside it, or a keyboard visitor could
+     *    tab to a link that has just scrolled itself off screen.
+     */
+    if (menuOpen.value || y < HIDE_AFTER) {
+      hidden.value = false
+      return
+    }
+    if (header.value?.contains(document.activeElement)) {
+      hidden.value = false
+      return
+    }
+    hidden.value = direction === 1
+  })
 })
 
-onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
+onBeforeUnmount(() => stopFrame?.())
 
 // Return focus to the trigger when the mobile panel closes (PRD NFR5).
 //
@@ -55,7 +88,11 @@ watch(menuOpen, async (open, wasOpen) => {
 </script>
 
 <template>
-  <header class="header on-ink" :class="{ 'header--compact': compact }">
+  <header
+    ref="header"
+    class="header on-ink"
+    :class="{ 'header--compact': compact, 'header--hidden': hidden }"
+  >
     <Container>
       <div class="header__bar">
         <RouterLink to="/" class="header__logo" aria-label="TryEntitle — home">
@@ -123,7 +160,31 @@ watch(menuOpen, async (open, wasOpen) => {
   background-color: var(--ink);
   color: var(--text-on-ink);
   border-bottom: 1px solid transparent;
-  transition: border-color var(--duration-base) var(--ease-standard);
+  transition:
+    border-color var(--duration-base) var(--ease-standard),
+    transform var(--duration-base) var(--ease-standard);
+}
+
+/*
+ * Retracted: parked just past its own top edge.
+ *
+ * `translateY(-100%)` rather than a height collapse or `display: none` — the bar
+ * stays in the layout and stays focusable-adjacent, so returning it is a single
+ * cheap compositor move with no reflow, and the scroll position underneath never
+ * shifts. The component's guards (see the script) mean this class is never
+ * applied while the mobile panel is open or while focus is inside the bar.
+ */
+.header--hidden {
+  transform: translateY(-100%);
+}
+
+/* Retracting is a scroll flourish, not a layout requirement — under reduced
+   motion the bar simply stays put, which is also the more predictable
+   behaviour for anyone who finds movement disorienting. */
+@media (prefers-reduced-motion: reduce) {
+  .header--hidden {
+    transform: none;
+  }
 }
 
 .header--compact {

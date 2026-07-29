@@ -1,0 +1,249 @@
+/*
+ * Motion layer — "Paper Trail" in motion
+ *
+ * The JavaScript in lib/motion writes numbers; this file decides what they mean.
+ * That split is the whole design: adding a treatment is a rule here, never a
+ * change to the engine.
+ *
+ * SIGNALS WRITTEN BY lib/motion/effects.ts, per element:
+ *   --p          0 → 1   the element's full traverse of the viewport
+ *   --enter      0 → 1   its arrival, over the first viewport-worth of that
+ *   --parallax   px      resolved drift offset, for `data-parallax` only
+ *   --magnet-x/y px      pointer lean, for `data-magnetic` only
+ *
+ * TWO RULES EVERY DECLARATION HERE FOLLOWS
+ *
+ * 1. THE FALLBACK IS THE DESIGN. Every `var()` carries the value that makes the
+ *    element look correct with no JavaScript at all — `var(--enter, 1)`, not
+ *    `var(--enter, 0)`. With the bundle stripped out the page must render as a
+ *    finished, static document, not as a pile of pre-animation states.
+ *
+ * 2. NO OPACITY ON TEXT. A contrast checker computes the blended colour of a
+ *    partially transparent element, so fading text fails the accessibility gate
+ *    (globals.css states this at length). Text moves and is clipped; it never
+ *    fades. Opacity is permitted only on decorative layers that carry no words.
+ *
+ * `transform` is left to components. This file composes motion through the
+ * independent `translate` / `scale` properties instead, so a magnetic button can
+ * lean while its own `:active` transform still presses it.
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   1. HEADLINE LINE MASKS
+   Each visual line is a clipping box; the inner span slides up from under it.
+   Set up by lib/motion/split.ts, released when `.is-split-in` lands.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.split-line {
+  display: block;
+  overflow: hidden;
+  /* The descender guard: `overflow: hidden` on a line box crops the tails of
+     g, y, and p. The padding restores room for them and the negative margin
+     takes the space back out of the layout, so line spacing is unchanged. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.split-line__inner {
+  display: block;
+  /* Start fully below the mask; 110% clears descenders as well as the x-height. */
+  translate: 0 110%;
+  transition: translate 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--line-delay, 0ms);
+  will-change: translate;
+}
+
+[data-split].is-split-in .split-line__inner {
+  translate: 0 0;
+}
+
+/* Once the entrance has run, drop the compositor hint — a permanently promoted
+   layer on every headline is real memory for no remaining benefit. */
+[data-split].is-split-in .split-line__inner {
+  will-change: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   2. PARALLAX
+   `data-parallax="0.18"` drifts a layer by 18% of a viewport across its
+   traverse. Reserve it for imagery and decorative rules — parallaxed body copy
+   is unreadable and parallaxed headings detach from the section they title.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+[data-parallax] {
+  translate: 0 var(--parallax, 0px);
+  will-change: translate;
+}
+
+/*
+ * Full-bleed media that drifts inside a fixed frame. The figure is the clip; the
+ * image is oversized so the drift never exposes an edge. 120% height against a
+ * ±0.18 viewport drift leaves headroom at every aspect ratio.
+ */
+.parallax-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.parallax-frame img,
+.parallax-frame video {
+  width: 100%;
+  height: 120%;
+  position: absolute;
+  inset: -10% 0 auto 0;
+  object-fit: cover;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   3. SCRUBBED ARRIVAL
+   `data-scrub` publishes --enter and --p without prescribing an effect, so a
+   component can key anything to its own arrival. These are the shared ones.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Media settles from slightly over-scale as it arrives — the "camera pushing
+   in" read, done with scale rather than a fade so no text is ever involved. */
+[data-scrub='settle'] {
+  scale: calc(1.06 - 0.06 * var(--enter, 1));
+  will-change: scale;
+}
+
+/* A rule that draws itself across as the section arrives. */
+[data-scrub='rule'] {
+  transform-origin: left center;
+  scale: var(--enter, 1) 1;
+}
+
+/* Decorative depth layer — the one place opacity is allowed, because it carries
+   no words. Sits behind content and lifts as the band arrives. */
+[data-scrub='glow'] {
+  opacity: calc(0.15 + 0.85 * var(--enter, 1));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   4. PINNED PANELS
+   `data-pin` sticks a panel while its parent scrolls past, and publishes the
+   PARENT's traverse as --p so the panel can scrub against its own pin duration.
+
+   The parent must be tall enough to have something to scroll through, which is
+   the component's job — a pin inside a parent no taller than the panel simply
+   behaves as a normal sticky element, which is a safe degradation.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+[data-pin] {
+  position: sticky;
+  /* Clear the sticky header, plus a little air. */
+  top: calc(var(--header-height) + var(--space-5));
+}
+
+/*
+ * Pinning is a DESKTOP affordance. On a short viewport a pinned panel eats the
+ * screen and the visitor cannot scroll past it without watching the whole scrub,
+ * so below 900px everything flows normally.
+ */
+@media (max-width: 899px) {
+  [data-pin] {
+    position: static;
+  }
+}
+
+/* A progress rail for a pinned sequence: fills as the pin runs. */
+.pin-progress {
+  transform-origin: top center;
+  scale: 1 var(--p, 0);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   5. MAGNETIC HOVER
+   Composed through `translate` so the element's own transform stays free.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+[data-magnetic] {
+  translate: var(--magnet-x, 0) var(--magnet-y, 0);
+  /* No transition while active — the offset is already pointer-smooth and
+     easing it adds lag. The transition exists for the spring back on leave. */
+  transition: translate var(--duration-base) var(--ease-standard);
+}
+
+[data-magnetic][data-magnet-active] {
+  transition: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   6. BAND TRANSITIONS
+   The page alternates ink and bond grounds (tokens.css). A hard edge between
+   them is correct and deliberate — but the seam reads better with a thin seal
+   rule that draws itself as the new band arrives.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.band-seam {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background-color: var(--seal);
+  transform-origin: left center;
+  scale: var(--enter, 1) 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   7. ROUTE TRANSITION
+   A short wipe on navigation. Transform only — the outgoing page must not fade,
+   for the same contrast reason as everything else, and a wipe reads as a
+   deliberate transition rather than a slow load.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/*
+ * Applied to <main> for one frame after a route change, then removed, so the
+ * new page settles up into place. See App.vue for why this is a class on the
+ * landmark rather than a Vue <Transition>.
+ */
+#main {
+  transition: translate var(--duration-slow) var(--ease-standard);
+}
+
+#main.route-entering {
+  translate: 0 12px;
+  /* No transition on the way IN to the offset — the page should start displaced
+     instantly and only animate back, or the first frame slides the wrong way. */
+  transition: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   8. REDUCED MOTION
+   The non-negotiable (design spec §5). Everything above resolves to its finished
+   state: masks open, layers sit at their authored position, marquees hold still.
+
+   globals.css already collapses transition and animation DURATIONS; what this
+   block does is neutralise the scroll-linked TRANSFORMS, which have no duration
+   to collapse and would otherwise leave elements permanently displaced.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .split-line__inner {
+    translate: 0 0;
+  }
+
+  [data-parallax],
+  [data-magnetic] {
+    translate: 0 0;
+  }
+
+  [data-scrub='settle'],
+  [data-scrub='rule'],
+  .band-seam,
+  .pin-progress {
+    scale: 1;
+  }
+
+  [data-scrub='glow'] {
+    opacity: 1;
+  }
+
+  [data-pin] {
+    position: static;
+  }
+
+  #main.route-entering {
+    translate: 0 0;
+  }
+}

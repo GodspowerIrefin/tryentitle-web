@@ -1,24 +1,13 @@
 <script setup lang="ts">
 /**
- * HoursCalculator — Ink band (design spec §4.10)
+ * HoursCalculator — Bond band, conversion panel (design spec §4.10)
  *
- * The conversion engine. Three inputs, a live figure, and the booking CTA
- * directly beneath with the computed number passed into the scheduler prefill.
- * Everything above this section exists to get someone here holding a number they
- * did not want to see.
+ * Two-column layout: inputs on the left, live figures + booking CTA on the
+ * right. Arithmetic is on the visitor's OWN inputs only — never a benchmark.
  *
- * HONESTY: the output is arithmetic on the visitor's OWN inputs, never a
- * benchmark or an implied result. The footnote says so explicitly, and there is
- * no savings claim attached — the spec's "we target 60–80% of that" line is
- * omitted because TryEntitle has no engagement data to support a range yet.
- *
- * Accessibility contract:
- * - Real <input type="range"> elements with <label>, so they are keyboard
- *   operable and announced with their current value by default.
- * - The live figure is an `aria-live="polite"` region, announced on settle
- *   rather than on every keystroke of a drag.
- * - The count-up is decorative: the region's text is always the true value, so
- *   assistive tech never reads an intermediate number.
+ * Accessibility:
+ * - Real <input type="range"> with <label>
+ * - Live figure announced via aria-live="polite" after settle (not mid-drag)
  */
 import { computed, ref, watch } from 'vue'
 import Section from '@/components/primitives/Section'
@@ -33,20 +22,15 @@ defineProps<{
   footnote: string
 }>()
 
-const people = ref(4)
-const hoursEach = ref(6)
-const hourlyCost = ref(38)
+const people = ref(20)
+const hoursEach = ref(30)
+const hourlyCost = ref(27)
 
 const WEEKS_PER_YEAR = 48
 
 const annualHours = computed(() => people.value * hoursEach.value * WEEKS_PER_YEAR)
 const annualCost = computed(() => annualHours.value * hourlyCost.value)
 
-/**
- * Percentage of each slider that should read as filled. Range inputs give no
- * way to style the portion left of the thumb cross-engine, so the track is a
- * gradient and this drives its stop.
- */
 function fill(value: number, min: number, max: number): string {
   return `${((value - min) / (max - min)) * 100}%`
 }
@@ -60,20 +44,12 @@ const costLabel = computed(() =>
   }),
 )
 
-/**
- * Note handed to the scheduler so the call opens with the visitor's own figure
- * already on the table.
- */
 const prefill = computed(
   () =>
     `Estimated ${hoursLabel.value} hours and ${costLabel.value} a year on manual admin ` +
     `(${people.value} people × ${hoursEach.value} hrs/week × ${WEEKS_PER_YEAR} weeks).`,
 )
 
-/**
- * Debounced mirror of the figure for the live region: announcing on every input
- * event during a slider drag would flood a screen reader.
- */
 const announced = ref('')
 let settle: ReturnType<typeof setTimeout> | undefined
 watch(
@@ -89,91 +65,86 @@ watch(
 </script>
 
 <template>
-  <Section tone="ink" labelledby="calc-title">
+  <Section tone="bond" labelledby="calc-title">
     <Container>
-      <div class="calc">
-        <div class="calc__head">
-          <Eyebrow>{{ eyebrow }}</Eyebrow>
-          <Heading id="calc-title" :level="2" size="h2">{{ title }}</Heading>
-        </div>
-
-        <div class="calc__grid">
-          <div class="calc__inputs">
-            <div class="field">
-              <label class="field__label mono-label" for="calc-people">
-                People doing manual admin
-              </label>
-              <div class="field__row">
-                <input
-                  id="calc-people"
-                  v-model.number="people"
-                  class="slider"
-                  type="range"
-                  min="1"
-                  max="40"
-                  step="1"
-                  :style="{ '--fill': fill(people, 1, 40) }"
-                />
-                <output class="field__value" for="calc-people">{{ people }}</output>
-              </div>
-            </div>
-
-            <div class="field">
-              <label class="field__label mono-label" for="calc-hours">
-                Hours each, per week
-              </label>
-              <div class="field__row">
-                <input
-                  id="calc-hours"
-                  v-model.number="hoursEach"
-                  class="slider"
-                  type="range"
-                  min="1"
-                  max="30"
-                  step="1"
-                  :style="{ '--fill': fill(hoursEach, 1, 30) }"
-                />
-                <output class="field__value" for="calc-hours">{{ hoursEach }}</output>
-              </div>
-            </div>
-
-            <div class="field">
-              <label class="field__label mono-label" for="calc-cost">
-                Average loaded hourly cost
-              </label>
-              <div class="field__row">
-                <input
-                  id="calc-cost"
-                  v-model.number="hourlyCost"
-                  class="slider"
-                  type="range"
-                  min="15"
-                  max="150"
-                  step="1"
-                  :style="{ '--fill': fill(hourlyCost, 15, 150) }"
-                />
-                <output class="field__value" for="calc-cost">${{ hourlyCost }}</output>
-              </div>
-            </div>
+      <div class="panel">
+        <div class="panel__inputs">
+          <div class="panel__head">
+            <Eyebrow>{{ eyebrow }}</Eyebrow>
+            <Heading id="calc-title" :level="2" size="h2">{{ title }}</Heading>
           </div>
 
-          <div class="calc__result" data-reveal>
-            <p class="result__figures">
-              <span class="result__number">{{ hoursLabel }}</span>
-              <span class="result__unit mono-label">hours a year</span>
-            </p>
-            <p class="result__figures result__figures--cost">
-              <span class="result__number">{{ costLabel }}</span>
-              <span class="result__unit mono-label">before errors and delays</span>
-            </p>
-
-            <p class="visually-hidden" aria-live="polite">{{ announced }}</p>
-
-            <div class="result__action">
-              <BookingButton placement="calculator" size="lg" :prefill="prefill" />
+          <div class="fields">
+            <div class="field">
+              <label class="field__label" for="calc-people">
+                People doing manual admin:
+                <span class="field__value">{{ people }}</span>
+              </label>
+              <input
+                id="calc-people"
+                v-model.number="people"
+                class="slider"
+                type="range"
+                min="1"
+                max="40"
+                step="1"
+                :style="{ '--fill': fill(people, 1, 40) }"
+              />
             </div>
 
-            <p class="result__footnote">{{ footnote }}</p>
+            <div class="field">
+              <label class="field__label" for="calc-hours">
+                Hours each, per week:
+                <span class="field__value">{{ hoursEach }}</span>
+              </label>
+              <input
+                id="calc-hours"
+                v-model.number="hoursEach"
+                class="slider"
+                type="range"
+                min="1"
+                max="30"
+                step="1"
+                :style="{ '--fill': fill(hoursEach, 1, 30) }"
+              />
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="calc-cost">
+                Average loaded hourly cost:
+                <span class="field__value">${{ hourlyCost }}</span>
+              </label>
+              <input
+                id="calc-cost"
+                v-model.number="hourlyCost"
+                class="slider"
+                type="range"
+                min="15"
+                max="150"
+                step="1"
+                :style="{ '--fill': fill(hourlyCost, 15, 150) }"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="panel__result" data-reveal>
+          <div class="stat stat--hours">
+            <p class="stat__label">Hours lost per year</p>
+            <p class="stat__value">{{ hoursLabel }} hours</p>
+          </div>
+
+          <div class="stat stat--cost">
+            <p class="stat__label">Before errors and delays</p>
+            <p class="stat__value">{{ costLabel }}</p>
+          </div>
+
+          <p class="visually-hidden" aria-live="polite">{{ announced }}</p>
+
+          <p class="panel__footnote">{{ footnote }}</p>
+
+          <div class="panel__action">
+            <BookingButton placement="calculator" size="lg" :prefill="prefill" />
           </div>
         </div>
       </div>
@@ -182,143 +153,175 @@ watch(
 </template>
 
 <style scoped>
-.calc {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
-}
-
-.calc__head {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  align-items: flex-start;
-  max-width: 40ch;
-}
-
-.calc__grid {
+.panel {
   display: grid;
-  gap: var(--space-6);
+  gap: var(--space-8);
+  align-items: start;
+  padding: var(--space-6);
+  background-color: var(--verify-wash);
+  border: 1px solid color-mix(in srgb, var(--verify) 18%, var(--rule-on-bond));
+  border-radius: var(--radius-card);
 }
 
-@media (min-width: 900px) {
-  .calc__grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--space-8);
-    align-items: start;
+@media (min-width: 640px) {
+  .panel {
+    padding: var(--space-8);
   }
 }
 
-/* ─── Inputs ─────────────────────────────────────────────────────────── */
-.calc__inputs {
+@media (min-width: 900px) {
+  .panel {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: var(--space-9);
+    align-items: center;
+    padding: var(--space-8) var(--space-9);
+  }
+}
+
+.panel__inputs {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-7);
+}
+
+.panel__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 18ch;
+}
+
+@media (min-width: 640px) {
+  .panel__head {
+    max-width: 22ch;
+  }
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 .field__label {
-  color: var(--text-on-ink-muted);
-}
-
-.field__row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: 600;
+  color: var(--text-on-bond);
 }
 
 .field__value {
-  font-family: var(--font-mono);
-  font-size: var(--text-body-lg);
-  color: var(--seal);
-  min-width: 3.5ch;
-  text-align: end;
+  font-variant-numeric: tabular-nums;
 }
 
-/* Seal-track slider. Styled per-engine because range inputs have no common
-   pseudo-element; both branches use the same tokens. */
 .slider {
-  flex: 1 1 auto;
+  width: 100%;
   appearance: none;
-  height: 4px;
+  height: 6px;
   border-radius: var(--radius-pill);
   background: linear-gradient(
     to right,
-    var(--seal) 0%,
-    var(--seal) var(--fill, 50%),
-    rgba(242, 243, 240, 0.16) var(--fill, 50%)
+    var(--verify) 0%,
+    var(--verify) var(--fill, 50%),
+    var(--ink) var(--fill, 50%)
   );
-  background-color: rgba(242, 243, 240, 0.16);
+  cursor: pointer;
 }
 
 .slider::-webkit-slider-thumb {
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border-radius: var(--radius-pill);
-  background-color: var(--seal);
-  border: 2px solid var(--ink);
+  background-color: var(--verify);
+  border: 3px solid var(--bond-raised);
+  box-shadow: var(--shadow-card);
   cursor: grab;
 }
 
 .slider::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border-radius: var(--radius-pill);
-  background-color: var(--seal);
-  border: 2px solid var(--ink);
+  background-color: var(--verify);
+  border: 3px solid var(--bond-raised);
+  box-shadow: var(--shadow-card);
   cursor: grab;
 }
 
-/* ─── Result ─────────────────────────────────────────────────────────── */
-.calc__result {
+.slider:focus-visible {
+  outline: 2px solid var(--verify);
+  outline-offset: 4px;
+}
+
+.panel__result {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  padding: var(--space-6);
-  background-color: var(--ink-raised);
-  border: 1px solid var(--rule-on-ink);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5) var(--space-6);
   border-radius: var(--radius-card);
 }
 
-.result__figures {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
+.stat--hours {
+  background-color: var(--bond-raised);
+  border: 1px solid var(--rule-on-bond);
+  box-shadow: var(--shadow-card);
 }
 
-.result__figures--cost {
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--rule-on-ink);
+.stat--cost {
+  background-color: var(--ink);
+  color: var(--text-on-ink);
 }
 
-.result__number {
+.stat__label {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--text-on-bond-muted);
+}
+
+.stat--cost .stat__label {
+  color: var(--text-on-ink-muted);
+}
+
+.stat__value {
   font-family: var(--font-display);
   font-size: var(--text-h2);
   font-weight: 600;
-  line-height: 1;
+  line-height: 1.05;
   letter-spacing: var(--tracking-display);
   font-variation-settings: 'wdth' 95;
-  color: var(--text-on-ink);
-  /* Tabular figures stop the number jittering as digits change during a drag. */
   font-variant-numeric: tabular-nums;
+  color: var(--text-on-bond);
 }
 
-.result__unit {
-  color: var(--text-on-ink-muted);
+.stat--cost .stat__value {
+  color: var(--verify);
 }
 
-.result__action {
+.panel__footnote {
+  color: var(--text-on-bond-muted);
+  font-size: var(--text-body-sm);
+  max-width: 42ch;
+  line-height: var(--leading-body);
+}
+
+.panel__action {
   margin-top: var(--space-2);
 }
 
-.result__footnote {
-  color: var(--text-on-ink-muted);
-  font-size: var(--text-body);
+.panel__action :deep(.btn) {
+  width: 100%;
 }
 </style>

@@ -1,12 +1,13 @@
 import { ViteSSG } from 'vite-ssg'
 import App from './App.vue'
 import { routes } from './router'
-import { initReveals, refreshReveals } from './lib/reveal'
-import { initSmoothScroll } from './lib/smooth-scroll'
+import { initMotion, refreshMotion } from './lib/motion'
 
-// Design tokens first, then base styles that consume them.
+// Design tokens first, then base styles that consume them, then the motion layer
+// last — it composes on top of both and must be able to override neither.
 import './styles/tokens.css'
 import './styles/globals.css'
+import './styles/motion.css'
 
 // Self-hosted fonts (PRD NFR7). Fontsource ships woff2 + `font-display: swap`
 // with no external requests at runtime. Latin subsets only.
@@ -39,11 +40,6 @@ export const createApp = ViteSSG(
   },
   ({ router }) => {
     if (!import.meta.env.SSR) {
-      // Eased wheel scrolling and scroll reveals. Both no-op under
-      // `prefers-reduced-motion`, and both are additive: if either throws, the
-      // page is still a fully working document.
-      initSmoothScroll()
-
       // Move keyboard focus to the main landmark on route change so keyboard and
       // screen-reader users are not stranded at the top of a new document.
       //
@@ -54,14 +50,33 @@ export const createApp = ViteSSG(
       router.afterEach(() => {
         if (isInitialNavigation) {
           isInitialNavigation = false
-          // Arm reveals for the server-rendered markup that is already on screen.
-          requestAnimationFrame(initReveals)
+          // Start the motion layer against the server-rendered markup that is
+          // already on screen. Deferred a frame so it measures settled layout.
+          //
+          // Everything inside no-ops under `prefers-reduced-motion` and every
+          // piece is additive: if any of it throws, the page is still a fully
+          // working document.
+          requestAnimationFrame(initMotion)
           return
         }
         requestAnimationFrame(() => {
-          document.getElementById('main')?.focus()
-          // New route, new markup: pick up its reveal targets.
-          refreshReveals()
+          const main = document.getElementById('main')
+          main?.focus()
+
+          /*
+           * Route entrance: displace the landmark, then release it on the next
+           * frame so it settles back. Two frames are required — setting and
+           * clearing the class in the same frame is coalesced into no change at
+           * all, and the transition never runs.
+           *
+           * Reduced motion is handled in motion.css (the offset resolves to 0),
+           * so there is no branch here.
+           */
+          main?.classList.add('route-entering')
+          requestAnimationFrame(() => main?.classList.remove('route-entering'))
+
+          // New route, new markup: re-scan reveal, effect, and hover targets.
+          refreshMotion()
         })
       })
     }
