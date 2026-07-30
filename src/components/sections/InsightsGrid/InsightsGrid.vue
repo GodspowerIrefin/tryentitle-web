@@ -161,7 +161,7 @@ onBeforeUnmount(() => {
                 :src="active.image"
                 :alt="active.imageAlt"
                 width="1200"
-                height="640"
+                height="360"
               />
               <div class="reader__hero-shade" aria-hidden="true" />
               <div class="reader__bar">
@@ -422,7 +422,7 @@ onBeforeUnmount(() => {
 .reader__hero {
   position: relative;
   flex-shrink: 0;
-  aspect-ratio: 21 / 9;
+  height: clamp(6.5rem, 14vh, 8.5rem);
   background: var(--ink);
 }
 

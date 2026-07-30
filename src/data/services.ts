@@ -19,7 +19,6 @@ export interface ServiceSummary {
   /** One-line promise — plain, operational, no jargon (PRD §8.1). */
   summary: string
   /** Concrete examples rendered as record chips. */
-  chips?: readonly string[]
   /** Glyph from the shared icon set. */
   icon: IconName
 }
@@ -39,7 +38,6 @@ export const SERVICES: ServiceSummary[] = [
     headline: 'Repetitive work handled; judgment stays human',
     summary:
       'Agents handle the repetitive parts of your workflow — reading, deciding, routing — so people only step in where real judgment is needed.',
-    chips: ['Reading', 'Deciding', 'Routing'],
     icon: 'repeat',
   },
   {
@@ -48,7 +46,6 @@ export const SERVICES: ServiceSummary[] = [
     headline: 'Read, sorted, and entered — automatically',
     summary:
       'Documents are read, sorted, and entered into your system automatically and accurately, every time.',
-    chips: ['Read', 'Sorted', 'Entered'],
     icon: 'document',
   },
   {
@@ -57,7 +54,6 @@ export const SERVICES: ServiceSummary[] = [
     headline: 'Onboarding without the chase',
     summary:
       'Onboarding runs from first submission to a fully ready file, without manual follow-up.',
-    chips: ['First submission', 'Ready file', 'No chase'],
     icon: 'users',
   },
   {
@@ -66,7 +62,6 @@ export const SERVICES: ServiceSummary[] = [
     headline: 'Routing, approvals, and live reports',
     summary:
       'Requests route automatically with a full approval trail, and reports stay current — pulled directly from your systems.',
-    chips: ['Auto-routing', 'Approval trail', 'Live reports'],
     icon: 'inbox',
   },
   {
@@ -75,7 +70,6 @@ export const SERVICES: ServiceSummary[] = [
     headline: 'Systems in sync, work in view',
     summary:
       'Your systems sync automatically, and you get real visibility into how work is moving.',
-    chips: ['Auto sync', 'Visibility', 'How work moves'],
     icon: 'plug',
   },
 ]

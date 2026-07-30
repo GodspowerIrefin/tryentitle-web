@@ -213,7 +213,12 @@ function onKeydown(event: KeyboardEvent, index: number) {
           </div>
 
           <div class="rail">
-            <div class="rail__tabs" role="tablist" aria-label="Services" aria-orientation="vertical">
+            <div
+              class="rail__tabs"
+              role="tablist"
+              aria-label="Services"
+              aria-orientation="vertical"
+            >
               <div v-if="pinned" class="rail__progress" aria-hidden="true">
                 <span :style="{ transform: `scaleY(${progress})` }" />
               </div>
@@ -221,7 +226,11 @@ function onKeydown(event: KeyboardEvent, index: number) {
               <button
                 v-for="(service, i) in items"
                 :key="service.slug"
-                :ref="(el) => { if (el) tabs[i] = el as HTMLButtonElement }"
+                :ref="
+                  (el) => {
+                    if (el) tabs[i] = el as HTMLButtonElement
+                  }
+                "
                 type="button"
                 role="tab"
                 class="tab"
@@ -256,12 +265,6 @@ function onKeydown(event: KeyboardEvent, index: number) {
                 <h3 class="panel__headline">{{ current.headline }}</h3>
                 <p class="panel__body">{{ current.summary }}</p>
 
-                <ul class="panel__chips">
-                  <li v-for="chip in current.chips" :key="chip">
-                    <Chip marker>{{ chip }}</Chip>
-                  </li>
-                </ul>
-
                 <div class="panel__action">
                   <Button :to="`/services/${current.slug}`" variant="secondary">
                     See how it works
@@ -283,7 +286,6 @@ function onKeydown(event: KeyboardEvent, index: number) {
             :eyebrow="service.name"
             :title="service.headline"
             :body="service.summary"
-            :chips="service.chips"
             :icon="service.icon"
             cta="See how it works"
             :to="`/services/${service.slug}`"
@@ -307,7 +309,7 @@ function onKeydown(event: KeyboardEvent, index: number) {
 .cards {
   display: grid;
   gap: var(--space-4);
-  margin-top: var(--space-8);
+  margin-top: var(--space-5);
   grid-template-columns: 1fr;
 }
 
@@ -324,7 +326,7 @@ function onKeydown(event: KeyboardEvent, index: number) {
 
   .scrolly {
     display: block;
-    margin-top: var(--space-8);
+    margin-top: var(--space-5);
   }
 
   /* `--steps` comes from the template so the travel always matches the number of
@@ -339,7 +341,7 @@ function onKeydown(event: KeyboardEvent, index: number) {
     /* Given real height on purpose: the stage is the frame the 3D formation lives
        in, and at its natural content height (~460px) the formation had nowhere to
        be. Bounded so it always fits between the sticky header and the fold. */
-    min-height: min(74vh, 680px);
+    min-height: min(44vh, 680px);
     max-height: calc(100vh - var(--header-height) - var(--space-8));
     display: flex;
     align-items: center;

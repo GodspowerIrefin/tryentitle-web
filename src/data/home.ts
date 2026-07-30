@@ -7,7 +7,7 @@
  */
 export const HOME_COPY = {
   hero: {
-    eyebrow: 'Operations, rebuilt',
+    eyebrow: '',
     title: 'Workflows that move business forward.',
     subhead:
       'Manual processes are slowing your team down and costing you money. We redesign your workflows and automate the repetitive parts, so your people can focus on the decisions that actually need them.',
@@ -55,7 +55,7 @@ export const HOME_COPY = {
   },
 
   calculator: {
-    eyebrow: 'Run the number',
+    eyebrow: '',
     title: 'What is manual work costing you this year?',
     footnote:
       "An estimate from your own inputs, not a benchmark — we'll pressure-test it against your real process on the call.",

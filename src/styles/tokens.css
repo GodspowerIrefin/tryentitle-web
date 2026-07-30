@@ -89,7 +89,7 @@
   --space-10: 8rem;
 
   /* Section rhythm — 72px mobile → 128px desktop (spec §1 Layout) */
-  --section-rhythm: clamp(4.5rem, 3rem + 6.5vw, 8rem);
+  --section-rhythm: clamp(4.5rem, 3rem + 6.5vw, 1.1875rem);
   --section-rhythm-compact: clamp(3rem, 2rem + 4vw, 5rem);
 
   /* ─── Layout ───────────────────────────────────────────────────────── */
@@ -118,10 +118,10 @@
   --duration-slow: 400ms;
 
   /* ─── Type families ────────────────────────────────────────────────── */
-  --font-display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', 'Arial Narrow',
-    system-ui, sans-serif;
-  --font-body: 'Instrument Sans Variable', 'Instrument Sans', system-ui, -apple-system,
-    'Segoe UI', sans-serif;
+  --font-display:
+    'Bricolage Grotesque Variable', 'Bricolage Grotesque', 'Arial Narrow', system-ui, sans-serif;
+  --font-body:
+    'Instrument Sans Variable', 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', 'Menlo', monospace;
 
   /* ─── Type scale — spec §1, mobile → desktop ───────────────────────── */

@@ -55,7 +55,7 @@ withDefaults(
       <span v-if="icon" class="fcard__tile" aria-hidden="true">
         <Icon :name="icon" :size="20" />
       </span>
-      <Chip v-if="stat" :tone="statTone" class="fcard__stat">{{ stat }}</Chip>
+      <!-- <Chip v-if="stat" :tone="statTone" class="fcard__stat">{{ stat }}</Chip> -->
     </div>
 
     <p v-if="eyebrow" class="fcard__eyebrow mono-label">{{ eyebrow }}</p>
