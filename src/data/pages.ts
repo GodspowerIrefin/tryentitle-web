@@ -13,7 +13,7 @@ export const INDUSTRIES_PAGE = {
   eyebrow: 'Industries',
   title: 'Built around the documents your field runs on.',
   intro:
-    'Open a field to see the workflows. Click through for how we redesign them — with a person on the exceptions.',
+    'Pick a field to see the workflows we redesign — with a person on the exceptions.',
   note: 'If your work is document-heavy and repetitive, it likely applies.',
   noteCta: 'Tell us what your week looks like',
 } as const

@@ -32,6 +32,7 @@ useHead({
 
 <template>
   <IndustriesGrid
+    variant="cards"
     :eyebrow="INDUSTRIES_PAGE.eyebrow"
     :title="INDUSTRIES_PAGE.title"
     :intro="INDUSTRIES_PAGE.intro"

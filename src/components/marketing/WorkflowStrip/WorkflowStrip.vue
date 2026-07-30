@@ -11,6 +11,12 @@
  * Behaviour:
  * - Auto-demo: holds the before-state for 2s on load, then reveals the after
  *   state and the toggle, so the argument lands before any interaction.
+ * - The after-state runs a sheet of paper along the track, stopping AT each of
+ *   the six stages and lighting the one it is standing on. It steps rather than
+ *   glides because the claim is that a document is handled six times, and a
+ *   smooth slide from end to end shows one continuous event instead of six.
+ *   The sheet arrives from the hero's incoming routes (see HeroPattern), so the
+ *   two together read as one journey: received here, processed there.
  * - `prefers-reduced-motion`: renders the after-state immediately and statically;
  *   the toggle is still available, nothing auto-plays, nothing loops.
  *
@@ -35,6 +41,21 @@ const X0 = 82
 const GAP = 163
 const MID = 96
 
+/**
+ * The walk is expressed in CSS — the sheet's stops and each node's lit window
+ * are the same six moments seen from two sides, and only a shared timeline can
+ * keep them in step. Publishing the layout constants as custom properties keeps
+ * the geometry defined once here rather than re-typed as literals in keyframes.
+ */
+const track = {
+  '--x0': `${X0}px`,
+  '--gap': `${GAP}px`,
+  '--mid': `${MID}px`,
+  '--entry': `${X0 - 68}px`,
+  /* Arrival plus one per stage — the walk has seven beats, not six. */
+  '--steps': String(AFTER_STAGES.length + 1),
+} as const
+
 /** Before-state nodes sit at alternating heights so the chain reads as tangled. */
 function beforeY(i: number): number {
   return i % 2 === 0 ? MID - 22 : MID + 26
@@ -43,9 +64,7 @@ function beforeY(i: number): number {
 const beforeNodes = computed(() =>
   BEFORE_STAGES.map((s, i) => ({ ...s, x: X0 + i * GAP, y: beforeY(i) })),
 )
-const afterNodes = computed(() =>
-  AFTER_STAGES.map((s, i) => ({ ...s, x: X0 + i * GAP, y: MID })),
-)
+const afterNodes = computed(() => AFTER_STAGES.map((s, i) => ({ ...s, x: X0 + i * GAP, y: MID })))
 
 /** Zig-zag connector through the before nodes. */
 const beforePath = computed(() =>
@@ -58,6 +77,15 @@ const afterPath = computed(() => {
   return `M ${first?.x ?? X0} ${MID} L ${last?.x ?? X0} ${MID}`
 })
 
+/**
+ * Where the document comes FROM. The hero's routes converge on this node from
+ * outside the panel and are cut off by its edge; this stub picks the line back
+ * up inside and carries it the rest of the way to intake, so the two read as
+ * one flow interrupted by an opaque box rather than as two separate graphics.
+ */
+const ENTRY = X0 - 68
+const inboundPath = computed(() => `M ${ENTRY} ${MID} L ${X0} ${MID}`)
+
 const description = computed(() =>
   showAfter.value
     ? 'After: a document moves through six automated stages — intake, extract, validate, human check, route, delivered. The human check is the single point where a person makes a judgment call.'
@@ -66,8 +94,7 @@ const description = computed(() =>
 
 function prefersReducedMotion(): boolean {
   return (
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
   )
 }
 
@@ -99,7 +126,10 @@ function stampY(node: WorkflowStage & { y: number }): number {
 </script>
 
 <template>
-  <div class="strip">
+  <!-- `data-flow-panel` / `data-flow-intake` are read by the hero's decorative
+       layer, which measures them so its routes converge on the real intake node
+       instead of an assumed position. Nothing here depends on that. -->
+  <div class="strip" :style="track" data-flow-panel>
     <div class="strip__head">
       <p class="strip__state mono-label">
         {{ showAfter ? 'After — one process, one exception' : 'Before — six handoffs, no queue' }}
@@ -131,6 +161,7 @@ function stampY(node: WorkflowStage & { y: number }): number {
       <title id="strip-title">How a document moves through the process</title>
       <desc id="strip-desc">{{ description }}</desc>
 
+
       <!-- ─── Before layer ─────────────────────────────────────────── -->
       <g class="layer layer--before" :class="{ 'is-hidden': showAfter }" :aria-hidden="showAfter">
         <path class="line line--before" :d="beforePath" />
@@ -146,13 +177,7 @@ function stampY(node: WorkflowStage & { y: number }): number {
           <text class="label label--before" :x="node.x" :y="node.y + 36" text-anchor="middle">
             {{ node.label.toUpperCase() }}
           </text>
-          <text
-            v-if="node.stamp"
-            class="stamp"
-            :x="node.x"
-            :y="stampY(node)"
-            text-anchor="middle"
-          >
+          <text v-if="node.stamp" class="stamp" :x="node.x" :y="stampY(node)" text-anchor="middle">
             {{ node.stamp }}
           </text>
         </g>
@@ -160,17 +185,27 @@ function stampY(node: WorkflowStage & { y: number }): number {
 
       <!-- ─── After layer ──────────────────────────────────────────── -->
       <g class="layer layer--after" :class="{ 'is-hidden': !showAfter }" :aria-hidden="!showAfter">
+        <!-- The stub the hero's routes hand off to. Dashed because it is the
+             only segment on this track that is NOT part of the process: it is
+             whatever arrived, from wherever it came from. -->
+        <path class="line line--inbound" :d="inboundPath" />
         <path class="line line--after" :d="afterPath" />
 
-        <!-- The travelling document token. Straight track, so a transform
-             animation is enough — no offset-path, no per-frame JS. -->
-        <rect class="token" x="-7" y="-7" width="14" height="14" rx="2" :style="{ '--y': `${MID}px` }" />
-
-        <g v-for="node in afterNodes" :key="`a-${node.label}`">
+        <!-- `--i` is the stage's place in the walk; every lit window is the same
+             keyframe set delayed by that many steps. -->
+        <g
+          v-for="(node, i) in afterNodes"
+          :key="`a-${node.label}`"
+          class="stage"
+          :style="{ '--i': i }"
+        >
           <template v-if="node.human">
             <circle class="node-ring" :cx="node.x" :cy="node.y" r="22" />
             <circle class="node node--human" :cx="node.x" :cy="node.y" r="13" />
           </template>
+          <!-- The anchor goes on the NODE, not the stage group: the group's box
+               includes the label beneath it, so its centre sits well below the
+               row the hero needs to aim at. -->
           <rect
             v-else
             class="node node--after"
@@ -179,6 +214,7 @@ function stampY(node: WorkflowStage & { y: number }): number {
             width="22"
             height="22"
             rx="2"
+            :data-flow-intake="i === 0 ? '' : undefined"
           />
           <text
             class="label"
@@ -189,6 +225,17 @@ function stampY(node: WorkflowStage & { y: number }): number {
           >
             {{ node.label.toUpperCase() }}
           </text>
+        </g>
+
+        <!-- The sheet, drawn around its own centre so the walk is a plain
+             translate to each node's x. It rides a lane ABOVE the track rather
+             than on it: a sheet this size sitting on a 22px node covers the
+             node, and the node lighting up is half of what the walk is saying.
+             Last in the layer so it is never clipped by a stage. -->
+        <g class="sheet">
+          <path class="sheet__page" d="M -12 -16 H 3 L 12 -7 V 16 H -12 Z" />
+          <path class="sheet__fold" d="M 3 -16 V -7 H 12" />
+          <path class="sheet__rule" d="M -7 -1 H 7 M -7 5 H 3" />
         </g>
       </g>
     </svg>
@@ -302,6 +349,14 @@ function stampY(node: WorkflowStage & { y: number }): number {
   stroke: var(--verify);
 }
 
+/* Not redline — nothing is wrong with the document, it simply has not been
+   picked up yet. Graphite is the site's "unprocessed" weight. */
+.line--inbound {
+  stroke: var(--muted-on-ink);
+  stroke-opacity: 0.55;
+  stroke-dasharray: 4 5;
+}
+
 .node {
   stroke-width: 1.5;
 }
@@ -353,30 +408,166 @@ function stampY(node: WorkflowStage & { y: number }): number {
   fill: var(--redline-text);
 }
 
-/* Travelling document token — straight-line loop on the after track only. */
-.token {
-  fill: var(--seal);
+/* ─── The travelling sheet ───────────────────────────────────────────── */
+/*
+ * ONE TIMELINE, TWO VIEWS. `--cycle` is the whole walk and `--step` is one
+ * stage's share of it; the sheet's stops and each node's lit window are the
+ * same six moments, so they are derived from those two values rather than
+ * tuned separately. `--x0`, `--gap`, `--mid` and `--stages` come from the
+ * script, which owns the layout.
+ *
+ * The percentages below are the one thing that cannot be derived: CSS keyframe
+ * offsets take no calc(). They are a SEVEN-beat split — arrival, then one per
+ * stage — at 14.29% each, of which the sheet spends the first 8.9% standing
+ * still and the rest hopping. Changing AFTER_STAGES means re-cutting them.
+ */
+.strip {
+  --step: 1.5s;
+  --cycle: calc(var(--step) * var(--steps));
+  /* The sheet's lane, clear of both the nodes and their labels. The strip is
+     drawn at roughly half scale in the panel, so the sheet has to be generous
+     in viewBox units to be legible as paper on screen. */
+  --lane: calc(var(--mid) - 38px);
+}
+
+.sheet {
   opacity: 0;
 }
 
+.sheet__page {
+  fill: var(--bond);
+  stroke: var(--seal);
+  stroke-width: 1.5;
+}
+
+.sheet__fold,
+.sheet__rule {
+  fill: none;
+  stroke: var(--seal);
+  stroke-width: 1.5;
+}
+
 @media (prefers-reduced-motion: no-preference) {
-  .layer--after:not(.is-hidden) .token {
-    animation: token-run 4.5s var(--ease-standard) infinite;
+  .layer--after:not(.is-hidden) .sheet {
+    animation: sheet-walk var(--cycle) var(--ease-standard) infinite;
+  }
+
+  /*
+   * Every stage runs the same keyframes, offset by its place in the walk —
+   * `--i` is set on the group and inherits down to these three. A positive
+   * delay means a node simply keeps its resting style until its first turn
+   * comes round, which is the correct opening state anyway.
+   */
+  .layer--after:not(.is-hidden) .stage .node--after {
+    animation: stage-node-lit var(--cycle) var(--ease-standard)
+      calc((var(--i) + 1) * var(--step)) infinite;
+  }
+
+  .layer--after:not(.is-hidden) .stage .node-ring {
+    animation: stage-ring-lit var(--cycle) var(--ease-standard) calc((var(--i) + 1) * var(--step))
+      infinite;
+  }
+
+  /* The human stage's label is already gold — brightening it toward the
+     on-ink text colour would read as a downgrade, so it is left alone. */
+  .layer--after:not(.is-hidden) .stage .label--after {
+    animation: stage-label-lit var(--cycle) var(--ease-standard) calc((var(--i) + 1) * var(--step))
+      infinite;
   }
 }
 
-@keyframes token-run {
+/* Arrives on the inbound stub, then stops at all six nodes. */
+@keyframes sheet-walk {
   0% {
-    transform: translate(82px, var(--y));
+    transform: translate(var(--entry), var(--lane));
     opacity: 0;
   }
-  8%,
-  92% {
+  4%,
+  8.9% {
+    transform: translate(var(--entry), var(--lane));
+    opacity: 1;
+  }
+  14.29%,
+  23.15% {
+    transform: translate(var(--x0), var(--lane));
+  }
+  28.57%,
+  37.43% {
+    transform: translate(calc(var(--x0) + 1 * var(--gap)), var(--lane));
+  }
+  42.86%,
+  51.72% {
+    transform: translate(calc(var(--x0) + 2 * var(--gap)), var(--lane));
+  }
+  57.14%,
+  66% {
+    transform: translate(calc(var(--x0) + 3 * var(--gap)), var(--lane));
+  }
+  71.43%,
+  80.29% {
+    transform: translate(calc(var(--x0) + 4 * var(--gap)), var(--lane));
+  }
+  85.71%,
+  96% {
+    transform: translate(calc(var(--x0) + 5 * var(--gap)), var(--lane));
     opacity: 1;
   }
   100% {
-    transform: translate(897px, var(--y));
+    transform: translate(calc(var(--x0) + 5 * var(--gap)), var(--lane));
     opacity: 0;
+  }
+}
+
+/*
+ * Lit from arrival to departure. The 93.7%→100% ramp is the same hop seen from
+ * the receiving end: the node warms as the sheet crosses to it, so the wrap
+ * back to 0% is a continuation rather than a jump.
+ */
+@keyframes stage-node-lit {
+  0%,
+  8.9% {
+    stroke: var(--seal);
+    stroke-width: 2.5;
+  }
+  15%,
+  94.57% {
+    stroke: var(--verify);
+    stroke-width: 1.5;
+  }
+  100% {
+    stroke: var(--seal);
+    stroke-width: 2.5;
+  }
+}
+
+@keyframes stage-ring-lit {
+  0%,
+  8.9% {
+    opacity: 1;
+    stroke-width: 2.5;
+  }
+  15%,
+  94.57% {
+    opacity: 0.45;
+    stroke-width: 1.5;
+  }
+  100% {
+    opacity: 1;
+    stroke-width: 2.5;
+  }
+}
+
+@keyframes stage-label-lit {
+  0%,
+  8.9% {
+    fill: var(--text-on-ink);
+  }
+  15%,
+  94.57% {
+    fill: var(--muted-on-ink);
+  }
+  100% {
+    fill: var(--text-on-ink);
   }
 }
 

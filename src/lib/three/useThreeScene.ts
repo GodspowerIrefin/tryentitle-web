@@ -74,17 +74,35 @@ export function useThreeScene(
   let onScreen = false
   let last = 0
   let start = 0
+  let clockSeeded = false
   let disposed = false
 
   function prefersReducedMotion(): boolean {
     return (
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
     )
   }
 
   function loop(now: number) {
     if (!running || !renderer || !controller) return
+
+    /*
+     * Seed the clock from the FIRST RAF TIMESTAMP, not from `performance.now()`
+     * at init.
+     *
+     * A rAF callback receives the time the frame began, which is earlier than a
+     * `performance.now()` sampled later in that same frame's script — so seeding
+     * at init hands the first frame a NEGATIVE `elapsed` (~-0.1s here). Scenes
+     * that only feed `elapsed` to `Math.sin` never notice; one that uses it to
+     * index a curve or an array gets an out-of-range lookup on frame one, throws
+     * inside the rAF callback, and the loop dies without ever rescheduling.
+     */
+    if (!clockSeeded) {
+      clockSeeded = true
+      start = now
+      last = now
+    }
+
     const elapsed = (now - start) / 1000
     const dt = Math.min((now - last) / 1000, 0.05) // clamp long frames (tab wake)
     last = now
@@ -153,7 +171,6 @@ export function useThreeScene(
 
     controller = build({ THREE, scene, camera, renderer, canvas, width, height })
 
-    start = performance.now()
     active.value = true
 
     resizeObserver = new ResizeObserver((entries) => {

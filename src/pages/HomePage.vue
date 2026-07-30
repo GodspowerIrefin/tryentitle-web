@@ -7,14 +7,14 @@
  * cost) into BOND (the solution — clean process, clear deliverables), and back to
  * ink for the ask. Reordering these changes the argument, not just the layout.
  *
- *   1  Hero + Live Workflow Strip   ink    comprehension in five seconds
+ *   1  Hero + Live Workflow Strip   bond   comprehension in five seconds
  *   2  Systems marquee              ink    credibility + stack qualification
  *   3  Cost of manual work          ink    agitate the pain, name the leaks
  *   4  Positioning contrast         bond   kill the "generic AI tool" objection
  *   5  Six core services            bond   scope clarity
  *   6  How an engagement runs       bond   de-risk the commitment
  *   7  Human oversight layer        ink    the differentiator
- *   8  Industries                   bond   self-identification
+ *   8  Industries marquee           bond   self-identification (all fields)
  *   9  Hours calculator             bond   convert intent into a number
  *  10  Proof commitments            bond   credibility substitute
  *  11  Testimonials                 bond   renders nothing until real (FR12)
@@ -34,7 +34,7 @@ import PositioningContrast from '@/components/sections/PositioningContrast'
 import ServicesGrid from '@/components/sections/ServicesGrid'
 import ProcessRail from '@/components/sections/ProcessRail'
 import OversightLayer from '@/components/sections/OversightLayer'
-import IndustriesGrid from '@/components/sections/IndustriesGrid'
+import IndustriesMarquee from '@/components/sections/IndustriesMarquee'
 import HoursCalculator from '@/components/sections/HoursCalculator'
 import ProofCommitments from '@/components/sections/ProofCommitments'
 import ProofStrip from '@/components/sections/ProofStrip'
@@ -45,7 +45,6 @@ import { HOME_COPY } from '@/data/home'
 import { PAIN_POINTS } from '@/data/pain-points'
 import { POSITIONING } from '@/data/positioning'
 import { SERVICES } from '@/data/services'
-import { INDUSTRIES } from '@/data/industries'
 import { PROCESS_STEPS } from '@/data/process-steps'
 import { PROOF_COMMITMENTS } from '@/data/proof'
 import { HOME_FAQ } from '@/data/faq'
@@ -89,12 +88,6 @@ useHead({
     :items="PAIN_POINTS"
   />
 
-  <PositioningContrast
-    :eyebrow="HOME_COPY.positioning.eyebrow"
-    :title="HOME_COPY.positioning.title"
-    :items="POSITIONING"
-  />
-
   <ServicesGrid
     :eyebrow="HOME_COPY.services.eyebrow"
     :title="HOME_COPY.services.title"
@@ -102,11 +95,11 @@ useHead({
     :items="SERVICES"
   />
 
-  <ProcessRail
+  <!-- <ProcessRail
     :eyebrow="HOME_COPY.process.eyebrow"
     :title="HOME_COPY.process.title"
     :steps="PROCESS_STEPS"
-  />
+  /> -->
 
   <OversightLayer
     :eyebrow="HOME_COPY.oversight.eyebrow"
@@ -117,12 +110,11 @@ useHead({
     :examples="EXCEPTION_EXAMPLES"
   />
 
-  <IndustriesGrid
+  <IndustriesMarquee
     :eyebrow="HOME_COPY.industries.eyebrow"
     :title="HOME_COPY.industries.title"
     :note="HOME_COPY.industries.note"
     :note-cta="HOME_COPY.industries.noteCta"
-    :items="INDUSTRIES"
   />
 
   <HoursCalculator

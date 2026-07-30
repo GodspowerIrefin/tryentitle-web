@@ -2,35 +2,59 @@
 /**
  * IndustriesGrid — Bond band (design spec §4.9, PRD FR10)
  *
- * Accordion of industries. Each row opens to a numbered workflow index — a
- * vertical rail of plain labels, not chips — plus a link to the industry detail
- * page. Ends with the required "not on the list?" invitation (FR10).
+ * Two presentations of the same industry list:
+ * - `accordion` (home): compact preview — open a row for workflows, link out for more.
+ * - `cards` (overview): dossier-style matter cards — featured lead + filed index grid.
  *
- * Accessibility: each industry is a real <button> inside an <h3> with
- * `aria-expanded` / `aria-controls`; the panel is `role="region"`. The detail
- * link is a separate focusable control inside the open panel.
+ * Both end with the required "not on the list?" invitation (FR10).
  */
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import Section from '@/components/primitives/Section'
 import Container from '@/components/primitives/Container'
+import Card from '@/components/primitives/Card'
 import Icon from '@/components/primitives/Icon'
+import Button from '@/components/primitives/Button'
 import BookingButton from '@/components/marketing/BookingButton'
 import SectionHeader from '@/components/sections/SectionHeader'
-import type { IndustrySummary } from '@/data/industries'
+import { INDUSTRIES, type IndustrySummary } from '@/data/industries'
 
-defineProps<{
-  eyebrow: string
-  title: string
-  intro?: string
-  note: string
-  noteCta?: string
-  items: IndustrySummary[]
-  level?: 1 | 2 | 3
-}>()
+const props = withDefaults(
+  defineProps<{
+    eyebrow: string
+    title: string
+    intro?: string
+    note: string
+    noteCta?: string
+    items: IndustrySummary[]
+    level?: 1 | 2 | 3
+    /** Accordion on home; cards on the industries overview. */
+    variant?: 'accordion' | 'cards'
+    /** Optional link under the list (e.g. home → /industries). */
+    moreHref?: string
+    moreLabel?: string
+  }>(),
+  { variant: 'accordion', level: 2 },
+)
 
-/** Index of the open panel; null means all closed. */
 const openIndex = ref<number | null>(0)
+
+const cardHeadingTag = computed(() => `h${props.level === 1 ? 2 : 3}`)
+
+const defaultAside = computed(() =>
+  props.variant === 'cards'
+    ? 'Seven fields we know the paperwork of. Pick one for the workflows we redesign — and how a person stays on the exceptions.'
+    : 'A sample of the fields we know the paperwork of. Open one for the workflows — or see the full list.',
+)
+
+/** Full catalog index so FIELD 01–07 stay stable even when home shows a subset. */
+const fieldNumber = computed(() => {
+  const map = new Map(INDUSTRIES.map((item, i) => [item.slug, i + 1]))
+  return (slug: string) => map.get(slug) ?? 0
+})
+
+const featured = computed(() => (props.variant === 'cards' ? props.items[0] : undefined))
+const rest = computed(() => (props.variant === 'cards' ? props.items.slice(1) : []))
 
 function toggle(index: number) {
   openIndex.value = openIndex.value === index ? null : index
@@ -38,6 +62,10 @@ function toggle(index: number) {
 
 function marker(i: number): string {
   return String(i + 1).padStart(2, '0')
+}
+
+function fieldLabel(slug: string): string {
+  return marker(fieldNumber.value(slug) - 1)
 }
 </script>
 
@@ -48,14 +76,12 @@ function marker(i: number): string {
         :eyebrow="eyebrow"
         :title="title"
         title-id="industries-title"
-        :aside="
-          intro ??
-          'Seven fields we know the paperwork of. Open one to see the workflows — then go deeper for the full picture.'
-        "
+        :aside="intro ?? defaultAside"
         :level="level"
       />
 
-      <ul class="industries">
+      <!-- Accordion (homepage preview) -->
+      <ul v-if="variant === 'accordion'" class="industries">
         <li v-for="(industry, i) in items" :key="industry.slug" class="industry" data-reveal>
           <h3 class="industry__heading">
             <button
@@ -103,11 +129,107 @@ function marker(i: number): string {
           </div>
         </li>
       </ul>
+
+      <!-- Dossier cards (industries overview) -->
+      <div v-else class="dossiers">
+        <!-- Featured lead matter -->
+        <Card
+          v-if="featured"
+          :to="`/industries/${featured.slug}`"
+          flush
+          class="lead"
+          data-reveal
+        >
+          <div class="lead__mast on-ink">
+            <p class="lead__meta mono-label">
+              Field {{ fieldLabel(featured.slug) }}
+              <span aria-hidden="true">·</span>
+              {{ featured.workflows.length }} workflows
+            </p>
+            <span class="lead__glyph" aria-hidden="true">
+              <Icon :name="featured.icon" :size="36" />
+            </span>
+            <component :is="cardHeadingTag" class="lead__title">
+              {{ featured.name }}
+            </component>
+            <p class="lead__deck">
+              The document paths this field runs on — redesigned end to end, with a person on the
+              exceptions.
+            </p>
+            <span class="lead__cta">
+              Open this field
+              <Icon name="arrow-right" :size="16" class="lead__arrow" />
+            </span>
+          </div>
+
+          <div class="lead__index">
+            <p class="lead__index-label mono-label">Process index</p>
+            <ol class="rail">
+              <li v-for="(workflow, wi) in featured.workflows" :key="workflow" class="rail__step">
+                <span class="rail__n" aria-hidden="true">{{ marker(wi) }}</span>
+                <span class="rail__name">{{ workflow }}</span>
+              </li>
+            </ol>
+          </div>
+        </Card>
+
+        <!-- Remaining filed matters -->
+        <ul class="matters">
+          <li v-for="industry in rest" :key="industry.slug" data-reveal>
+            <Card :to="`/industries/${industry.slug}`" flush class="matter">
+              <div class="matter__top">
+                <p class="matter__meta mono-label">
+                  Field {{ fieldLabel(industry.slug) }}
+                  <span aria-hidden="true">·</span>
+                  {{ industry.workflows.length }}
+                </p>
+                <span class="matter__tile" aria-hidden="true">
+                  <Icon :name="industry.icon" :size="18" />
+                </span>
+              </div>
+
+              <component :is="cardHeadingTag" class="matter__title">
+                {{ industry.name }}
+              </component>
+
+              <ol class="matter__rail">
+                <li
+                  v-for="(workflow, wi) in industry.workflows"
+                  :key="workflow"
+                  class="matter__step"
+                >
+                  <span class="matter__n" aria-hidden="true">{{ marker(wi) }}</span>
+                  <span class="matter__name">{{ workflow }}</span>
+                </li>
+              </ol>
+
+              <span class="matter__cta">
+                Open field
+                <Icon name="arrow-right" :size="16" class="matter__arrow" />
+              </span>
+            </Card>
+          </li>
+        </ul>
+      </div>
+
+      <div v-if="moreHref" class="more">
+        <Button :to="moreHref" variant="secondary">
+          {{ moreLabel ?? 'View all industries' }}
+          <Icon name="arrow-right" :size="16" />
+        </Button>
+      </div>
+
+      <div class="invite">
+        <p class="invite__label">{{ noteCta ?? 'Not on the list?' }}</p>
+        <p class="invite__text">{{ note }}</p>
+        <BookingButton placement="industries-invite" />
+      </div>
     </Container>
   </Section>
 </template>
 
 <style scoped>
+/* ─── Accordion (home) ───────────────────────────────────────────────── */
 .industries {
   display: flex;
   flex-direction: column;
@@ -194,7 +316,6 @@ function marker(i: number): string {
   }
 }
 
-/* Numbered workflow index — a process rail, not a chip cluster. */
 .workflows {
   display: flex;
   flex-direction: column;
@@ -223,7 +344,6 @@ function marker(i: number): string {
   color: var(--text-on-bond-muted);
 }
 
-/* Hairline rail down the marker column, connecting the steps. */
 .workflow__index::before {
   content: '';
   position: absolute;
@@ -260,6 +380,329 @@ function marker(i: number): string {
 
 .industry__more:hover {
   color: var(--text-on-bond);
+}
+
+/* ─── Dossier system (overview) ──────────────────────────────────────── */
+.dossiers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+
+/* Featured lead — ink masthead + process index */
+.lead {
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow: hidden;
+  min-height: 100%;
+}
+
+@media (min-width: 900px) {
+  .lead {
+    grid-template-columns: minmax(16rem, 0.95fr) minmax(0, 1.15fr);
+    min-height: 22rem;
+  }
+}
+
+.lead__mast {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background:
+    linear-gradient(160deg, rgba(200, 147, 58, 0.14), transparent 42%),
+    var(--ink);
+  color: var(--text-on-ink);
+}
+
+@media (min-width: 900px) {
+  .lead__mast {
+    padding: var(--space-7);
+    justify-content: space-between;
+  }
+}
+
+.lead__meta {
+  color: var(--seal);
+}
+
+.lead__glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 1px solid var(--rule-on-ink);
+  border-radius: var(--radius-card);
+  color: var(--seal);
+  background: rgba(242, 243, 240, 0.04);
+}
+
+.lead__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.4rem + 2.2vw, 3rem);
+  font-weight: 400;
+  letter-spacing: var(--tracking-display);
+  line-height: 1.05;
+  text-wrap: balance;
+  color: var(--text-on-ink);
+}
+
+.lead__deck {
+  margin: 0;
+  max-width: 28ch;
+  font-size: var(--text-body);
+  line-height: 1.5;
+  color: var(--text-on-ink-muted);
+}
+
+.lead__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-utility);
+  font-weight: 500;
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--seal);
+}
+
+.lead__arrow,
+.matter__arrow {
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lead:hover .lead__arrow,
+  .matter:hover .matter__arrow {
+    transform: translateX(4px);
+  }
+}
+
+.lead__index {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background-color: var(--bond-raised);
+}
+
+@media (min-width: 900px) {
+  .lead__index {
+    padding: var(--space-7);
+    justify-content: center;
+  }
+}
+
+.lead__index-label {
+  color: var(--seal-ink);
+}
+
+.rail {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rail__step {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: baseline;
+  padding-block: 0.85rem;
+  border-bottom: 1px solid var(--rule-on-bond);
+}
+
+.rail__step:first-child {
+  border-top: 1px solid var(--rule-on-bond);
+}
+
+.rail__n {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: var(--text-utility);
+  font-weight: 600;
+  letter-spacing: var(--tracking-utility);
+  color: var(--seal-ink);
+}
+
+.rail__n::before {
+  content: '';
+  position: absolute;
+  left: 0.7rem;
+  top: 1.35rem;
+  bottom: calc(-0.85rem - 1px);
+  width: 1px;
+  background-color: var(--rule-on-bond);
+}
+
+.rail__step:last-child .rail__n::before {
+  display: none;
+}
+
+.rail__name {
+  font-family: var(--font-body);
+  font-size: var(--text-body-lg);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--text-on-bond);
+}
+
+/* Filed matters grid */
+.matters {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .matters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .matters {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.matter {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  height: 100%;
+  padding: var(--space-5);
+  background-color: var(--bond-raised);
+  overflow: hidden;
+}
+
+/* Seal filing tab */
+.matter::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background-color: var(--seal);
+  transform: scaleY(0.22);
+  transform-origin: top;
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .matter:hover::before {
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .matter::before {
+    transform: none;
+    height: 3px;
+    width: 100%;
+  }
+}
+
+.matter__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.matter__meta {
+  color: var(--text-on-bond-muted);
+}
+
+.matter__tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: none;
+  border-radius: var(--radius-card);
+  background-color: var(--ink);
+  color: var(--seal);
+}
+
+.matter__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-weight: 400;
+  letter-spacing: var(--tracking-display);
+  line-height: 1.15;
+  color: var(--text-on-bond);
+}
+
+.matter__rail {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule-on-bond);
+}
+
+.matter__step {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: baseline;
+  padding-block: 0.65rem;
+  border-bottom: 1px solid var(--rule-on-bond);
+}
+
+.matter__step:last-child {
+  border-bottom: none;
+}
+
+.matter__n {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text-on-bond-muted);
+}
+
+.matter__name {
+  font-size: var(--text-body-sm);
+  line-height: 1.35;
+  color: var(--text-on-bond);
+}
+
+.matter__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--rule-on-bond);
+  font-family: var(--font-mono);
+  font-size: var(--text-utility);
+  font-weight: 500;
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--seal-ink);
+}
+
+.more {
+  margin-top: var(--space-6);
 }
 
 .invite {
