@@ -217,11 +217,3 @@ Carried from PRD §18. These are **not** resolvable in code:
 `noindex`, and keeps it out of the sitemap. After counsel (or a licensed
 template) supplies real content, set `reviewed: true` in the frontmatter to
 release the page. Do not flip that flag to make a warning disappear.
-
----
-
-Copyright (c) 2026 TryEntitle. All rights reserved.
-
-This source code is proprietary and confidential. Unauthorized copying,
-distribution, modification, or use of this code, via any medium, is
-strictly prohibited without prior written permission.
