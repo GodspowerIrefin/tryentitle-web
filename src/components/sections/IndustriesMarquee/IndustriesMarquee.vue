@@ -81,24 +81,23 @@ function overflow(workflows: readonly string[]): number {
           own, so hiding an item (the input-specific hints below) takes its
           separator with it and never strands a trailing dot.
         -->
-        <p class="ledger mono-label">
-          <span class="ledger__item ledger__stat">{{ pad(items.length) }} fields</span>
-          <span class="ledger__item ledger__stat">{{ workflowCount }} workflows mapped</span>
-          <span class="ledger__item ledger__hint">Hover any card to pause</span>
-          <span class="ledger__item ledger__hint ledger__hint--touch">Swipe the strip</span>
-        </p>
       </div>
     </Container>
 
     <div class="ribbon on-ink" data-reveal>
       <div class="ribbon__viewport" aria-label="Industries">
         <div class="ribbon__row">
+          <!--
+            The clone is hidden from assistive tech and taken out of the tab order
+            (duplicate links otherwise), but it must stay pointer-interactive: at
+            any moment roughly half the visible strip is the clone, and `inert`
+            here left those tiles dead to hover and clicks.
+          -->
           <ul
             v-for="copy in LOOP"
             :key="`track-${copy}`"
             class="ribbon__track"
             :aria-hidden="copy > 1 || undefined"
-            :inert="copy > 1 || undefined"
           >
             <li v-for="industry in items" :key="`${copy}-${industry.slug}`">
               <RouterLink
@@ -257,6 +256,7 @@ function overflow(workflows: readonly string[]): number {
   top: 0;
   height: 2px;
   background: linear-gradient(90deg, transparent, var(--seal) 14%, var(--seal) 86%, transparent);
+  pointer-events: none;
 }
 
 .ribbon__viewport {

@@ -48,7 +48,6 @@ const year = new Date().getFullYear()
 
       <div class="footer__bottom">
         <p>© {{ year }} TryEntitle. All rights reserved.</p>
-        <p class="footer__note">An operations company. Not affiliated with any referenced tool.</p>
       </div>
     </Container>
   </footer>

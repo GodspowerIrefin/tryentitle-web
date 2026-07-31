@@ -8,6 +8,17 @@
  * The whole hero is therefore one diagram read left to right: many sources, one
  * door, one process. That is the product argument drawn rather than stated.
  *
+ * WHY THE INPUT SIDE IS DELIBERATELY UNTIDY
+ *
+ * The argument only lands if the two halves LOOK different. A neat symmetrical
+ * fan into a neat trunk says "this was always orderly"; what the product does is
+ * take work that arrives loose — different senders, different moments, no shared
+ * shape — and give it one door. So each feeder wanders through its own waypoint
+ * on the way in: they enter at unrelated points, bow by different amounts, cross
+ * one another, and carry slightly different weights. Past the gate every one of
+ * those irregularities is gone and there is a single square-cornered trunk. Few
+ * lines, though — four loose ones read as scattered, a dozen read as noise.
+ *
  * The panel is opaque and paints above this layer, so the trunk is cut off at
  * its edge rather than stopping there. The strip's own dashed inbound stub
  * continues it inside, which is what keeps the two halves reading as one flow
@@ -41,19 +52,36 @@ interface Vec {
 }
 
 /**
- * Where each input enters, as fractions of the hero box, and which way it
- * leaves — a route entering from the side has to leave horizontally and one
- * dropping in from the top has to leave vertically, or the fan kinks at its
- * first control point.
+ * The loose half of the diagram.
  *
- * All three live in the band ABOVE the copy. The gate sits above the panel and
- * the copy column owns the middle-left, so this is the only open ground that
- * reaches it; a fourth feeder from the bottom would have to cross the headline.
+ *  `x`      where the input enters, as a fraction of the hero's width.
+ *  `from`   which edge it enters by. A route entering from the side has to
+ *           leave horizontally and one dropping in from the top has to leave
+ *           vertically, or the fan kinks at its first control point.
+ *  `enter`  a side feeder's lane at the moment it enters; a top feeder's is
+ *           fixed by the edge, so for those it reads as how far ABOVE the
+ *           canvas it starts, which is what sets its approach angle.
+ *  `mid`    how far along the run to the gate its waypoint sits.
+ *  `lane`   which lane that waypoint sits in. Together with `mid` this is the
+ *           whole scatter: no two feeders share a lane or a waypoint, so they
+ *           bow apart and cross instead of nesting into a tidy fan.
+ *  `slack`  how lazily the first leg leaves its edge — low is a hard turn, high
+ *           is a long glide, and mixing them stops the entries rhyming.
+ *  `weight` stroke width. Real inbound work is not uniform, and a hair of
+ *           variation is what keeps four lines from reading as one ruled set.
+ *
+ * A LANE is a fraction of the open band above the copy — 0 at the top edge of
+ * the hero, 1 just clear of the headline. Lanes rather than fractions of the
+ * hero's height because that band is the whole stage this half of the diagram
+ * plays on, it is only ~60px tall on a laptop, and it moves whenever the type
+ * reflows. Scatter measured against the box instead would either waste the room
+ * or, at the first narrow viewport, put a line through the H1.
  */
 const FEEDERS = [
-  { at: { x: -0.08, y: 0.02 }, from: 'side', dur: 9.5, start: 0 },
-  { at: { x: -0.08, y: 0.105 }, from: 'side', dur: 12, start: 0.38 },
-  { at: { x: 0.14, y: -0.06 }, from: 'top', dur: 10.5, start: 0.71 },
+  { x: -0.09, from: 'side', enter: 0.06, mid: 0.5, lane: 0.34, slack: 0.66, weight: 1.2, dur: 9.5, start: 0 }, // prettier-ignore
+  { x: -0.07, from: 'side', enter: 0.78, mid: 0.44, lane: 1, slack: 0.28, weight: 0.95, dur: 12.6, start: 0.3 }, // prettier-ignore
+  { x: 0.085, from: 'top', enter: 0.85, mid: 0.58, lane: 0.66, slack: 0.55, weight: 1.05, dur: 10.8, start: 0.54 }, // prettier-ignore
+  { x: 0.355, from: 'top', enter: 0.2, mid: 0.52, lane: 0.14, slack: 0.78, weight: 0.85, dur: 8.4, start: 0.79 }, // prettier-ignore
 ] as const
 
 /**
@@ -74,6 +102,8 @@ const w = ref(1440)
 const h = ref(720)
 const intake = ref<Vec | null>(null)
 const panel = ref<Vec | null>(null)
+/** Top of the copy column — the floor of the band the scatter plays in. */
+const copyTop = ref<number | null>(null)
 
 let observer: ResizeObserver | undefined
 let settleHost: HTMLElement | null = null
@@ -88,7 +118,7 @@ let settleHost: HTMLElement | null = null
  */
 const still = ref(false)
 
-/** Re-reads the box and the intake node together — they only ever move as one. */
+/** Re-reads the box, the intake node and the copy — they only move as one. */
 function measure(): void {
   const el = root.value
   if (!el) return
@@ -103,6 +133,7 @@ function measure(): void {
   const scope = el.closest('section')
   const node = scope?.querySelector('[data-flow-intake]')
   const box = scope?.querySelector('[data-flow-panel]')
+  const text = scope?.querySelector('[data-flow-copy]')
 
   if (node) {
     const r = node.getBoundingClientRect()
@@ -111,6 +142,9 @@ function measure(): void {
   if (box) {
     const r = box.getBoundingClientRect()
     panel.value = { x: r.left - host.left, y: r.top - host.top }
+  }
+  if (text) {
+    copyTop.value = text.getBoundingClientRect().top - host.top
   }
 }
 
@@ -187,7 +221,8 @@ const flow = computed(() => {
    * the panel there is only ~60px of corridor to lose 250px of height in, which
    * no smooth cubic can do gracefully — so it drops straight down the corridor,
    * turns a rounded corner, and runs in flat at intake's height. That is also
-   * the right dialect: right angles and a fillet are what a plan drawing does.
+   * the right dialect: right angles and a fillet are what a plan drawing does,
+   * and after the gate this diagram is supposed to look drawn.
    */
   const dx = I.x - gate.x
   const dy = I.y - gate.y
@@ -197,22 +232,54 @@ const flow = computed(() => {
     : ` L ${n(gate.x)} ${n(I.y - r)} Q ${n(gate.x)} ${n(I.y)} ${n(gate.x + r)} ${n(I.y)}` +
       ` L ${n(I.x)} ${n(I.y)}`
 
+  /*
+   * The band the scatter plays in, and the lane function that indexes it.
+   *
+   * The wander is free to be untidy but not free to be anywhere: the middle of
+   * every feeder's run is horizontally on top of the copy column, so a route
+   * that strays below the top of the copy is a line through the headline. The
+   * floor is therefore the measured copy, held off by a clear 18px, and the
+   * ceiling is inset from the hero's own top edge so a route near lane 0 reads
+   * as running along the top rather than as clipped by it.
+   */
+  const ceiling = H * 0.02
+  const bed = Math.max(ceiling + 12, (copyTop.value ?? H * 0.2) - 18)
+  const lane = (t: number) => ceiling + (bed - ceiling) * t
+
   /* On a phone the fan has nowhere to go — the copy runs full width and the CTA
      sits directly above the panel — so the inputs are dropped and the trunk
      alone feeds intake. */
   const feeders = stacked
     ? []
     : FEEDERS.map((f) => {
-        const E: Vec = { x: f.at.x * W, y: f.at.y * H }
-        const c1: Vec =
+        /* A top feeder starts above the canvas, deep enough that `enter` still
+           buys it a visibly different approach angle from its neighbour. */
+        const E: Vec =
           f.from === 'side'
-            ? { x: E.x + (gate.x - E.x) * 0.55, y: E.y }
-            : { x: E.x, y: E.y + (gate.y - E.y) * 0.6 }
-        const c2: Vec = { x: gate.x - (gate.x - E.x) * 0.3, y: gate.y - (gate.y - E.y) * 0.06 }
+            ? { x: f.x * W, y: lane(f.enter) }
+            : { x: f.x * W, y: -H * (0.04 + 0.06 * f.enter) }
+
+        /* The kink that makes this route its own. */
+        const M: Vec = { x: E.x + (gate.x - E.x) * f.mid, y: lane(f.lane) }
+
+        /* Leg one: off the edge, in the direction that edge implies, into M. */
+        const a1: Vec =
+          f.from === 'side'
+            ? { x: E.x + (M.x - E.x) * f.slack, y: E.y }
+            : { x: E.x, y: E.y + (M.y - E.y) * f.slack }
+        const a2: Vec = { x: M.x - (M.x - E.x) * 0.35, y: M.y }
+
+        /* Leg two: out of M and into the gate FLAT, which is the one thing every
+           feeder does the same way — otherwise they arrive at a shared point
+           from four unrelated angles and the gate reads as a collision. */
+        const b1: Vec = { x: M.x + (gate.x - M.x) * 0.45, y: M.y }
+        const b2: Vec = { x: gate.x - (gate.x - M.x) * 0.18, y: gate.y }
+
         const d =
-          `M ${n(E.x)} ${n(E.y)} C ${n(c1.x)} ${n(c1.y)}, ${n(c2.x)} ${n(c2.y)},` +
-          ` ${n(gate.x)} ${n(gate.y)}`
-        return { d, dur: f.dur, start: f.start }
+          `M ${n(E.x)} ${n(E.y)} C ${n(a1.x)} ${n(a1.y)}, ${n(a2.x)} ${n(a2.y)}, ${n(M.x)} ${n(M.y)}` +
+          ` C ${n(b1.x)} ${n(b1.y)}, ${n(b2.x)} ${n(b2.y)}, ${n(gate.x)} ${n(gate.y)}`
+
+        return { d, dur: f.dur, start: f.start, weight: f.weight }
       })
 
   /* Each sheet rides one input all the way in; with no inputs they queue on the
@@ -227,14 +294,14 @@ const flow = computed(() => {
     /* Published so the gradients can ramp to full warmth exactly at intake. */
     aim: I,
     /* Drawn once. Every sheet travels it, but stroking it per sheet would stack
-       three copies of the same line and triple its weight. */
+       four copies of the same line and quadruple its weight. */
     trunk: `M ${n(gate.x)} ${n(gate.y)}${tail}`,
     /* Feeder + trunk as one path: the motion and the comet both need the whole
        journey, not the leg the sheet happens to be on. */
     sheets: legs.map((f, i) => {
       /* Where the sheet is parked when motion is off — spread along the fan so
          the still frame reads as traffic held rather than a pile-up. */
-      const restT = 0.34 + i * 0.19
+      const restT = 0.3 + i * 0.15
       return {
         key: `s-${i}`,
         d: f.d,
@@ -322,7 +389,7 @@ const trailTo = TRAIL
         class="pattern__route"
         :d="feeder.d"
         pathLength="100"
-        :style="{ animationDelay: `${i * 130}ms` }"
+        :style="{ '--weight': feeder.weight, animationDelay: `${i * 130}ms` }"
       />
       <path
         class="pattern__route pattern__route--trunk"
@@ -331,7 +398,7 @@ const trailTo = TRAIL
         style="animation-delay: 620ms"
       />
 
-      <!-- The gate. A junction mark is what turns three lines that happen to
+      <!-- The gate. A junction mark is what turns four lines that happen to
            meet into a place where things are collected — so it is only drawn
            when there is actually something to collect. -->
       <template v-if="flow.feeders.length">
@@ -466,14 +533,16 @@ const trailTo = TRAIL
 .pattern__route {
   fill: none;
   stroke: url(#hero-route);
-  stroke-width: 1.1;
+  /* Per-feeder, so the inbound set is not a ruled family. The trunk overrides. */
+  stroke-width: var(--weight, 1.1);
   stroke-dasharray: 100;
   stroke-dashoffset: 0;
 }
 
-/* Carries three inputs' worth of traffic, so it reads a step heavier. */
+/* Carries four inputs' worth of traffic, so it reads a step heavier than the
+   heaviest of them. */
 .pattern__route--trunk {
-  stroke-width: 1.5;
+  stroke-width: 1.6;
 }
 
 .pattern__gate {
@@ -531,7 +600,7 @@ const trailTo = TRAIL
 
   .pattern__gate,
   .pattern__gate-ring {
-    animation: hero-gate-in 500ms var(--ease-standard) 560ms both;
+    animation: hero-gate-in 500ms var(--ease-standard) 700ms both;
   }
 
   /* Traffic arrives behind the finished routes — a sheet already mid-flight on
