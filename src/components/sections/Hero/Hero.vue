@@ -52,7 +52,10 @@ onMounted(() => {
     </div>
 
     <Container class="hero__grid-layout">
-      <div ref="copy" class="hero__copy" :class="{ 'is-revealed': revealed }">
+      <!-- `data-flow-copy` is read by HeroPattern: the scattered inbound routes
+           run through the band above this column, and they need its real top
+           edge rather than a guess at where the type lands. -->
+      <div ref="copy" class="hero__copy" :class="{ 'is-revealed': revealed }" data-flow-copy>
         <!-- Home passes an empty eyebrow; an empty <p> would still take its gap. -->
         <Eyebrow v-if="eyebrow" class="hero__step" style="--i: 0">{{ eyebrow }}</Eyebrow>
 
