@@ -39,12 +39,9 @@ import ServiceScene from '@/components/three/ServiceScene.vue'
 import type { ServiceSummary } from '@/data/services'
 
 const props = defineProps<{
-  eyebrow: string
-  title: string
-  intro?: string
+  eyebrow?: string
+  title?: string
   items: ServiceSummary[]
-  /** Heading level for the section lead. Home uses 2; the overview page passes 1. */
-  level?: 1 | 2 | 3
 }>()
 
 const active = ref(0)
@@ -189,13 +186,7 @@ function onKeydown(event: KeyboardEvent, index: number) {
 <template>
   <Section tone="bond" labelledby="services-title" class="services">
     <Container>
-      <SectionHeader
-        :eyebrow="eyebrow"
-        :title="title"
-        title-id="services-title"
-        :intro="intro"
-        :level="level"
-      />
+      <SectionHeader :eyebrow="eyebrow ?? ''" :title="title ?? ''" title-id="services-title" />
     </Container>
 
     <!-- ─── Desktop: pinned, scroll-driven rail ─────────────────────── -->

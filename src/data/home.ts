@@ -10,7 +10,7 @@ export const HOME_COPY = {
     eyebrow: '',
     title: 'Workflows that move business forward.',
     subhead:
-      'Manual processes are slowing your team down and costing you money. We redesign your workflows and automate the repetitive parts, so your people can focus on the decisions that actually need them.',
+      'Manual processes slow your team down and cost you money. We redesign your workflows and automate the repetitive parts, so your people can focus on the decisions that actually need them.',
   },
 
   systems: {
@@ -18,7 +18,7 @@ export const HOME_COPY = {
   },
 
   painPoints: {
-    eyebrow: 'Where the hours go',
+    eyebrow: 'What we do',
     title: 'Six places the week quietly disappears.',
     intro: 'None of them look like a crisis. Together they cost you a full-time salary a year.',
   },
@@ -42,28 +42,28 @@ export const HOME_COPY = {
   oversight: {
     eyebrow: 'How we differ',
     title: 'Full automation is a promise nobody keeps. We don’t make it.',
-    body: 'Most of the work in a document-heavy process is repetitive and safe to automate. The rest is judgment — the unusual claim, the client who replies with something nobody anticipated, the number that looks wrong. We automate the repeatable part completely, and route the rest to a person with the full context attached. That is why our workflows are still running six months later.',
+    body: 'Most of a document-heavy process is repetitive and safe to automate. TryEntitle automates the repeatable part completely and route the rest to a person with the full context attached.',
     automatedLabel: 'Automated',
     humanLabel: 'Human review',
   },
 
   industries: {
     eyebrow: 'Who this is for',
-    title: 'If your business runs on documents and deadlines, this applies.',
-    note: 'If your team handles documents, approvals, and deadlines by hand, the same approach applies.',
+    title: '',
+    note: '',
     noteCta: 'Tell us what your week looks like',
   },
 
   calculator: {
-    eyebrow: '',
+    eyebrow: 'Cost calculator',
     title: 'What is manual work costing you this year?',
     footnote:
-      "An estimate from your own inputs, not a benchmark — we'll pressure-test it against your real process on the call.",
+      'An estimate from your own inputs, not a benchmark. We&#39;ll pressure-test it against your real process on the call.',
   },
 
   proof: {
     eyebrow: 'Why trust us yet',
-    title: 'We’re new. Here’s what we’ll put in writing.',
+    title: '',
   },
 
   fieldNotes: {
@@ -72,12 +72,6 @@ export const HOME_COPY = {
   },
 
   faq: {
-    eyebrow: 'Questions',
-    title: 'The things people ask before booking.',
-  },
-
-  closing: {
-    title: 'Thirty minutes. Bring your worst process.',
-    body: 'No deck, no discovery gauntlet. You describe what your team does by hand, and we tell you what we’d automate first and roughly what it’d take. If it isn’t a fit, we’ll say that too.',
+    title: 'Frequently asked questions',
   },
 } as const
