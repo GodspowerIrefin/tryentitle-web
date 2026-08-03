@@ -4,10 +4,8 @@
  * THE SIX NAMES ARE FIXED. They must match across nav, home, services, footer,
  * and metadata. `name` and `slug` do not change without a PRD update.
  *
- * Each entry carries three things the sticky tab rail needs: a `headline` (the
- * outcome, in the customer's terms), a `summary` (the one-line promise), and
- * `chips` (concrete examples, so the abstract service name lands on something
- * the reader recognises from their own week).
+ * Each entry carries what the sticky tab rail needs: a `headline` (the outcome,
+ * in the customer's terms) and a `summary` (the one-line promise).
  */
 import type { IconName } from '../components/primitives/Icon/icons'
 
@@ -18,7 +16,9 @@ export interface ServiceSummary {
   headline: string
   /** One-line promise — plain, operational, no jargon (PRD §8.1). */
   summary: string
-  /** Concrete examples rendered as record chips. */
+  /** Concrete examples rendered as record chips. Optional: the services rail no
+   *  longer shows them, but the service detail hero still accepts them. */
+  chips?: readonly string[]
   /** Glyph from the shared icon set. */
   icon: IconName
 }
