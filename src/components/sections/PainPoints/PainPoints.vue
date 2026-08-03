@@ -14,8 +14,8 @@ import SectionHeader from '@/components/sections/SectionHeader'
 import type { PainPoint } from '@/data/pain-points'
 
 defineProps<{
-  eyebrow: string
-  title: string
+  eyebrow?: string
+  title?: string
   intro?: string
   items: PainPoint[]
 }>()
@@ -25,8 +25,8 @@ defineProps<{
   <Section tone="ink" labelledby="painpoints-title">
     <Container>
       <SectionHeader
-        :eyebrow="eyebrow"
-        :title="title"
+        :eyebrow="eyebrow ?? ''"
+        :title="title ?? ''"
         title-id="painpoints-title"
         :intro="intro"
       />

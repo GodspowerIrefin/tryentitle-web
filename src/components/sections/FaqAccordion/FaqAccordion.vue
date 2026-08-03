@@ -18,7 +18,7 @@ import SectionHeader from '@/components/sections/SectionHeader'
 import type { FaqItem } from '@/data/faq'
 
 defineProps<{
-  eyebrow: string
+  eyebrow?: string
   title: string
   items: readonly FaqItem[]
   /** Optional link to the full FAQ page (home short set only). */
@@ -38,7 +38,7 @@ function toggle(index: number) {
     <Container>
       <div class="faq-layout">
         <div class="faq-layout__head">
-          <SectionHeader :eyebrow="eyebrow" :title="title" title-id="faq-title" />
+          <SectionHeader :eyebrow="eyebrow ?? ''" :title="title ?? ''" title-id="faq-title" />
           <RouterLink v-if="moreHref" :to="moreHref" class="faq-more">
             {{ moreLabel ?? 'See all questions' }}
             <Icon name="arrow-right" :size="16" />

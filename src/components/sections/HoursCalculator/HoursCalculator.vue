@@ -130,13 +130,17 @@ watch(
 
         <div class="panel__result" data-reveal>
           <div class="stat stat--hours">
-            <p class="stat__label">Hours lost per year</p>
-            <p class="stat__value">{{ hoursLabel }} hours</p>
+            <p class="stat__value">
+              <span class="stat__figure">{{ hoursLabel }}</span>
+              hours lost per year
+            </p>
           </div>
 
           <div class="stat stat--cost">
-            <p class="stat__label">Before errors and delays</p>
-            <p class="stat__value">{{ costLabel }}</p>
+            <p class="stat__value">
+              <span class="stat__figure">{{ costLabel }}</span>
+              before errors and delays
+            </p>
           </div>
 
           <p class="visually-hidden" aria-live="polite">{{ announced }}</p>
@@ -285,17 +289,21 @@ watch(
   color: var(--text-on-ink);
 }
 
-.stat__label {
+.stat__value {
   font-family: var(--font-body);
-  font-size: var(--text-body-sm);
+  font-size: var(--text-body-lg);
+  font-weight: 500;
+  line-height: 1.25;
   color: var(--text-on-bond-muted);
 }
 
-.stat--cost .stat__label {
+.stat--cost .stat__value {
   color: var(--text-on-ink-muted);
 }
 
-.stat__value {
+.stat__figure {
+  display: block;
+  margin-bottom: var(--space-2);
   font-family: var(--font-display);
   font-size: var(--text-h2);
   font-weight: 600;
@@ -306,7 +314,7 @@ watch(
   color: var(--text-on-bond);
 }
 
-.stat--cost .stat__value {
+.stat--cost .stat__figure {
   color: var(--verify);
 }
 

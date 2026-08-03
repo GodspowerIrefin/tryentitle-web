@@ -17,8 +17,6 @@ import { RouterLink } from 'vue-router'
 import Section from '@/components/primitives/Section'
 import Container from '@/components/primitives/Container'
 import Icon from '@/components/primitives/Icon'
-import Button from '@/components/primitives/Button'
-import BookingButton from '@/components/marketing/BookingButton'
 import SectionHeader from '@/components/sections/SectionHeader'
 import { INDUSTRIES } from '@/data/industries'
 
@@ -70,10 +68,7 @@ function overflow(workflows: readonly string[]): number {
           :eyebrow="eyebrow"
           :title="title"
           title-id="industries-title"
-          :aside="
-            intro ??
-            'Fields we know the paperwork of. Catch one as it passes or open the full index.'
-          "
+          :aside="intro ?? ''"
         />
 
         <!--
@@ -105,10 +100,9 @@ function overflow(workflows: readonly string[]): number {
                 class="tile"
                 :tabindex="copy > 1 ? -1 : undefined"
               >
-                <span class="tile__stamp" aria-hidden="true">{{ fieldCode(industry.slug) }}</span>
+                <!-- <span class="tile__stamp" aria-hidden="true">{{ fieldCode(industry.slug) }}</span> -->
 
                 <span class="tile__head">
-                  <span class="tile__meta mono-label">Field {{ fieldCode(industry.slug) }}</span>
                   <span class="tile__icon" aria-hidden="true">
                     <Icon :name="industry.icon" :size="20" />
                   </span>
@@ -125,13 +119,9 @@ function overflow(workflows: readonly string[]): number {
                     <span class="tile__n" aria-hidden="true">{{ pad(wi + 1) }}</span>
                     <span class="tile__flow">{{ workflow }}</span>
                   </span>
-                  <span v-if="overflow(industry.workflows)" class="tile__more">
-                    + {{ overflow(industry.workflows) }} more
-                  </span>
                 </span>
-
                 <span class="tile__cta">
-                  Open field
+                  Learn more
                   <Icon name="arrow-right" :size="14" class="tile__arrow" />
                 </span>
               </RouterLink>
@@ -140,28 +130,6 @@ function overflow(workflows: readonly string[]): number {
         </div>
       </div>
     </div>
-
-    <Container>
-      <div class="foot" data-reveal>
-        <div class="foot__index">
-          <p class="foot__label mono-label">The full index</p>
-          <p class="foot__text">
-            Seven fields, each with the document paths we redesign and the exceptions a person still
-            owns.
-          </p>
-          <Button to="/industries" variant="secondary">
-            View all industries
-            <Icon name="arrow-right" :size="16" />
-          </Button>
-        </div>
-
-        <div class="invite">
-          <p class="invite__label mono-label">{{ noteCta ?? 'Not on the list?' }}</p>
-          <p class="invite__text">{{ note }}</p>
-          <BookingButton placement="industries-marquee" />
-        </div>
-      </div>
-    </Container>
   </Section>
 </template>
 

@@ -27,25 +27,24 @@ export const SERVICES: ServiceSummary[] = [
   {
     slug: 'workflow-strategy-assessment',
     name: 'Workflow Strategy Assessment',
-    headline: 'A full map before anything is built',
+    headline: 'See where the time actually goes',
     summary:
-      'A full map of your current process, showing exactly where the bottlenecks are, before anything is built.',
+      'We follow one of your processes end to end and show you which steps to automate, which to fix, and which to leave alone.',
     icon: 'map',
   },
   {
     slug: 'workflow-agents',
     name: 'Workflow Agents',
-    headline: 'Repetitive work handled; judgment stays human',
-    summary:
-      'Agents handle the repetitive parts of your workflow — reading, deciding, routing — so people only step in where real judgment is needed.',
+    headline: 'The repetitive steps, handled',
+    summary: 'Automation that does the routine work and hands anything unusual to a person.',
     icon: 'repeat',
   },
   {
     slug: 'document-operations',
     name: 'Document Operations',
-    headline: 'Read, sorted, and entered — automatically',
+    headline: 'Documents in, data out',
     summary:
-      'Documents are read, sorted, and entered into your system automatically and accurately, every time.',
+      'Forms, PDFs, and emails become clean entries in your system without anyone retyping them.',
     icon: 'document',
   },
   {
@@ -53,23 +52,23 @@ export const SERVICES: ServiceSummary[] = [
     name: 'Customer Operations',
     headline: 'Onboarding without the chase',
     summary:
-      'Onboarding runs from first submission to a fully ready file, without manual follow-up.',
+      'Intake, updates, and scheduling happen on their own, so nothing sits waiting on a follow-up.',
     icon: 'users',
   },
   {
     slug: 'internal-operations',
     name: 'Internal Operations',
-    headline: 'Routing, approvals, and live reports',
+    headline: "Approvals that don't sit",
     summary:
-      'Requests route automatically with a full approval trail, and reports stay current — pulled directly from your systems.',
+      'Requests reach the right person, and the reports you rebuild every week build themselves.',
     icon: 'inbox',
   },
   {
     slug: 'integrations-process-intelligence',
     name: 'Integrations & Process Intelligence',
-    headline: 'Systems in sync, work in view',
+    headline: 'Your systems, finally talking',
     summary:
-      'Your systems sync automatically, and you get real visibility into how work is moving.',
+      'Data moves between the tools you already pay for, and you can see where work slows down.',
     icon: 'plug',
   },
 ]

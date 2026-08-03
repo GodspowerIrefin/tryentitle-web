@@ -4,7 +4,7 @@
  */
 export const SERVICES_PAGE = {
   eyebrow: 'Services',
-  title: 'Six ways we take work off your desk.',
+  title: '',
   intro:
     'Each is scoped to your business — you do not buy a package, you get a redesigned process with automation inside it and a person on the exceptions.',
 } as const
@@ -12,8 +12,7 @@ export const SERVICES_PAGE = {
 export const INDUSTRIES_PAGE = {
   eyebrow: 'Industries',
   title: 'Built around the documents your field runs on.',
-  intro:
-    'Pick a field to see the workflows we redesign — with a person on the exceptions.',
+  intro: 'Pick a field to see the workflows we redesign — with a person on the exceptions.',
   note: 'If your work is document-heavy and repetitive, it likely applies.',
   noteCta: 'Tell us what your week looks like',
 } as const
@@ -74,6 +73,6 @@ export const SERVICE_DETAIL_COPY = {
 
 /** The closing CTA copy reused across detail and overview pages. */
 export const CLOSING = {
-  title: 'Start with one workflow.',
-  body: 'A workflow review is a focused look at one manual process — what it costs you now, and what it would take to redesign it. No obligation, no package to buy.',
+  title: '',
+  body: '',
 } as const

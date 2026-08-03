@@ -20,7 +20,7 @@ export interface ProofCommitment {
   title: string
   body: string
   /** Short mono label for the row's dark mark panel. */
-  label: string
+  label?: string
   /** Glyph at the centre of the mark. */
   icon: IconName
 }
@@ -29,25 +29,22 @@ export const PROOF_COMMITMENTS: ProofCommitment[] = [
   {
     title: 'You keep the map.',
     body: 'After the assessment, the process documentation is yours — whether or not we go further.',
-    label: 'Ownership',
+
     icon: 'map',
   },
   {
     title: 'Fixed scope, fixed price.',
     body: 'You approve a written scope before anything is built. No hourly drift.',
-    label: 'Scope',
     icon: 'document',
   },
   {
     title: 'Your data stays yours.',
     body: 'We work inside your systems, under your access controls, with a signed DPA. Nothing is used to train anything.',
-    label: 'Data',
     icon: 'shield',
   },
   {
     title: 'If it doesn’t run, you don’t pay for it.',
     body: 'If a workflow doesn’t hit the agreed outcome in the pilot, we rebuild it or refund the build fee.',
-    label: 'Guarantee',
     icon: 'check',
   },
 ]

@@ -28,11 +28,7 @@
 import { useHead } from '@unhead/vue'
 
 import Hero from '@/components/sections/Hero'
-import SystemsMarquee from '@/components/sections/SystemsMarquee'
 import PainPoints from '@/components/sections/PainPoints'
-import PositioningContrast from '@/components/sections/PositioningContrast'
-import ServicesGrid from '@/components/sections/ServicesGrid'
-import ProcessRail from '@/components/sections/ProcessRail'
 import OversightLayer from '@/components/sections/OversightLayer'
 import IndustriesMarquee from '@/components/sections/IndustriesMarquee'
 import HoursCalculator from '@/components/sections/HoursCalculator'
@@ -43,9 +39,6 @@ import ClosingCta from '@/components/sections/ClosingCta'
 
 import { HOME_COPY } from '@/data/home'
 import { PAIN_POINTS } from '@/data/pain-points'
-import { POSITIONING } from '@/data/positioning'
-import { SERVICES } from '@/data/services'
-import { PROCESS_STEPS } from '@/data/process-steps'
 import { PROOF_COMMITMENTS } from '@/data/proof'
 import { HOME_FAQ } from '@/data/faq'
 import { TESTIMONIALS } from '@/lib/proof'
@@ -81,19 +74,9 @@ useHead({
 
   <!-- <SystemsMarquee :label="HOME_COPY.systems.label" /> -->
 
-  <PainPoints
-    :eyebrow="HOME_COPY.painPoints.eyebrow"
-    :title="HOME_COPY.painPoints.title"
-    :intro="HOME_COPY.painPoints.intro"
-    :items="PAIN_POINTS"
-  />
+  <PainPoints :items="PAIN_POINTS" />
 
-  <ServicesGrid
-    :eyebrow="HOME_COPY.services.eyebrow"
-    :title="HOME_COPY.services.title"
-    :intro="HOME_COPY.services.intro"
-    :items="SERVICES"
-  />
+  <!-- <ServicesGrid :eyebrow="HOME_COPY.services.eyebrow" :items="SERVICES" /> -->
 
   <!-- <ProcessRail
     :eyebrow="HOME_COPY.process.eyebrow"
@@ -132,12 +115,9 @@ useHead({
   <ProofStrip :items="TESTIMONIALS" />
 
   <FaqAccordion
-    :eyebrow="HOME_COPY.faq.eyebrow"
     :title="HOME_COPY.faq.title"
     :items="HOME_FAQ"
     more-href="/faq"
     more-label="See all questions"
   />
-
-  <ClosingCta :title="HOME_COPY.closing.title" :body="HOME_COPY.closing.body" />
 </template>
