@@ -56,9 +56,9 @@ export const HOME_COPY = {
 
   calculator: {
     eyebrow: 'Cost calculator',
-    title: 'What is manual work costing you this year?',
+    title: '',
     footnote:
-      'An estimate from your own inputs, not a benchmark. We&#39;ll pressure-test it against your real process on the call.',
+      "An estimate from your own inputs, not a benchmark  we'll pressure-test it against your real process on the call.",
   },
 
   proof: {

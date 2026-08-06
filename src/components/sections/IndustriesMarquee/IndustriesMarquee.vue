@@ -31,9 +31,6 @@ defineProps<{
 /** Two identical tracks — shift by one track plus one gap for a seamless loop. */
 const LOOP = 2
 
-/** How many workflow lines a tile shows before it starts counting the rest. */
-const PREVIEW = 3
-
 const items = INDUSTRIES.filter((i) => i.slug !== 'professional-services')
 
 /** Full catalog index, so FIELD 01–07 stay stable even though one is omitted. */
@@ -49,14 +46,6 @@ function pad(n: number): string {
 
 function fieldCode(slug: string): string {
   return pad(fieldNumbers.get(slug) ?? 0)
-}
-
-function preview(workflows: readonly string[]): readonly string[] {
-  return workflows.slice(0, PREVIEW)
-}
-
-function overflow(workflows: readonly string[]): number {
-  return Math.max(0, workflows.length - PREVIEW)
 }
 </script>
 
@@ -110,16 +99,8 @@ function overflow(workflows: readonly string[]): number {
 
                 <span class="tile__name">{{ industry.name }}</span>
 
-                <span class="tile__rail">
-                  <span
-                    v-for="(workflow, wi) in preview(industry.workflows)"
-                    :key="workflow"
-                    class="tile__step"
-                  >
-                    <span class="tile__n" aria-hidden="true">{{ pad(wi + 1) }}</span>
-                    <span class="tile__flow">{{ workflow }}</span>
-                  </span>
-                </span>
+                <span class="tile__outcome">{{ industry.outcome }}</span>
+
                 <span class="tile__cta">
                   Learn more
                   <Icon name="arrow-right" :size="14" class="tile__arrow" />
@@ -139,9 +120,9 @@ function overflow(workflows: readonly string[]): number {
   overflow: clip;
 
   /* Local washes, kept in one place so the tray reads as one material. */
-  --tray-wash: rgba(200, 147, 58, 0.12);
+  --tray-wash: rgba(255, 106, 22, 0.12);
   --tray-rule: rgba(242, 243, 240, 0.08);
-  --tile-wash: rgba(200, 147, 58, 0.1);
+  --tile-wash: rgba(255, 106, 22, 0.1);
   --tile-stamp: rgba(242, 243, 240, 0.05);
   /* Distance the ribbon dissolves over at each end of the tray. */
   --ribbon-fade: clamp(1.5rem, 8vw, 9rem);
@@ -355,7 +336,7 @@ function overflow(workflows: readonly string[]): number {
 
 .tile:hover .tile__stamp,
 .tile:focus-visible .tile__stamp {
-  color: rgba(200, 147, 58, 0.16);
+  color: rgba(255, 106, 22, 0.16);
 }
 
 .tile__head {
@@ -395,43 +376,19 @@ function overflow(workflows: readonly string[]): number {
   text-wrap: balance;
 }
 
-.tile__rail {
-  display: flex;
-  flex-direction: column;
+/*
+ * The outcome sits on the rule the workflow rail used to draw, and takes the
+ * slack in the tile so the CTA still lands on the bottom edge whether the copy
+ * runs to three lines or five.
+ */
+.tile__outcome {
   margin-top: auto;
+  padding-top: var(--space-4);
   border-top: 1px solid var(--rule-on-ink);
-}
-
-.tile__step {
-  display: grid;
-  grid-template-columns: 1.75rem minmax(0, 1fr);
-  gap: var(--space-3);
-  align-items: baseline;
-  padding-block: 0.5rem;
-  border-bottom: 1px solid var(--rule-on-ink);
-}
-
-.tile__n {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: var(--tracking-utility);
-  color: var(--seal);
-}
-
-.tile__flow {
   font-size: var(--text-body-sm);
-  line-height: 1.3;
-  color: var(--text-on-ink);
-}
-
-.tile__more {
-  padding-top: var(--space-2);
-  font-family: var(--font-mono);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
+  line-height: 1.45;
   color: var(--text-on-ink-muted);
+  text-wrap: pretty;
 }
 
 .tile__cta {

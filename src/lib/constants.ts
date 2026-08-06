@@ -25,12 +25,35 @@ export const BOOKING_LABEL = 'Book Now'
 
 /**
  * Contact addresses surfaced in legal pages and the footer.
- * [DECISION NEEDED · PRD D8] — confirm real inboxes before launch.
+ * Confirm these inboxes are monitored before launch (PRD D8).
  */
 export const CONTACT = {
   general: 'hello@tryentitle.com',
   privacy: 'privacy@tryentitle.com',
   security: 'security@tryentitle.com',
+} as const
+
+/**
+ * Legal identity used by Terms, Privacy, DPA, and Security pages.
+ * Keep the markdown in `src/content/legal/` aligned with these values.
+ */
+export const LEGAL = {
+  /** Name used in contracts and policies. */
+  legalName: 'TryEntitle',
+  /** Public trading / brand name. */
+  tradingName: 'TryEntitle',
+  /** How the business is described in policies. */
+  entityDescription: 'a workflow redesign and automation firm',
+  /** Governing law for website terms. Update if incorporation jurisdiction differs. */
+  governingLaw: 'the laws of England and Wales',
+  /** Exclusive venue for disputes under the website Terms. */
+  venue: 'the courts of England and Wales',
+  /** Website-use liability cap (informational site; engagement liability is contractual). */
+  websiteLiabilityCap: 'one hundred pounds sterling (£100)',
+  /** Scheduling provider named in privacy / DPA. */
+  scheduler: 'Calendly',
+  /** Static host / CDN named in privacy / security. */
+  host: 'Vercel',
 } as const
 
 /**

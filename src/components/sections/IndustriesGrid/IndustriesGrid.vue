@@ -133,19 +133,8 @@ function fieldLabel(slug: string): string {
       <!-- Dossier cards (industries overview) -->
       <div v-else class="dossiers">
         <!-- Featured lead matter -->
-        <Card
-          v-if="featured"
-          :to="`/industries/${featured.slug}`"
-          flush
-          class="lead"
-          data-reveal
-        >
+        <Card v-if="featured" :to="`/industries/${featured.slug}`" flush class="lead" data-reveal>
           <div class="lead__mast on-ink">
-            <p class="lead__meta mono-label">
-              Field {{ fieldLabel(featured.slug) }}
-              <span aria-hidden="true">·</span>
-              {{ featured.workflows.length }} workflows
-            </p>
             <span class="lead__glyph" aria-hidden="true">
               <Icon :name="featured.icon" :size="36" />
             </span>
@@ -157,19 +146,14 @@ function fieldLabel(slug: string): string {
               exceptions.
             </p>
             <span class="lead__cta">
-              Open this field
+              Learn more
               <Icon name="arrow-right" :size="16" class="lead__arrow" />
             </span>
           </div>
 
           <div class="lead__index">
-            <p class="lead__index-label mono-label">Process index</p>
-            <ol class="rail">
-              <li v-for="(workflow, wi) in featured.workflows" :key="workflow" class="rail__step">
-                <span class="rail__n" aria-hidden="true">{{ marker(wi) }}</span>
-                <span class="rail__name">{{ workflow }}</span>
-              </li>
-            </ol>
+            <p class="lead__index-label mono-label">What changes</p>
+            <p class="lead__outcome">{{ featured.outcome }}</p>
           </div>
         </Card>
 
@@ -178,11 +162,6 @@ function fieldLabel(slug: string): string {
           <li v-for="industry in rest" :key="industry.slug" data-reveal>
             <Card :to="`/industries/${industry.slug}`" flush class="matter">
               <div class="matter__top">
-                <p class="matter__meta mono-label">
-                  Field {{ fieldLabel(industry.slug) }}
-                  <span aria-hidden="true">·</span>
-                  {{ industry.workflows.length }}
-                </p>
                 <span class="matter__tile" aria-hidden="true">
                   <Icon :name="industry.icon" :size="18" />
                 </span>
@@ -192,19 +171,10 @@ function fieldLabel(slug: string): string {
                 {{ industry.name }}
               </component>
 
-              <ol class="matter__rail">
-                <li
-                  v-for="(workflow, wi) in industry.workflows"
-                  :key="workflow"
-                  class="matter__step"
-                >
-                  <span class="matter__n" aria-hidden="true">{{ marker(wi) }}</span>
-                  <span class="matter__name">{{ workflow }}</span>
-                </li>
-              </ol>
+              <p class="matter__outcome">{{ industry.outcome }}</p>
 
               <span class="matter__cta">
-                Open field
+                Learn more
                 <Icon name="arrow-right" :size="16" class="matter__arrow" />
               </span>
             </Card>
@@ -222,7 +192,6 @@ function fieldLabel(slug: string): string {
       <div class="invite">
         <p class="invite__label">{{ noteCta ?? 'Not on the list?' }}</p>
         <p class="invite__text">{{ note }}</p>
-        <BookingButton placement="industries-invite" />
       </div>
     </Container>
   </Section>
@@ -411,9 +380,7 @@ function fieldLabel(slug: string): string {
   align-items: flex-start;
   gap: var(--space-4);
   padding: var(--space-6);
-  background:
-    linear-gradient(160deg, rgba(200, 147, 58, 0.14), transparent 42%),
-    var(--ink);
+  background: linear-gradient(160deg, rgba(255, 106, 22, 0.14), transparent 42%), var(--ink);
   color: var(--text-on-ink);
 }
 
@@ -503,56 +470,22 @@ function fieldLabel(slug: string): string {
   color: var(--seal-ink);
 }
 
-.rail {
-  display: flex;
-  flex-direction: column;
+/*
+ * The outcome replaces the numbered process index, so it carries that panel on
+ * its own: set larger than body and ruled top and bottom, it still reads as a
+ * filed statement rather than a stray paragraph in a wide empty panel.
+ */
+.lead__outcome {
   margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.rail__step {
-  display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1fr);
-  gap: var(--space-4);
-  align-items: baseline;
-  padding-block: 0.85rem;
-  border-bottom: 1px solid var(--rule-on-bond);
-}
-
-.rail__step:first-child {
-  border-top: 1px solid var(--rule-on-bond);
-}
-
-.rail__n {
-  position: relative;
-  font-family: var(--font-mono);
-  font-size: var(--text-utility);
-  font-weight: 600;
-  letter-spacing: var(--tracking-utility);
-  color: var(--seal-ink);
-}
-
-.rail__n::before {
-  content: '';
-  position: absolute;
-  left: 0.7rem;
-  top: 1.35rem;
-  bottom: calc(-0.85rem - 1px);
-  width: 1px;
-  background-color: var(--rule-on-bond);
-}
-
-.rail__step:last-child .rail__n::before {
-  display: none;
-}
-
-.rail__name {
+  padding-block: var(--space-5);
+  border-block: 1px solid var(--rule-on-bond);
+  max-width: 40ch;
   font-family: var(--font-body);
   font-size: var(--text-body-lg);
   font-weight: 500;
-  line-height: 1.35;
+  line-height: 1.5;
   color: var(--text-on-bond);
+  text-wrap: pretty;
 }
 
 /* Filed matters grid */
@@ -649,41 +582,17 @@ function fieldLabel(slug: string): string {
   color: var(--text-on-bond);
 }
 
-.matter__rail {
-  display: flex;
-  flex-direction: column;
+/* Takes the slack the numbered rail used to, so the CTA stays on the bottom
+   edge across cards whose copy runs to different lengths. */
+.matter__outcome {
   flex: 1;
   margin: 0;
-  padding: 0;
-  list-style: none;
+  padding-top: var(--space-4);
   border-top: 1px solid var(--rule-on-bond);
-}
-
-.matter__step {
-  display: grid;
-  grid-template-columns: 2rem minmax(0, 1fr);
-  gap: var(--space-3);
-  align-items: baseline;
-  padding-block: 0.65rem;
-  border-bottom: 1px solid var(--rule-on-bond);
-}
-
-.matter__step:last-child {
-  border-bottom: none;
-}
-
-.matter__n {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--text-on-bond-muted);
-}
-
-.matter__name {
   font-size: var(--text-body-sm);
-  line-height: 1.35;
-  color: var(--text-on-bond);
+  line-height: 1.45;
+  color: var(--text-on-bond-muted);
+  text-wrap: pretty;
 }
 
 .matter__cta {

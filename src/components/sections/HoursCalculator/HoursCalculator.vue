@@ -2,8 +2,9 @@
 /**
  * HoursCalculator — Bond band, conversion panel (design spec §4.10)
  *
- * Two-column layout: inputs on the left, live figures + booking CTA on the
- * right. Arithmetic is on the visitor's OWN inputs only — never a benchmark.
+ * Consulting-landing layout: a large paper panel with inputs on the left and
+ * live figures + booking CTA on the right. Arithmetic uses the visitor's OWN
+ * inputs only — never a benchmark.
  *
  * Accessibility:
  * - Real <input type="range"> with <label>
@@ -65,21 +66,21 @@ watch(
 </script>
 
 <template>
-  <Section tone="bond" labelledby="calc-title">
+  <Section tone="bond" class="calc" labelledby="calc-title">
     <Container>
-      <div class="panel">
-        <div class="panel__inputs">
-          <div class="panel__head">
-            <Eyebrow>{{ eyebrow }}</Eyebrow>
-            <Heading id="calc-title" :level="2" size="h2">{{ title }}</Heading>
-          </div>
+      <div class="shell">
+        <header class="shell__head">
+          <Eyebrow>{{ eyebrow }}</Eyebrow>
+          <Heading id="calc-title" :level="2" size="h2" class="shell__title">{{ title }}</Heading>
+        </header>
 
-          <div class="fields">
+        <div class="shell__grid">
+          <div class="controls">
             <div class="field">
-              <label class="field__label" for="calc-people">
-                People doing manual admin:
-                <span class="field__value">{{ people }}</span>
-              </label>
+              <div class="field__row">
+                <label class="field__label" for="calc-people">People doing manual admin</label>
+                <span class="field__value" aria-hidden="true">{{ people }}</span>
+              </div>
               <input
                 id="calc-people"
                 v-model.number="people"
@@ -88,15 +89,16 @@ watch(
                 min="1"
                 max="40"
                 step="1"
+                :aria-valuetext="`${people} people`"
                 :style="{ '--fill': fill(people, 1, 40) }"
               />
             </div>
 
             <div class="field">
-              <label class="field__label" for="calc-hours">
-                Hours each, per week:
-                <span class="field__value">{{ hoursEach }}</span>
-              </label>
+              <div class="field__row">
+                <label class="field__label" for="calc-hours">Hours each, per week</label>
+                <span class="field__value" aria-hidden="true">{{ hoursEach }}</span>
+              </div>
               <input
                 id="calc-hours"
                 v-model.number="hoursEach"
@@ -105,15 +107,16 @@ watch(
                 min="1"
                 max="30"
                 step="1"
+                :aria-valuetext="`${hoursEach} hours`"
                 :style="{ '--fill': fill(hoursEach, 1, 30) }"
               />
             </div>
 
             <div class="field">
-              <label class="field__label" for="calc-cost">
-                Average loaded hourly cost:
-                <span class="field__value">${{ hourlyCost }}</span>
-              </label>
+              <div class="field__row">
+                <label class="field__label" for="calc-cost">Average loaded hourly cost</label>
+                <span class="field__value" aria-hidden="true">${{ hourlyCost }}</span>
+              </div>
               <input
                 id="calc-cost"
                 v-model.number="hourlyCost"
@@ -122,34 +125,33 @@ watch(
                 min="15"
                 max="150"
                 step="1"
+                :aria-valuetext="`${hourlyCost} dollars`"
                 :style="{ '--fill': fill(hourlyCost, 15, 150) }"
               />
             </div>
           </div>
-        </div>
 
-        <div class="panel__result" data-reveal>
-          <div class="stat stat--hours">
-            <p class="stat__value">
-              <span class="stat__figure">{{ hoursLabel }}</span>
-              hours lost per year
-            </p>
-          </div>
+          <aside class="result" data-reveal aria-label="Estimated annual cost">
+            <div class="result__card">
+              <p class="result__stat">
+                <span class="result__figure">{{ hoursLabel }}</span>
+                <span class="result__caption">hours lost per year</span>
+              </p>
 
-          <div class="stat stat--cost">
-            <p class="stat__value">
-              <span class="stat__figure">{{ costLabel }}</span>
-              before errors and delays
-            </p>
-          </div>
+              <p class="result__stat result__stat--accent">
+                <span class="result__figure">{{ costLabel }}</span>
+                <span class="result__caption">before errors and delays</span>
+              </p>
 
-          <p class="visually-hidden" aria-live="polite">{{ announced }}</p>
+              <p class="visually-hidden" aria-live="polite">{{ announced }}</p>
 
-          <p class="panel__footnote">{{ footnote }}</p>
+              <p class="result__note">{{ footnote }}</p>
 
-          <div class="panel__action">
-            <BookingButton placement="calculator" size="lg" :prefill="prefill" />
-          </div>
+              <div class="result__action">
+                <BookingButton placement="calculator" size="lg" :prefill="prefill" />
+              </div>
+            </div>
+          </aside>
         </div>
       </div>
     </Container>
@@ -157,60 +159,79 @@ watch(
 </template>
 
 <style scoped>
-.panel {
-  display: grid;
-  gap: var(--space-8);
-  align-items: start;
-  padding: var(--space-6);
-  background-color: var(--verify-wash);
-  border: 1px solid color-mix(in srgb, var(--verify) 18%, var(--rule-on-bond));
-  border-radius: var(--radius-card);
+.calc {
+  /* Soft atmosphere behind the paper shell — consulting-landing air, not a tinted box. */
+  background:
+    radial-gradient(ellipse 80% 70% at 12% 0%, var(--seal-wash), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 100% 80%, color-mix(in srgb, var(--seal) 8%, transparent), transparent 50%),
+    var(--bond);
 }
 
-@media (min-width: 640px) {
-  .panel {
-    padding: var(--space-8);
-  }
-}
-
-@media (min-width: 900px) {
-  .panel {
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-    gap: var(--space-9);
-    align-items: center;
-    padding: var(--space-8) var(--space-9);
-  }
-}
-
-.panel__inputs {
+.shell {
   display: flex;
   flex-direction: column;
-  gap: var(--space-7);
+  gap: var(--space-8);
+  padding: clamp(1.5rem, 3vw, 3rem);
+  background-color: var(--bond-raised);
+  border: 1px solid color-mix(in srgb, var(--rule-on-bond) 80%, transparent);
+  border-radius: 1.5rem;
+  box-shadow: 0 24px 60px rgba(15, 31, 26, 0.08);
 }
 
-.panel__head {
+.shell__head {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  max-width: 18ch;
+  max-width: 28ch;
 }
 
-@media (min-width: 640px) {
-  .panel__head {
-    max-width: 22ch;
+.shell__title {
+  color: var(--text-on-bond);
+}
+
+.shell__grid {
+  display: grid;
+  gap: var(--space-8);
+  align-items: stretch;
+}
+
+@media (min-width: 900px) {
+  .shell {
+    gap: var(--space-9);
+    padding: var(--space-9);
+  }
+
+  .shell__grid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: var(--space-9);
+    align-items: center;
   }
 }
 
-.fields {
+.controls {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-7);
 }
 
 .field {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--rule-on-bond);
+}
+
+.field:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.field__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
 }
 
 .field__label {
@@ -221,7 +242,13 @@ watch(
 }
 
 .field__value {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-weight: 600;
+  letter-spacing: var(--tracking-display);
   font-variant-numeric: tabular-nums;
+  color: var(--seal-ink);
 }
 
 .slider {
@@ -231,105 +258,96 @@ watch(
   border-radius: var(--radius-pill);
   background: linear-gradient(
     to right,
-    var(--verify) 0%,
-    var(--verify) var(--fill, 50%),
-    var(--ink) var(--fill, 50%)
+    var(--seal) 0%,
+    var(--seal) var(--fill, 50%),
+    color-mix(in srgb, var(--ink) 12%, var(--bond)) var(--fill, 50%)
   );
   cursor: pointer;
 }
 
 .slider::-webkit-slider-thumb {
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: var(--radius-pill);
-  background-color: var(--verify);
+  background-color: var(--seal);
   border: 3px solid var(--bond-raised);
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--seal) 35%, transparent);
   cursor: grab;
 }
 
 .slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: var(--radius-pill);
-  background-color: var(--verify);
+  background-color: var(--seal);
   border: 3px solid var(--bond-raised);
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--seal) 35%, transparent);
   cursor: grab;
 }
 
 .slider:focus-visible {
-  outline: 2px solid var(--verify);
+  outline: 2px solid var(--seal);
   outline-offset: 4px;
 }
 
-.panel__result {
+.result__card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-5);
+  height: 100%;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  background-color: var(--ink);
+  color: var(--text-on-ink);
+  border-radius: 1.25rem;
 }
 
-.stat {
+.result__stat {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  padding: var(--space-5) var(--space-6);
-  border-radius: var(--radius-card);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--rule-on-ink);
 }
 
-.stat--hours {
-  background-color: var(--bond-raised);
-  border: 1px solid var(--rule-on-bond);
-  box-shadow: var(--shadow-card);
+.result__stat:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
-.stat--cost {
-  background-color: var(--ink);
-  color: var(--text-on-ink);
-}
-
-.stat__value {
-  font-family: var(--font-body);
-  font-size: var(--text-body-lg);
-  font-weight: 500;
-  line-height: 1.25;
-  color: var(--text-on-bond-muted);
-}
-
-.stat--cost .stat__value {
-  color: var(--text-on-ink-muted);
-}
-
-.stat__figure {
-  display: block;
-  margin-bottom: var(--space-2);
+.result__figure {
   font-family: var(--font-display);
-  font-size: var(--text-h2);
+  font-size: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: var(--tracking-display);
   font-variation-settings: 'wdth' 95;
   font-variant-numeric: tabular-nums;
-  color: var(--text-on-bond);
+  color: var(--text-on-ink);
 }
 
-.stat--cost .stat__figure {
-  color: var(--verify);
+.result__stat--accent .result__figure {
+  color: var(--seal);
 }
 
-.panel__footnote {
-  color: var(--text-on-bond-muted);
+.result__caption {
+  font-size: var(--text-body);
+  color: var(--text-on-ink-muted);
+}
+
+.result__note {
+  margin-top: auto;
+  color: var(--text-on-ink-muted);
   font-size: var(--text-body-sm);
-  max-width: 42ch;
+  max-width: 36ch;
   line-height: var(--leading-body);
 }
 
-.panel__action {
+.result__action {
   margin-top: var(--space-2);
 }
 
-.panel__action :deep(.btn) {
+.result__action :deep(.btn) {
   width: 100%;
 }
 </style>

@@ -159,7 +159,7 @@ function marker(i: number): string {
   align-items: flex-start;
   gap: var(--space-2);
   padding: var(--space-3);
-  border: 1px solid rgba(200, 147, 58, 0.4);
+  border: 1px solid rgba(255, 106, 22, 0.4);
   border-radius: var(--radius-chip);
   background-color: var(--seal-wash);
   color: var(--seal-ink);

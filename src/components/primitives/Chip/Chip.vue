@@ -76,8 +76,8 @@ withDefaults(
 
 .on-ink .chip--seal {
   color: var(--seal);
-  background-color: rgba(200, 147, 58, 0.12);
-  border-color: rgba(200, 147, 58, 0.3);
+  background-color: rgba(255, 106, 22, 0.12);
+  border-color: rgba(255, 106, 22, 0.3);
 }
 
 .on-ink .chip--verify {
