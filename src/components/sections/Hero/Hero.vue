@@ -58,8 +58,6 @@ onMounted(() => {
 
     <Container class="hero__frame">
       <div ref="copy" class="hero__panel" :class="{ 'is-revealed': revealed }">
-        <p class="hero__brand hero__step" style="--i: 0">{{ eyebrow || SITE_NAME }}</p>
-
         <Heading id="hero-title" :level="1" size="h1" class="hero__title hero__step" style="--i: 1">
           {{ title }}
         </Heading>

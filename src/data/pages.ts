@@ -56,9 +56,8 @@ export const INDUSTRY_DETAIL_COPY = {
 export const SERVICE_DETAIL_COPY = {
   useCases: {
     eyebrow: 'In practice',
-    title: 'What this looks like on a real workflow.',
-    intro:
-      'Not a feature list — the situations this service is usually brought in for, and what we build for each.',
+    title: '',
+    intro: '',
     problemLabel: 'Today',
     buildLabel: 'What we build',
     impactsLabel: 'What changes',
@@ -66,8 +65,7 @@ export const SERVICE_DETAIL_COPY = {
   industries: {
     eyebrow: 'Industries',
     title: 'Where this service does the most work.',
-    intro:
-      'It is not limited to these. If your work is document-heavy and repetitive, it likely applies.',
+    intro: '',
   },
 } as const
 

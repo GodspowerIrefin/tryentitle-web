@@ -2,12 +2,12 @@
 /**
  * IndustriesMarquee — homepage-only Bond band.
  *
- * A full-bleed INK tray inset into the bond band, carrying one ribbon of
- * industry dossier tiles (Professional Services omitted — too generic for this
- * wall). The tray is the point: the surrounding sections either side of this one
- * are both bond, so a light ribbon on light paper reads as nothing. Dropping the
- * ribbon onto ink gives the seal somewhere to burn and makes the band the visual
- * anchor of the lower page without breaking Section's band contract.
+ * A full-bleed greige tray inset into the bond band, carrying one ribbon of
+ * cream industry dossier tiles (Professional Services omitted — too generic for
+ * this wall). The tray is the point: the sections either side are both bond, so
+ * cards on the same paper would read as nothing. A tray one step darker and
+ * warmer than bond makes the band an anchor without punching a black hole
+ * through the middle of the page, and gives the cards an edge to sit on.
  *
  * Links to detail pages. Pauses on hover/focus. Reduced motion: static wrap, no
  * horizontal page scroll (NFR1).
@@ -68,7 +68,7 @@ function fieldCode(slug: string): string {
       </div>
     </Container>
 
-    <div class="ribbon on-ink" data-reveal>
+    <div class="ribbon" data-reveal>
       <div class="ribbon__viewport" aria-label="Industries">
         <div class="ribbon__row">
           <!--
@@ -119,11 +119,31 @@ function fieldCode(slug: string): string {
   /* The tray is full-bleed; nothing may push the page sideways (NFR1). */
   overflow: clip;
 
-  /* Local washes, kept in one place so the tray reads as one material. */
-  --tray-wash: rgba(255, 106, 22, 0.12);
-  --tray-rule: rgba(242, 243, 240, 0.08);
-  --tile-wash: rgba(255, 106, 22, 0.1);
-  --tile-stamp: color-mix(in srgb, var(--ink) 10%, transparent);
+  /*
+   * Local washes, kept in one place so the tray reads as one material.
+   *
+   * Neither a wall of seal nor a slab of ink: the band is now a warm greige tray
+   * — bond with graphite mixed in and a few points of seal to keep it off neutral
+   * — carrying cream document cards. Separation comes from tone and shadow rather
+   * than a hard light/dark flip, which is what let the old ink tray fight the bond
+   * sections either side of it. The orange is left to do accent work only: the
+   * spine tab, the icon chip, the CTA.
+   */
+  /*
+   * The warmth is mixed into the base, not laid over the top as a wash. A seal
+   * gradient on a neutral grey leaves the top pink and the bottom cold, and the
+   * hand-off between them reads as a band across the tray.
+   */
+  --tray-grey: color-mix(in srgb, var(--bond) 88%, var(--graphite) 12%);
+  --tray-base: color-mix(in srgb, var(--tray-grey) 96%, var(--seal) 4%);
+  --tray-stock: color-mix(in srgb, var(--tray-grey) 92%, var(--seal) 8%);
+  --tray-wash: color-mix(in srgb, var(--seal) 5%, transparent);
+  --tray-rule: color-mix(in srgb, var(--ink) 6%, transparent);
+  /* Cream, not white — the card has to stay warmer than the tray it sits on. */
+  --tile-stock: color-mix(in srgb, var(--bond-raised) 93%, var(--seal) 7%);
+  --tile-stock-low: color-mix(in srgb, var(--bond-raised) 96%, var(--seal) 4%);
+  --tile-edge: color-mix(in srgb, var(--ink) 15%, transparent);
+  --tile-stamp: color-mix(in srgb, var(--ink) 8%, transparent);
   /* Distance the ribbon dissolves over at each end of the tray. */
   --ribbon-fade: clamp(1.5rem, 8vw, 9rem);
   --marquee-duration: 48s;
@@ -181,8 +201,13 @@ function fieldCode(slug: string): string {
   position: relative;
   margin-top: var(--space-7);
   padding-block: var(--space-7);
-  background: radial-gradient(110% 160% at 50% -30%, var(--tray-wash), transparent 62%), var(--ink);
-  color: var(--text-on-ink);
+  /* Warm at the top edge, settling into greige — depth under the cards. */
+  background:
+    radial-gradient(140% 180% at 50% -40%, var(--tray-wash), transparent 70%),
+    linear-gradient(180deg, var(--tray-stock) 0%, var(--tray-base) 85%);
+  color: var(--text-on-bond);
+  /* Bottom hairline only — the top edge is the seal cap drawn below. */
+  border-bottom: 1px solid var(--rule-on-bond);
 }
 
 /* Ledger ruling — faint vertical hairlines, so the tray reads as filed stock
@@ -264,20 +289,21 @@ function fieldCode(slug: string): string {
   width: 100%;
   min-height: 19.5rem;
   padding: var(--space-5);
-  background: var(--seal);
-  border: 1px solid color-mix(in srgb, var(--ink) 18%, var(--seal));
+  background: linear-gradient(170deg, var(--tile-stock) 0%, var(--tile-stock-low) 78%);
+  border: 1px solid var(--tile-edge);
   border-radius: var(--radius-card);
   color: var(--ink);
   text-decoration: none;
   overflow: hidden;
-  box-shadow: 0 12px 28px color-mix(in srgb, var(--seal) 28%, transparent);
+  /* No drop shadow — the card sits flat on the tray and the edge carries the
+     separation, which is why that border is a shade heavier than a card on bond
+     would need. */
   transition:
     border-color var(--duration-fast) var(--ease-standard),
-    box-shadow var(--duration-fast) var(--ease-standard),
     transform var(--duration-fast) var(--ease-standard);
 }
 
-/* Filing tab down the spine — fills on hover. */
+/* Filing tab down the spine — the seal marker, fills on hover. */
 .tile::before {
   content: '';
   position: absolute;
@@ -285,21 +311,20 @@ function fieldCode(slug: string): string {
   left: 0;
   width: 3px;
   height: 100%;
-  background-color: var(--ink);
-  transform: scaleY(0.18);
+  background-color: var(--seal);
+  transform: scaleY(0.22);
   transform-origin: top;
   transition: transform var(--duration-base) var(--ease-standard);
 }
 
 .tile:hover,
 .tile:focus-visible {
-  border-color: var(--ink);
-  box-shadow: 0 16px 36px color-mix(in srgb, var(--seal) 40%, transparent);
+  border-color: var(--seal);
   outline: none;
 }
 
 .tile:focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid var(--seal);
   outline-offset: 2px;
 }
 
@@ -359,10 +384,16 @@ function fieldCode(slug: string): string {
   width: 2.5rem;
   height: 2.5rem;
   flex: none;
-  border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
   border-radius: var(--radius-card);
   background-color: var(--ink);
   color: var(--seal);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.tile:hover .tile__icon,
+.tile:focus-visible .tile__icon {
+  background-color: var(--seal);
+  color: var(--ink);
 }
 
 .tile__name {
@@ -385,10 +416,10 @@ function fieldCode(slug: string): string {
 .tile__outcome {
   margin-top: auto;
   padding-top: var(--space-4);
-  border-top: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  border-top: 1px solid var(--rule-on-bond);
   font-size: var(--text-body-sm);
   line-height: 1.45;
-  color: color-mix(in srgb, var(--ink) 75%, transparent);
+  color: var(--text-on-bond-muted);
   text-wrap: pretty;
 }
 
@@ -401,7 +432,8 @@ function fieldCode(slug: string): string {
   font-weight: 600;
   letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--ink);
+  /* Body-size accent text on paper — the 5.4:1 variant, not raw seal (2.6:1). */
+  color: var(--seal-ink);
 }
 
 .tile__arrow {

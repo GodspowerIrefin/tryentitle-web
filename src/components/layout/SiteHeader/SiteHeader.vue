@@ -90,13 +90,13 @@ watch(menuOpen, async (open, wasOpen) => {
 <template>
   <header
     ref="header"
-    class="header on-ink"
+    class="header"
     :class="{ 'header--compact': compact, 'header--hidden': hidden }"
   >
     <Container>
       <div class="header__bar">
         <RouterLink to="/" class="header__logo" aria-label="TryEntitle — home">
-          <Logo />
+          <Logo tone="light" />
         </RouterLink>
 
         <nav class="header__nav" aria-label="Primary">
@@ -138,22 +138,25 @@ watch(menuOpen, async (open, wasOpen) => {
 
 <style scoped>
 /*
- * The header is ALWAYS ink, and carries `.on-ink` so its children pick
- * band-correct colours.
+ * The header is ALWAYS cream paper — a bond band, so its children take the
+ * `-on-bond` side of every token pair.
  *
- * The spec asks for "transparent over hero, solidifies on scroll" (§4.1). Ink
- * achieves that on the home page for free — the hero is also ink, so the bar
- * merges into it and only the rule appears on scroll. Literal transparency would
- * break every other route: services, industries, blog, and legal pages all open
- * on a BOND band, where light nav text on a transparent bar would be invisible.
- * One always-legible treatment beats a per-route special case.
+ * The spec asks for "transparent over hero, solidifies on scroll" (§4.1). Cream
+ * gets that for free on every route: the hero and the top of every inner page are
+ * both light, so the bar merges into the page and only the rule appears on
+ * scroll. Literal transparency is still wrong — the hero photograph runs under
+ * the bar and dark nav text over it would be unreadable in the frames where the
+ * image goes dark.
  */
 .header {
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: var(--ink);
-  color: var(--text-on-ink);
+  /* Warm white, a shade lighter and warmer than the bond page ground, so the
+     bar reads as a sheet laid over the page rather than part of it. */
+  --nav-stock: var(--cream);
+  background-color: var(--nav-stock);
+  color: var(--text-on-bond);
   border-bottom: 1px solid transparent;
   transition:
     border-color var(--duration-base) var(--ease-standard),
@@ -183,9 +186,12 @@ watch(menuOpen, async (open, wasOpen) => {
 }
 
 .header--compact {
-  background-color: color-mix(in srgb, var(--ink) 94%, transparent);
+  /* 94%, not the lower value a glassy bar invites: the hero photograph runs
+     under this and its dark frames were showing through enough to pull the
+     graphite nav labels toward the AA floor. */
+  background-color: color-mix(in srgb, var(--nav-stock) 94%, transparent);
   backdrop-filter: saturate(1.1) blur(10px);
-  border-bottom-color: var(--rule-on-ink);
+  border-bottom-color: var(--rule-on-bond);
 }
 
 /* The tall bar is a desktop affordance only — on a 640px-high viewport those
@@ -233,7 +239,7 @@ watch(menuOpen, async (open, wasOpen) => {
 }
 
 .header__link {
-  color: var(--text-on-ink-muted);
+  color: var(--text-on-bond-muted);
   font-weight: 500;
   font-size: var(--text-body-sm);
   text-decoration: none;
@@ -245,13 +251,13 @@ watch(menuOpen, async (open, wasOpen) => {
 }
 
 .header__link:hover {
-  color: var(--text-on-ink);
+  color: var(--text-on-bond);
 }
 
-/* Current page is marked with the seal rule — legible on ink at 6.4:1, and the
-   one place the accent appears in the chrome. */
+/* Current page is marked with the seal rule. The rule is a fill, not text, so
+   raw seal is correct here — the label itself goes to ink. */
 .header__link.router-link-active {
-  color: var(--text-on-ink);
+  color: var(--text-on-bond);
   border-bottom-color: var(--seal);
 }
 
@@ -262,7 +268,7 @@ watch(menuOpen, async (open, wasOpen) => {
 .header__toggle {
   display: inline-flex;
   padding: var(--space-2);
-  color: var(--text-on-ink);
+  color: var(--text-on-bond);
 }
 
 @media (min-width: 860px) {

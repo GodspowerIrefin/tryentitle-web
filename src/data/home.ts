@@ -18,8 +18,8 @@ export const HOME_COPY = {
 
   painPoints: {
     eyebrow: 'What we do',
-    title: 'Six places the week quietly disappears.',
-    intro: 'None of them look like a crisis. Together they cost you a full-time salary a year.',
+    title: '',
+    intro: '',
   },
 
   positioning: {
@@ -41,7 +41,7 @@ export const HOME_COPY = {
   oversight: {
     eyebrow: 'How we differ',
     title: 'Full automation is a promise nobody keeps. We don’t make it.',
-    body: 'Most of a document-heavy process is repetitive and safe to automate. TryEntitle automates the repeatable part completely and route the rest to a person with the full context attached.',
+    body: '',
     automatedLabel: 'Automated',
     humanLabel: 'Human review',
   },

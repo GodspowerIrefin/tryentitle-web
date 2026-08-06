@@ -1,11 +1,22 @@
 <script setup lang="ts">
 /**
- * ServiceHero — Ink intro band for a service detail page.
+ * ServiceHero — Bond band opening a service detail page.
  *
- * Gives the page a product-like first screen: icon tile, outcome headline,
- * chips, and a booking CTA — before the long-form prose. Presentational; all
- * content arrives via props (PRD §11.3 rules 3–4).
+ * The same device as the home Hero: a full-bleed workspace photograph with an
+ * inset paper panel carrying the breadcrumb, the service name, its outcome line,
+ * and the booking pill. The two heroes are deliberately the same object — a
+ * visitor arriving on a service page from search should land in the same room as
+ * one who came through the front door.
+ *
+ * This replaced an ink band with a ghost-icon rail. That version put the page's
+ * darkest surface directly under a dark header and spent its whole right-hand
+ * column on a decorative watermark, so the first screen carried one column of
+ * copy and a large empty square. The panel-on-photo layout gives the same copy a
+ * frame and hands the rest of the width to the photograph.
+ *
+ * Presentational — all copy arrives via props (PRD §11.3 rule 4).
  */
+import { onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import Section from '@/components/primitives/Section'
 import Container from '@/components/primitives/Container'
@@ -14,6 +25,7 @@ import Heading from '@/components/primitives/Heading'
 import Chip from '@/components/primitives/Chip'
 import Icon, { type IconName } from '@/components/primitives/Icon'
 import BookingButton from '@/components/marketing/BookingButton'
+import { splitLines } from '@/lib/motion/split'
 
 interface Crumb {
   label: string
@@ -24,59 +36,149 @@ defineProps<{
   breadcrumbs: Crumb[]
   eyebrow: string
   title: string
+  /** The outcome, in the customer's terms — the panel's supporting line. */
   headline: string
-  summary: string
   chips: readonly string[]
   icon: IconName
 }>()
+
+const revealed = ref(false)
+const panel = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  requestAnimationFrame(() => (revealed.value = true))
+
+  // Split after the webfont lands, or the measured lines belong to the fallback.
+  void (document.fonts?.ready ?? Promise.resolve()).then(() => {
+    const heading = panel.value?.querySelector('h1')
+    if (heading && splitLines(heading)) {
+      requestAnimationFrame(() => heading.classList.add('is-split-in'))
+    }
+  })
+})
 </script>
 
 <template>
-  <Section tone="ink" class="service-hero" labelledby="service-title">
-    <Container>
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <ol>
-          <li v-for="(crumb, i) in breadcrumbs" :key="i">
-            <RouterLink v-if="crumb.to" :to="crumb.to">{{ crumb.label }}</RouterLink>
-            <span v-else aria-current="page">{{ crumb.label }}</span>
-          </li>
-        </ol>
-      </nav>
+  <Section as="section" tone="bond" class="service-hero" labelledby="service-title">
+    <div class="service-hero__media" aria-hidden="true">
+      <img
+        class="service-hero__photo"
+        src="/images/hero-tech.jpg"
+        alt=""
+        width="2400"
+        height="1598"
+        decoding="async"
+        fetchpriority="high"
+      />
+      <div class="service-hero__wash" />
+    </div>
 
-      <div class="hero">
-        <div class="hero__copy">
-          <span class="hero__tile" aria-hidden="true">
-            <Icon :name="icon" :size="28" />
+    <Container class="service-hero__frame">
+      <div ref="panel" class="panel" :class="{ 'is-revealed': revealed }">
+        <nav class="crumbs panel__step" style="--i: 0" aria-label="Breadcrumb">
+          <ol>
+            <li v-for="(crumb, i) in breadcrumbs" :key="i">
+              <RouterLink v-if="crumb.to" :to="crumb.to">{{ crumb.label }}</RouterLink>
+              <span v-else aria-current="page">{{ crumb.label }}</span>
+            </li>
+          </ol>
+        </nav>
+
+        <div class="panel__mark panel__step" style="--i: 1">
+          <span class="panel__tile" aria-hidden="true">
+            <Icon :name="icon" :size="22" />
           </span>
           <Eyebrow>{{ eyebrow }}</Eyebrow>
-          <Heading id="service-title" :level="1" size="h1">{{ title }}</Heading>
-          <p class="hero__headline">{{ headline }}</p>
-          <p class="hero__summary">{{ summary }}</p>
+        </div>
 
-          <ul v-if="chips.length" class="hero__chips">
-            <li v-for="chip in chips" :key="chip">
-              <Chip tone="seal" marker>{{ chip }}</Chip>
-            </li>
-          </ul>
+        <Heading
+          id="service-title"
+          :level="1"
+          size="h1"
+          class="panel__title panel__step"
+          style="--i: 2"
+        >
+          {{ title }}
+        </Heading>
 
-          <div class="hero__actions">
-            <BookingButton placement="service-hero" size="lg" />
-            <a class="hero__jump" href="#service-body">Read how it works</a>
+        <div class="panel__foot panel__step" style="--i: 3">
+          <p class="panel__headline">{{ headline }}</p>
+          <div class="panel__actions">
+            <BookingButton placement="service-hero" size="lg" data-magnetic />
           </div>
         </div>
 
-        <aside class="hero__rail" aria-hidden="true">
-          <div class="hero__grid" />
-          <div class="hero__mark">
-            <Icon :name="icon" :size="120" />
-          </div>
-        </aside>
+        <ul v-if="chips.length" class="panel__chips panel__step" style="--i: 4">
+          <li v-for="chip in chips" :key="chip">
+            <Chip tone="seal" marker>{{ chip }}</Chip>
+          </li>
+        </ul>
       </div>
     </Container>
   </Section>
 </template>
 
 <style scoped>
+.service-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  min-height: min(72vh, 42rem);
+  padding-block: clamp(2rem, 4vw, 4rem);
+  display: flex;
+  align-items: center;
+  background-color: var(--bond);
+}
+
+.service-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.service-hero__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Paper wash — the panel sits on the bright left third, so the gradient is
+   heaviest there and lets the photograph breathe on the right. */
+.service-hero__wash {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(244, 243, 241, 0.78) 0%,
+      rgba(244, 243, 241, 0.32) 46%,
+      transparent 72%
+    ),
+    linear-gradient(180deg, rgba(244, 243, 241, 0.4) 0%, transparent 30%, rgba(244, 243, 241, 0.24) 100%);
+}
+
+.service-hero__frame {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: min(100%, 40rem);
+  padding: clamp(1.5rem, 3vw, 2.75rem);
+  background-color: color-mix(in srgb, var(--bond-raised) 94%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 1.5rem;
+  box-shadow: 0 24px 60px rgba(15, 31, 26, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+/* ─── Breadcrumb ─────────────────────────────────────────────────────── */
 .crumbs ol {
   display: flex;
   flex-wrap: wrap;
@@ -85,137 +187,158 @@ defineProps<{
   font-size: var(--text-utility);
   letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--text-on-ink-muted);
+  color: var(--text-on-bond-muted);
 }
 
 .crumbs li:not(:last-child)::after {
   content: '/';
   margin-inline-start: var(--space-2);
-  color: var(--rule-on-ink);
+  color: var(--rule-on-bond);
 }
 
 .crumbs a {
-  color: var(--text-on-ink-muted);
+  color: var(--text-on-bond-muted);
+  text-decoration: none;
 }
 
 .crumbs a:hover {
-  color: var(--text-on-ink);
+  color: var(--seal-ink);
 }
 
-.hero {
-  display: grid;
-  gap: var(--space-8);
-  margin-top: var(--space-6);
-  align-items: center;
-}
-
-@media (min-width: 960px) {
-  .hero {
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-    gap: var(--space-9);
-  }
-}
-
-.hero__copy {
+/* ─── Panel content ──────────────────────────────────────────────────── */
+.panel__mark {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  max-width: 40rem;
+  align-items: center;
+  gap: var(--space-3);
 }
 
-.hero__tile {
+.panel__tile {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 3.25rem;
-  height: 3.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
   border-radius: var(--radius-card);
+  background-color: var(--ink);
   color: var(--seal);
-  background-color: rgba(242, 243, 240, 0.08);
-  border: 1px solid var(--rule-on-ink);
-  margin-bottom: var(--space-2);
 }
 
-.hero__headline {
+.panel__title {
+  color: var(--text-on-bond);
+  max-width: 14ch;
+}
+
+.panel__foot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+  margin-top: auto;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--rule-on-bond);
+}
+
+.panel__headline {
   font-family: var(--font-display);
-  font-size: var(--text-h2);
+  font-size: var(--text-h3);
   font-weight: 400;
   letter-spacing: var(--tracking-display);
-  line-height: 1.15;
-  color: var(--text-on-ink);
-  max-width: 22ch;
+  line-height: 1.2;
+  color: var(--text-on-bond);
+  max-width: 24ch;
+  text-wrap: balance;
 }
 
-.hero__summary {
-  color: var(--text-on-ink-muted);
-  font-size: var(--text-body-lg);
-  max-width: var(--measure);
+.panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
 }
 
-.hero__chips {
+.panel__chips {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
-  margin-top: var(--space-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-4);
-  margin-top: var(--space-3);
-}
+/* The foot goes side-by-side once there is room for the pill beside the line —
+   the reference layout's copy-left / action-right row. */
+@media (min-width: 720px) {
+  .panel__foot {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
 
-.hero__jump {
-  font-family: var(--font-mono);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
-  text-transform: uppercase;
-  color: var(--text-on-ink-muted);
-  border-bottom: 1px solid var(--rule-on-ink);
-  padding-bottom: 2px;
-}
+  .panel__headline {
+    flex: 1;
+    max-width: 20ch;
+  }
 
-.hero__jump:hover {
-  color: var(--text-on-ink);
-}
-
-.hero__rail {
-  position: relative;
-  display: none;
-  min-height: 280px;
-  border: 1px solid var(--rule-on-ink);
-  border-radius: var(--radius-card);
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse at 70% 30%, rgba(255, 106, 22, 0.18), transparent 55%),
-    radial-gradient(ellipse at 20% 80%, rgba(47, 169, 140, 0.12), transparent 50%),
-    var(--ink-raised);
-}
-
-@media (min-width: 960px) {
-  .hero__rail {
-    display: block;
+  .panel__actions {
+    flex: none;
   }
 }
 
-.hero__grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--rule-on-ink) 1px, transparent 1px),
-    linear-gradient(90deg, var(--rule-on-ink) 1px, transparent 1px);
-  background-size: 40px 40px;
-  opacity: 0.55;
-  mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+@media (min-width: 1000px) {
+  .panel {
+    width: min(100%, 44rem);
+    padding: var(--space-8);
+  }
 }
 
-.hero__mark {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  color: color-mix(in srgb, var(--seal) 55%, transparent);
+/* ─── Entrance ───────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .panel__step {
+    transform: translateY(12px);
+    opacity: 0;
+    transition:
+      transform var(--duration-slow) var(--ease-standard),
+      opacity var(--duration-slow) var(--ease-standard);
+    transition-delay: calc(var(--i, 0) * 70ms);
+  }
+
+  .panel.is-revealed .panel__step {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .service-hero__photo {
+    transform: scale(1.04);
+    transition: transform 1.2s var(--ease-standard);
+  }
+
+  .service-hero:has(.panel.is-revealed) .service-hero__photo {
+    transform: scale(1);
+  }
+}
+
+/* Narrow: the photo becomes a backdrop the panel sits on top of, so the wash
+   flips to vertical and the panel takes the full gutter width. */
+@media (max-width: 719px) {
+  .service-hero {
+    min-height: auto;
+    align-items: flex-end;
+    padding-block: var(--space-6) var(--space-7);
+  }
+
+  .service-hero__wash {
+    background: linear-gradient(
+      180deg,
+      transparent 14%,
+      rgba(244, 243, 241, 0.58) 46%,
+      rgba(244, 243, 241, 0.93) 100%
+    );
+  }
+
+  .panel {
+    width: 100%;
+    border-radius: 1.25rem;
+  }
 }
 </style>

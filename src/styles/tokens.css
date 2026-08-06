@@ -39,6 +39,13 @@
   --ink-raised: #1c2733; /* Cards, tabs, panels on dark bands             */
   --bond: #f4f3f1; /* Warm off-white paper ground                         */
   --bond-raised: #ffffff; /* Cards on light bands                          */
+  /*
+   * The cream sheet: warm white, a shade lighter than the bond page ground.
+   * Shared by the header, the footer, and the closing band so the chrome and the
+   * final ask read as one continuous surface. Derived rather than a hex of its
+   * own — a rebrand of `--seal` or `--bond-raised` carries it automatically.
+   */
+  --cream: color-mix(in srgb, var(--bond-raised) 96%, var(--seal) 4%);
 
   /* ─── Accents ──────────────────────────────────────────────────────── */
   --seal: #ff6a16; /* Secondary orange. Fills, rules, rail marker         */

@@ -2,11 +2,18 @@
 /**
  * SiteFooter
  *
- * Site chrome present on every page (PRD §6.1). One of exactly two dark bands on
- * the site (the other is the closing CTA), so the shift to ink reads as
- * punctuation (PRD §10.3). Link groups — Solutions, Industries, Company, Legal —
- * are derived from the canonical data model, so the footer can never drift from
- * the source of truth.
+ * Site chrome present on every page (PRD §6.1). Cream stock, matching the header
+ * — the two pieces of chrome are the same sheet bracketing the page.
+ *
+ * This gives up the ink footer PRD §10.3 asked for. The closing CTA above it is
+ * now cream too, so the page ends on one continuous sheet — chrome and final ask
+ * on the same surface — and ink survives only where the argument itself is dark
+ * (the oversight layer). Anything that repaints one of these three surfaces must
+ * repaint all of them: they share `--cream`, and the join between the closing
+ * band and this one shows as a seam the moment they disagree.
+ *
+ * Link groups — Solutions, Industries, Company, Legal — are derived from the
+ * canonical data model, so the footer can never drift from the source of truth.
  *
  * Owns its own chrome spacing; it is not a page `Section` (PRD §12.4 concerns
  * page content bands, not header/footer chrome).
@@ -27,7 +34,7 @@ const year = new Date().getFullYear()
       <div class="footer__top">
         <div class="footer__brand">
           <RouterLink to="/" class="footer__logo" aria-label="TryEntitle — home">
-            <Logo tone="inverse" />
+            <Logo tone="light" />
           </RouterLink>
           <p class="footer__tagline">{{ SITE_TAGLINE }}</p>
           <BookingButton placement="footer" variant="primary" />
@@ -55,9 +62,13 @@ const year = new Date().getFullYear()
 
 <style scoped>
 .footer {
-  background-color: var(--ink);
-  color: var(--text-on-ink);
+  /* The shared cream sheet — same surface as the header and the closing band. */
+  background-color: var(--cream);
+  color: var(--text-on-bond);
   padding-block: clamp(3rem, 6vw, 5rem);
+  /* The page ground is bond and the footer is a shade lighter, so without a rule
+     the boundary is ambiguous wherever the last band is also light. */
+  border-top: 1px solid var(--rule-on-bond);
 }
 
 .footer__top {
@@ -87,7 +98,7 @@ const year = new Date().getFullYear()
 }
 
 .footer__tagline {
-  color: var(--text-on-ink-muted);
+  color: var(--text-on-bond-muted);
   font-size: var(--text-body-sm);
   line-height: 1.5;
 }
@@ -110,7 +121,7 @@ const year = new Date().getFullYear()
   font-size: var(--text-utility);
   letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--text-on-ink-muted);
+  color: var(--text-on-bond-muted);
   margin-bottom: var(--space-3);
 }
 
@@ -121,18 +132,19 @@ const year = new Date().getFullYear()
 }
 
 .footer__link {
-  color: var(--text-on-ink);
+  color: var(--text-on-bond);
   font-size: var(--text-body-sm);
   text-decoration: none;
 }
 
 /*
- * Seal IS legible as text here. It is 1.9:1 on bond but 6.4:1 on ink, so the dark
- * footer is one of the few surfaces where the accent may colour text rather than
- * fill a shape.
+ * `--seal-ink`, not `--seal`. Raw seal was correct while this band was ink (6.4:1)
+ * and is 2.6:1 on cream — the accent may fill a shape on paper but must not
+ * colour text at this size. The darkened variant carries the same signal at
+ * 5.4:1.
  */
 .footer__link:hover {
-  color: var(--seal);
+  color: var(--seal-ink);
   text-decoration: underline;
   text-underline-offset: 0.2em;
 }
@@ -144,13 +156,14 @@ const year = new Date().getFullYear()
   gap: var(--space-2);
   margin-top: var(--space-8);
   padding-top: var(--space-5);
-  border-top: 1px solid var(--rule-on-ink);
-  color: var(--text-on-ink-muted);
+  border-top: 1px solid var(--rule-on-bond);
+  color: var(--text-on-bond-muted);
   font-size: var(--text-body-sm);
 }
 
+/* Body-size accent text on paper — same 5.4:1 rule as the link hover above. */
 .footer__name {
-  color: var(--seal);
+  color: var(--seal-ink);
   font-weight: 600;
 }
 </style>
