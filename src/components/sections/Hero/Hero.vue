@@ -14,7 +14,6 @@ import Section from '@/components/primitives/Section'
 import Container from '@/components/primitives/Container'
 import Heading from '@/components/primitives/Heading'
 import BookingButton from '@/components/marketing/BookingButton'
-import { SITE_NAME } from '@/lib/constants'
 import { splitLines } from '@/lib/motion/split'
 
 defineProps<{
@@ -58,20 +57,25 @@ onMounted(() => {
 
     <Container class="hero__frame">
       <div ref="copy" class="hero__panel" :class="{ 'is-revealed': revealed }">
-        <Heading id="hero-title" :level="1" size="h1" class="hero__title hero__step" style="--i: 1">
-          {{ title }}
-        </Heading>
+        <!--
+          Headline and supporting line share a row, the same split the rest of
+          the site uses for a long heading (SectionHeader's `aside`). At full
+          panel width a stacked headline left the entire right half of the card
+          empty and the copy reading as one isolated column.
+        -->
+        <div class="hero__head hero__step" style="--i: 1">
+          <Heading id="hero-title" :level="1" size="h1" class="hero__title">
+            {{ title }}
+          </Heading>
+          <p class="hero__subhead">{{ subhead }}</p>
+        </div>
 
         <div class="hero__foot hero__step" style="--i: 2">
-          <p class="hero__subhead">{{ subhead }}</p>
+          <ul v-if="meta?.length" class="hero__trust"></ul>
           <div class="hero__actions">
             <BookingButton placement="hero" size="lg" data-magnetic />
           </div>
         </div>
-
-        <ul v-if="meta?.length" class="hero__trust hero__step" style="--i: 3">
-          <li v-for="claim in meta" :key="claim">{{ claim }}</li>
-        </ul>
       </div>
     </Container>
   </Section>
@@ -104,23 +108,24 @@ onMounted(() => {
   object-position: center;
 }
 
-/* Soft paper wash so the photo reads bright and the panel stays legible. */
+/*
+ * Soft paper wash so the photo reads bright and the panel stays legible.
+ *
+ * Even left to right, not the left-weighted ramp this had while the panel was an
+ * inset card on the left third. The panel is translucent, so a sideways gradient
+ * under a full-width card shows straight through it — the copy sat on bright
+ * paper and the CTA end of the same card picked up the dark window frames behind
+ * it. Only the vertical softening remains, which every column gets equally.
+ */
 .hero__wash {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(244, 243, 241, 0.72) 0%,
-      rgba(244, 243, 241, 0.28) 42%,
-      transparent 68%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(244, 243, 241, 0.35) 0%,
-      transparent 28%,
-      rgba(244, 243, 241, 0.2) 100%
-    );
+  background: linear-gradient(
+    180deg,
+    rgba(244, 243, 241, 0.42) 0%,
+    rgba(244, 243, 241, 0.28) 38%,
+    rgba(244, 243, 241, 0.42) 100%
+  );
 }
 
 .hero__frame {
@@ -133,7 +138,8 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
-  width: min(100%, 38rem);
+  /* Full container width — the panel is the band, not an inset card on it. */
+  width: 100%;
   padding: clamp(1.5rem, 3vw, 2.75rem);
   background-color: color-mix(in srgb, var(--bond-raised) 94%, transparent);
   border: 1px solid rgba(255, 255, 255, 0.7);
@@ -151,6 +157,11 @@ onMounted(() => {
   color: var(--seal);
 }
 
+.hero__head {
+  display: grid;
+  gap: var(--space-5);
+}
+
 .hero__title {
   max-width: 12ch;
   color: var(--text-on-bond);
@@ -162,7 +173,8 @@ onMounted(() => {
   align-items: flex-start;
   gap: var(--space-5);
   margin-top: auto;
-  padding-top: var(--space-2);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--rule-on-bond);
 }
 
 .hero__subhead {
@@ -178,12 +190,11 @@ onMounted(() => {
   gap: var(--space-3);
 }
 
+/* The rule now belongs to the foot, which owns the whole base row. */
 .hero__trust {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--rule-on-bond);
+  gap: var(--space-2) var(--space-5);
 }
 
 .hero__trust li {
@@ -206,14 +217,13 @@ onMounted(() => {
 @media (min-width: 720px) {
   .hero__foot {
     flex-direction: row;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
     gap: var(--space-6);
   }
 
-  .hero__subhead {
+  .hero__trust {
     flex: 1;
-    max-width: 28ch;
   }
 
   .hero__actions {
@@ -221,10 +231,27 @@ onMounted(() => {
   }
 }
 
+@media (min-width: 900px) {
+  /*
+   * Headline and supporting line side by side. `end` alignment sits the smaller
+   * text on the headline's last baseline rather than floating it at the top of a
+   * three-line block.
+   */
+  .hero__head {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    align-items: end;
+    gap: var(--space-8);
+  }
+
+  .hero__subhead {
+    max-width: 34ch;
+    padding-bottom: var(--space-2);
+  }
+}
+
 @media (min-width: 1000px) {
   .hero__panel {
-    width: min(100%, 42rem);
-    min-height: 22rem;
+    min-height: 24rem;
     padding: var(--space-8);
   }
 }

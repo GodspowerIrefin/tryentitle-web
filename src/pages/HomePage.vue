@@ -70,6 +70,7 @@ useHead({
     :eyebrow="HOME_COPY.hero.eyebrow"
     :title="HOME_COPY.hero.title"
     :subhead="HOME_COPY.hero.subhead"
+    :meta="HOME_COPY.hero.meta"
   />
 
   <!-- <SystemsMarquee :label="HOME_COPY.systems.label" /> -->
