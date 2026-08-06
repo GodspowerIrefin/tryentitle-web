@@ -11,6 +11,15 @@ export const HOME_COPY = {
     title: 'Workflows that move business forward.',
     subhead:
       'We map, build, and optimize custom AI & workflow automation systems for operations-heavy businesses.',
+    /**
+     * Micro-trust row along the base of the hero panel.
+     *
+     * Every line is an existing PROOF_COMMITMENTS promise in short form — nothing
+     * here is a new claim. That matters: §4.11 allows only what is true today, so
+     * the hero restates commitments the page already makes further down rather
+     * than inventing hero-sized ones of its own.
+     */
+    meta: ['', ''] as const,
   },
 
   systems: {
