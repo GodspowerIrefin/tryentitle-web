@@ -248,3 +248,36 @@ p {
 main {
   flex: 1 0 auto;
 }
+
+/*
+ * Print — the estimate sheet, and only when it is asked for.
+ *
+ * HoursCalculator sets `printing-estimate` on <body> before calling print() and
+ * clears it afterwards, so an ordinary Ctrl+P still prints the page as-is. Only
+ * the deliberate "Save as PDF" action swaps the document for the one-page sheet.
+ *
+ * The sheet is teleported to <body>, so it is a sibling of #app and this is just
+ * "hide one element, show the other". Hiding the page from inside the page does
+ * not work: `display: none` on an ancestor takes the sheet with it, and the
+ * `visibility: hidden` alternative leaves every blanked section still occupying
+ * its paper, so the estimate prints on page four of a stack of blank ones.
+ */
+@page {
+  margin: 14mm;
+}
+
+@media print {
+  body.printing-estimate > #app {
+    display: none;
+  }
+
+  body.printing-estimate > [data-print-sheet] {
+    display: block;
+  }
+
+  /* The warm paper ground is a screen device. On paper it is a tint over the
+     whole sheet in anyone whose print dialog has backgrounds switched on. */
+  body.printing-estimate {
+    background: #fff;
+  }
+}
