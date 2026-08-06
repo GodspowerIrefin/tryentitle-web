@@ -380,8 +380,9 @@ function fieldLabel(slug: string): string {
   align-items: flex-start;
   gap: var(--space-4);
   padding: var(--space-6);
-  background: linear-gradient(160deg, rgba(255, 106, 22, 0.14), transparent 42%), var(--ink);
-  color: var(--text-on-ink);
+  background: var(--seal);
+  color: var(--ink);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--seal) 28%, transparent);
 }
 
 @media (min-width: 900px) {
@@ -392,7 +393,7 @@ function fieldLabel(slug: string): string {
 }
 
 .lead__meta {
-  color: var(--seal);
+  color: var(--ink);
 }
 
 .lead__glyph {
@@ -401,10 +402,10 @@ function fieldLabel(slug: string): string {
   justify-content: center;
   width: 3.5rem;
   height: 3.5rem;
-  border: 1px solid var(--rule-on-ink);
+  border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
   border-radius: var(--radius-card);
   color: var(--seal);
-  background: rgba(242, 243, 240, 0.04);
+  background: var(--ink);
 }
 
 .lead__title {
@@ -415,7 +416,7 @@ function fieldLabel(slug: string): string {
   letter-spacing: var(--tracking-display);
   line-height: 1.05;
   text-wrap: balance;
-  color: var(--text-on-ink);
+  color: var(--ink);
 }
 
 .lead__deck {
@@ -423,7 +424,7 @@ function fieldLabel(slug: string): string {
   max-width: 28ch;
   font-size: var(--text-body);
   line-height: 1.5;
-  color: var(--text-on-ink-muted);
+  color: color-mix(in srgb, var(--ink) 75%, transparent);
 }
 
 .lead__cta {
@@ -436,7 +437,7 @@ function fieldLabel(slug: string): string {
   font-weight: 500;
   letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--seal);
+  color: var(--ink);
 }
 
 .lead__arrow,
@@ -568,8 +569,8 @@ function fieldLabel(slug: string): string {
   height: 2.25rem;
   flex: none;
   border-radius: var(--radius-card);
-  background-color: var(--ink);
-  color: var(--seal);
+  background-color: var(--seal);
+  color: var(--ink);
 }
 
 .matter__title {

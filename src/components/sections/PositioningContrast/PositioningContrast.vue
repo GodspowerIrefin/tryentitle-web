@@ -116,11 +116,12 @@ defineProps<{
     transform var(--duration-base) var(--ease-standard);
 }
 
-/* The conclusion, on ink. */
+/* The conclusion, on orange brand fill. */
 .col--ours {
-  background-color: var(--ink);
-  border-color: var(--ink);
-  box-shadow: 0 0 0 1px var(--seal), var(--shadow-lift);
+  background-color: var(--seal);
+  border-color: color-mix(in srgb, var(--ink) 18%, var(--seal));
+  color: var(--ink);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--seal) 28%, transparent);
 }
 
 @media (min-width: 900px) {
@@ -147,7 +148,7 @@ defineProps<{
 }
 
 .col--ours .col__kicker {
-  color: var(--seal);
+  color: var(--ink);
 }
 
 .col__verdict {
@@ -166,8 +167,8 @@ defineProps<{
 }
 
 .col__verdict.is-yes {
-  color: var(--ink);
-  background-color: var(--seal);
+  color: var(--seal);
+  background-color: var(--ink);
 }
 
 /* ─── Copy ───────────────────────────────────────────────────────────── */
@@ -177,7 +178,7 @@ defineProps<{
 }
 
 .col--ours .col__title {
-  color: var(--text-on-ink);
+  color: var(--ink);
 }
 
 .col__body {
@@ -185,7 +186,7 @@ defineProps<{
 }
 
 .col--ours .col__body {
-  color: var(--text-on-ink-muted);
+  color: color-mix(in srgb, var(--ink) 75%, transparent);
 }
 
 /* ─── Facts ledger ───────────────────────────────────────────────────── */
@@ -199,7 +200,7 @@ defineProps<{
 }
 
 .col--ours .col__facts {
-  border-top-color: rgba(255, 106, 22, 0.35);
+  border-top-color: color-mix(in srgb, var(--ink) 22%, transparent);
 }
 
 .fact dt {
@@ -208,7 +209,7 @@ defineProps<{
 }
 
 .col--ours .fact dt {
-  color: var(--seal);
+  color: color-mix(in srgb, var(--ink) 70%, transparent);
 }
 
 .fact dd {
@@ -218,7 +219,7 @@ defineProps<{
 }
 
 .col--ours .fact dd {
-  color: var(--text-on-ink);
+  color: var(--ink);
   font-weight: 500;
 }
 </style>

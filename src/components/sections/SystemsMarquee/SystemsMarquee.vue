@@ -83,12 +83,12 @@ const rowB = SYSTEMS.slice(half)
   font-size: var(--text-utility);
   letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--text-on-ink-muted);
+  color: var(--ink);
   /* Explicit fill, not inherited: the `mask-image` above makes the ancestor
      background undeterminable to a contrast checker, which then assumes the body
-     ground and reports a false failure. 5.9:1 against this fill. */
-  background-color: var(--ink-raised);
-  border: 1px solid var(--rule-on-ink);
+     ground and reports a false failure. */
+  background-color: var(--seal);
+  border: 1px solid color-mix(in srgb, var(--ink) 18%, var(--seal));
   border-radius: var(--radius-chip);
   padding: var(--space-2) var(--space-4);
   white-space: nowrap;
@@ -96,7 +96,7 @@ const rowB = SYSTEMS.slice(half)
 }
 
 .marquee__track li:hover {
-  color: var(--text-on-ink);
+  color: var(--ink);
 }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -123,7 +123,7 @@ function fieldCode(slug: string): string {
   --tray-wash: rgba(255, 106, 22, 0.12);
   --tray-rule: rgba(242, 243, 240, 0.08);
   --tile-wash: rgba(255, 106, 22, 0.1);
-  --tile-stamp: rgba(242, 243, 240, 0.05);
+  --tile-stamp: color-mix(in srgb, var(--ink) 10%, transparent);
   /* Distance the ribbon dissolves over at each end of the tray. */
   --ribbon-fade: clamp(1.5rem, 8vw, 9rem);
   --marquee-duration: 48s;
@@ -264,12 +264,13 @@ function fieldCode(slug: string): string {
   width: 100%;
   min-height: 19.5rem;
   padding: var(--space-5);
-  background: linear-gradient(158deg, var(--tile-wash), transparent 46%), var(--ink-raised);
-  border: 1px solid var(--rule-on-ink);
+  background: var(--seal);
+  border: 1px solid color-mix(in srgb, var(--ink) 18%, var(--seal));
   border-radius: var(--radius-card);
-  color: var(--text-on-ink);
+  color: var(--ink);
   text-decoration: none;
   overflow: hidden;
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--seal) 28%, transparent);
   transition:
     border-color var(--duration-fast) var(--ease-standard),
     box-shadow var(--duration-fast) var(--ease-standard),
@@ -284,7 +285,7 @@ function fieldCode(slug: string): string {
   left: 0;
   width: 3px;
   height: 100%;
-  background-color: var(--seal);
+  background-color: var(--ink);
   transform: scaleY(0.18);
   transform-origin: top;
   transition: transform var(--duration-base) var(--ease-standard);
@@ -292,13 +293,13 @@ function fieldCode(slug: string): string {
 
 .tile:hover,
 .tile:focus-visible {
-  border-color: var(--rule-hover);
-  box-shadow: var(--shadow-overlay);
+  border-color: var(--ink);
+  box-shadow: 0 16px 36px color-mix(in srgb, var(--seal) 40%, transparent);
   outline: none;
 }
 
 .tile:focus-visible {
-  outline: 2px solid var(--seal);
+  outline: 2px solid var(--ink);
   outline-offset: 2px;
 }
 
@@ -336,7 +337,7 @@ function fieldCode(slug: string): string {
 
 .tile:hover .tile__stamp,
 .tile:focus-visible .tile__stamp {
-  color: rgba(255, 106, 22, 0.16);
+  color: color-mix(in srgb, var(--ink) 18%, transparent);
 }
 
 .tile__head {
@@ -348,7 +349,7 @@ function fieldCode(slug: string): string {
 }
 
 .tile__meta {
-  color: var(--seal);
+  color: var(--ink);
 }
 
 .tile__icon {
@@ -358,9 +359,9 @@ function fieldCode(slug: string): string {
   width: 2.5rem;
   height: 2.5rem;
   flex: none;
-  border: 1px solid var(--rule-on-ink);
+  border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
   border-radius: var(--radius-card);
-  background-color: rgba(242, 243, 240, 0.04);
+  background-color: var(--ink);
   color: var(--seal);
 }
 
@@ -372,7 +373,7 @@ function fieldCode(slug: string): string {
   font-variation-settings: 'wdth' 95;
   letter-spacing: var(--tracking-display);
   line-height: 1.05;
-  color: var(--text-on-ink);
+  color: var(--ink);
   text-wrap: balance;
 }
 
@@ -384,10 +385,10 @@ function fieldCode(slug: string): string {
 .tile__outcome {
   margin-top: auto;
   padding-top: var(--space-4);
-  border-top: 1px solid var(--rule-on-ink);
+  border-top: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
   font-size: var(--text-body-sm);
   line-height: 1.45;
-  color: var(--text-on-ink-muted);
+  color: color-mix(in srgb, var(--ink) 75%, transparent);
   text-wrap: pretty;
 }
 
@@ -400,7 +401,7 @@ function fieldCode(slug: string): string {
   font-weight: 600;
   letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: var(--seal);
+  color: var(--ink);
 }
 
 .tile__arrow {

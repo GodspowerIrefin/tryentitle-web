@@ -9,8 +9,7 @@ export const HOME_COPY = {
   hero: {
     eyebrow: '',
     title: 'Workflows that move business forward.',
-    subhead:
-      'Manual processes slow your team down and cost you money. We redesign your workflows and automate the repetitive parts, so your people can focus on the decisions that actually need them.',
+    subhead: '',
   },
 
   systems: {

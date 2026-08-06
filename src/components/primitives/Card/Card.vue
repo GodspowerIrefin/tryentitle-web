@@ -32,6 +32,8 @@ const props = defineProps<{
   flush?: boolean
   /** Raise the card above its band (used for the highlighted comparison column). */
   featured?: boolean
+  /** Orange brand fill with dark text — used on the home pain-points grid. */
+  surface?: 'default' | 'seal'
 }>()
 
 const root = ref<HTMLElement | null>(null)
@@ -90,6 +92,7 @@ function handleMove(event: PointerEvent) {
       'card--interactive': interactive,
       'card--flush': flush,
       'card--featured': featured,
+      'card--seal': surface === 'seal',
       'is-glowing': glowing,
     }"
     v-bind="bindings"
@@ -116,11 +119,39 @@ function handleMove(event: PointerEvent) {
   box-shadow: var(--shadow-card);
 }
 
-/* Cards on ink bands take the raised ink fill (spec §2). */
-.on-ink .card {
-  background-color: var(--ink-raised);
-  border-color: var(--rule-on-ink);
-  box-shadow: none;
+/* On dark bands, cards use the orange brand fill with dark text — not ink-raised. */
+.on-ink .card:not(.card--seal) {
+  background-color: var(--seal);
+  border-color: color-mix(in srgb, var(--ink) 18%, var(--seal));
+  color: var(--ink);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--seal) 28%, transparent);
+}
+
+.on-ink .card:not(.card--seal).card--interactive:hover {
+  border-color: var(--ink);
+  box-shadow: 0 16px 36px color-mix(in srgb, var(--seal) 40%, transparent);
+}
+
+/* Orange brand surface — dark text for contrast on seal. */
+.card--seal {
+  background-color: var(--seal);
+  border-color: color-mix(in srgb, var(--ink) 18%, var(--seal));
+  color: var(--ink);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--seal) 28%, transparent);
+}
+
+.card--seal.card--interactive:hover {
+  border-color: var(--ink);
+  box-shadow: 0 16px 36px color-mix(in srgb, var(--seal) 40%, transparent);
+}
+
+.card--seal .card__glow,
+.on-ink .card .card__glow {
+  background: radial-gradient(
+    18rem circle at var(--mx, 50%) var(--my, 50%),
+    rgba(15, 31, 26, 0.12),
+    transparent 60%
+  );
 }
 
 .card--flush {

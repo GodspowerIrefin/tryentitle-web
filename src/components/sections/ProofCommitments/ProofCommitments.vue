@@ -152,20 +152,22 @@ function marker(i: number): string {
   gap: var(--space-5);
   min-height: 210px;
   padding: var(--space-5) var(--space-6);
-  background-color: var(--ink);
+  background-color: var(--seal);
+  color: var(--ink);
   border-radius: var(--radius-card);
   overflow: hidden;
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--seal) 28%, transparent);
 }
 
 .mark__label,
 .mark__index {
   align-self: flex-start;
-  color: var(--seal);
+  color: var(--ink);
 }
 
 .mark__index {
   align-self: flex-end;
-  color: var(--text-on-ink-muted);
+  color: color-mix(in srgb, var(--ink) 65%, transparent);
 }
 
 .mark__burst {
@@ -190,22 +192,22 @@ function marker(i: number): string {
  * arc rather than a ring.
  */
 .burst__tick {
-  stroke: var(--muted-on-ink);
+  stroke: color-mix(in srgb, var(--ink) 45%, transparent);
   stroke-width: 1.5;
-  opacity: 0.55;
+  opacity: 1;
 }
 
 .burst__ring {
   fill: none;
-  stroke: var(--seal);
+  stroke: var(--ink);
   stroke-width: 1;
-  opacity: 0.3;
+  opacity: 0.35;
 }
 
 .mark__glyph {
   position: absolute;
   display: inline-flex;
-  color: var(--seal);
+  color: var(--ink);
 }
 
 /* The burst turns slowly — one continuous, very low-amplitude motion rather than

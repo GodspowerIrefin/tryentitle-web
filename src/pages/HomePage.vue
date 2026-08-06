@@ -74,7 +74,12 @@ useHead({
 
   <!-- <SystemsMarquee :label="HOME_COPY.systems.label" /> -->
 
-  <PainPoints :items="PAIN_POINTS" />
+  <PainPoints
+    :eyebrow="HOME_COPY.painPoints.eyebrow"
+    :title="HOME_COPY.painPoints.title"
+    :intro="HOME_COPY.painPoints.intro"
+    :items="PAIN_POINTS"
+  />
 
   <!-- <ServicesGrid :eyebrow="HOME_COPY.services.eyebrow" :items="SERVICES" /> -->
 
