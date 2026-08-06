@@ -9,7 +9,8 @@ export const HOME_COPY = {
   hero: {
     eyebrow: '',
     title: 'Workflows that move business forward.',
-    subhead: '',
+    subhead:
+      'We map, build, and optimize custom AI & workflow automation systems for operations-heavy businesses.',
   },
 
   systems: {
@@ -58,6 +59,39 @@ export const HOME_COPY = {
     title: '',
     footnote:
       "An estimate from your own inputs, not a benchmark  we'll pressure-test it against your real process on the call.",
+    /**
+     * Slider labels. These were hardcoded in HoursCalculator, which put copy
+     * inside a component against §11.3 rule 4 — they live here so relabelling an
+     * input never means editing markup.
+     *
+     * `unit` is what the value reads as to a screen reader ("20 people"), so it
+     * stays a plain noun and does not repeat the label.
+     */
+    fields: {
+      people: { label: 'Team Size', unit: 'people' },
+      hours: { label: 'Hours Spent on Admin / Week', unit: 'hours each per week' },
+      cost: { label: 'Average Hourly Cost', unit: 'dollars per hour' },
+    },
+    /**
+     * Mid-funnel exits for the visitor who has run the numbers but will not book
+     * a call today. Both are deliberately quieter than the booking pill: this is
+     * the second choice, not a competing one.
+     *
+     * The wording promises only what is actually delivered — the visitor's own
+     * estimate. It is not a "strategy audit", because no such document exists;
+     * naming one would be the invented-deliverable failure §10.2 bans.
+     */
+    capture: {
+      prompt: 'Not ready to book?',
+      emailLabel: 'Email me this estimate',
+      pdfLabel: 'Save as PDF',
+      emailSubject: 'My workflow cost estimate',
+      emailIntro:
+        "Here's the estimate I put together on your site. I'd like to know what you'd do with it.",
+      sheetTitle: 'Your workflow cost estimate',
+      sheetInputs: 'What you entered',
+      sheetResult: 'What that adds up to',
+    },
   },
 
   proof: {

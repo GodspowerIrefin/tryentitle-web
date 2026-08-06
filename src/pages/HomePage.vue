@@ -109,6 +109,8 @@ useHead({
     :eyebrow="HOME_COPY.calculator.eyebrow"
     :title="HOME_COPY.calculator.title"
     :footnote="HOME_COPY.calculator.footnote"
+    :fields="HOME_COPY.calculator.fields"
+    :capture="HOME_COPY.calculator.capture"
   />
 
   <ProofCommitments
