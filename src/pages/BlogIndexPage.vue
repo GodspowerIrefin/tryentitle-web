@@ -30,13 +30,6 @@ useHead(
     <Container>
       <div class="insights__intro">
         <Eyebrow>Insights</Eyebrow>
-        <Heading id="insights-title" :level="1" size="h2">
-          Notes on how work actually moves.
-        </Heading>
-        <p class="insights__lead">
-          TryEntitle field notes mixed with external reading worth your time. Open a card to read —
-          external pieces link out to the publisher.
-        </p>
       </div>
 
       <div class="insights__list">

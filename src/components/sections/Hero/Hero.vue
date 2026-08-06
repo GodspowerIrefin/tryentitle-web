@@ -2,22 +2,19 @@
 /**
  * Hero — Bond band (PRD FR7)
  *
- * Comprehension in five seconds. Off-white paper ground with the SVG flow-field
- * pattern (HeroPattern) only — no Three.js layer competing with the rails.
- * The Live Workflow Strip stays the ink argument beside / below the copy.
+ * Full-bleed workspace photograph with a left paper panel: brand, headline,
+ * supporting line, and the orange booking pill. Layout nods to consulting
+ * landing pages (photo field + inset statement) without inventing a second CTA.
  *
- * Presentational — all copy arrives via props (PRD §11.3 rule 4). Copy comes
- * first in the DOM and the CTA sits high, so it stays above the fold at 360×640
- * (FR7).
+ * Presentational — all copy arrives via props (PRD §11.3 rule 4). CTA stays
+ * above the fold at 360×640 (FR7).
  */
 import { onMounted, ref } from 'vue'
 import Section from '@/components/primitives/Section'
 import Container from '@/components/primitives/Container'
-import Eyebrow from '@/components/primitives/Eyebrow'
 import Heading from '@/components/primitives/Heading'
 import BookingButton from '@/components/marketing/BookingButton'
-import WorkflowStrip from '@/components/marketing/WorkflowStrip'
-import HeroPattern from './HeroPattern.vue'
+import { SITE_NAME } from '@/lib/constants'
 import { splitLines } from '@/lib/motion/split'
 
 defineProps<{
@@ -46,41 +43,37 @@ onMounted(() => {
 
 <template>
   <Section as="section" tone="bond" class="hero" labelledby="hero-title">
-    <!-- Atmosphere: flow-field rails only (decorative; never carry meaning). -->
-    <div class="hero__atmosphere" aria-hidden="true">
-      <HeroPattern />
+    <div class="hero__media" aria-hidden="true">
+      <img
+        class="hero__photo"
+        src="/images/hero-office.jpg"
+        alt=""
+        width="2400"
+        height="1600"
+        decoding="async"
+        fetchpriority="high"
+      />
+      <div class="hero__wash" />
     </div>
 
-    <Container class="hero__grid-layout">
-      <!-- `data-flow-copy` is read by HeroPattern: the scattered inbound routes
-           run through the band above this column, and they need its real top
-           edge rather than a guess at where the type lands. -->
-      <div ref="copy" class="hero__copy" :class="{ 'is-revealed': revealed }" data-flow-copy>
-        <!-- Home passes an empty eyebrow; an empty <p> would still take its gap. -->
-        <Eyebrow v-if="eyebrow" class="hero__step" style="--i: 0">{{ eyebrow }}</Eyebrow>
+    <Container class="hero__frame">
+      <div ref="copy" class="hero__panel" :class="{ 'is-revealed': revealed }">
+        <p class="hero__brand hero__step" style="--i: 0">{{ eyebrow || SITE_NAME }}</p>
 
         <Heading id="hero-title" :level="1" size="h1" class="hero__title hero__step" style="--i: 1">
           {{ title }}
         </Heading>
 
-        <p class="hero__subhead hero__step" style="--i: 2">{{ subhead }}</p>
-
-        <div class="hero__actions hero__step" style="--i: 3">
-          <BookingButton placement="hero" size="lg" data-magnetic />
+        <div class="hero__foot hero__step" style="--i: 2">
+          <p class="hero__subhead">{{ subhead }}</p>
+          <div class="hero__actions">
+            <BookingButton placement="hero" size="lg" data-magnetic />
+          </div>
         </div>
 
-        <ul v-if="meta?.length" class="hero__trust hero__step" style="--i: 4">
+        <ul v-if="meta?.length" class="hero__trust hero__step" style="--i: 3">
           <li v-for="claim in meta" :key="claim">{{ claim }}</li>
         </ul>
-      </div>
-
-      <div
-        class="hero__visual hero__step"
-        :class="{ 'is-revealed': revealed }"
-        style="--i: 5"
-        data-parallax="-0.08"
-      >
-        <WorkflowStrip />
       </div>
     </Container>
   </Section>
@@ -91,38 +84,84 @@ onMounted(() => {
   position: relative;
   isolation: isolate;
   overflow: clip;
-  padding-block: clamp(2.5rem, 2rem + 4vw, 5rem) var(--section-rhythm);
+  /* Full-viewport banner under the sticky header. */
+  min-height: min(92vh, 52rem);
+  padding-block: clamp(2rem, 4vw, 4rem);
+  display: flex;
+  align-items: center;
   background-color: var(--bond);
 }
 
-.hero__atmosphere {
+.hero__media {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  overflow: hidden;
 }
 
-.hero__grid-layout {
+.hero__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Soft paper wash so the photo reads bright and the panel stays legible. */
+.hero__wash {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(244, 243, 241, 0.72) 0%, rgba(244, 243, 241, 0.28) 42%, transparent 68%),
+    linear-gradient(180deg, rgba(244, 243, 241, 0.35) 0%, transparent 28%, rgba(244, 243, 241, 0.2) 100%);
+}
+
+.hero__frame {
   position: relative;
   z-index: 1;
+  width: 100%;
 }
 
-.hero__copy {
+.hero__panel {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  align-items: flex-start;
+  gap: var(--space-6);
+  width: min(100%, 38rem);
+  padding: clamp(1.5rem, 3vw, 2.75rem);
+  background-color: color-mix(in srgb, var(--bond-raised) 94%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 1.5rem;
+  box-shadow: 0 24px 60px rgba(15, 31, 26, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.hero__brand {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: var(--tracking-display);
+  line-height: 1.05;
+  color: var(--seal-ink);
 }
 
 .hero__title {
-  max-width: 15ch;
+  max-width: 12ch;
+  color: var(--text-on-bond);
+}
+
+.hero__foot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+  margin-top: auto;
+  padding-top: var(--space-2);
 }
 
 .hero__subhead {
   color: var(--text-on-bond-muted);
-  font-size: var(--text-body-lg);
-  max-width: 52ch;
+  font-size: var(--text-body);
+  max-width: 36ch;
+  line-height: var(--leading-body);
 }
 
 .hero__actions {
@@ -135,7 +174,6 @@ onMounted(() => {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-4);
-  align-self: stretch;
   padding-top: var(--space-4);
   border-top: 1px solid var(--rule-on-bond);
 }
@@ -145,6 +183,7 @@ onMounted(() => {
   align-items: center;
   gap: var(--space-2);
   color: var(--text-on-bond-muted);
+  font-size: var(--text-body-sm);
 }
 
 .hero__trust li::before {
@@ -156,94 +195,74 @@ onMounted(() => {
   background-color: var(--seal);
 }
 
-.hero__visual {
-  position: relative;
-  margin-top: var(--space-8);
-  z-index: 1;
-}
+@media (min-width: 720px) {
+  .hero__foot {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
 
-.hero__cue {
-  display: none;
+  .hero__subhead {
+    flex: 1;
+    max-width: 28ch;
+  }
+
+  .hero__actions {
+    flex: none;
+  }
 }
 
 @media (min-width: 1000px) {
-  .hero__cue {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    position: absolute;
-    bottom: var(--space-6);
-    left: max(var(--gutter), calc(50% - var(--content-max) / 2));
-    color: var(--text-on-bond-muted);
-  }
-
-  .hero__cue-rail {
-    display: block;
-    position: relative;
-    width: 1px;
-    height: 40px;
-    background-color: var(--rule-on-bond);
-  }
-
-  .hero__cue-dot {
-    position: absolute;
-    inset-inline-start: -1px;
-    top: 0;
-    width: 3px;
-    height: 8px;
-    background-color: var(--seal);
-  }
-}
-
-@media (min-width: 1000px) and (prefers-reduced-motion: no-preference) {
-  .hero__cue {
-    transform: translateY(10px);
-    transition: transform var(--duration-slow) var(--ease-standard);
-    transition-delay: 420ms;
-  }
-
-  .hero__cue.is-revealed {
-    transform: translateY(0);
-  }
-
-  .hero__cue-dot {
-    animation: hero-cue 2.4s var(--ease-standard) infinite;
-  }
-}
-
-@keyframes hero-cue {
-  0% {
-    transform: translateY(0);
-  }
-  45%,
-  100% {
-    transform: translateY(32px);
+  .hero__panel {
+    width: min(100%, 42rem);
+    min-height: 22rem;
+    padding: var(--space-8);
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .hero__step {
-    transform: translateY(10px);
-    transition: transform var(--duration-slow) var(--ease-standard);
-    transition-delay: calc(var(--i, 0) * 60ms);
+    transform: translateY(12px);
+    opacity: 0;
+    transition:
+      transform var(--duration-slow) var(--ease-standard),
+      opacity var(--duration-slow) var(--ease-standard);
+    transition-delay: calc(var(--i, 0) * 70ms);
   }
 
-  .hero__copy.is-revealed .hero__step,
-  .hero__visual.is-revealed {
+  .hero__panel.is-revealed .hero__step {
     transform: translateY(0);
+    opacity: 1;
+  }
+
+  .hero__photo {
+    transform: scale(1.04);
+    transition: transform 1.2s var(--ease-standard);
   }
 }
 
-@media (min-width: 1000px) {
-  .hero__grid-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-    gap: clamp(var(--space-6), 4vw, var(--space-9));
-    align-items: center;
+@media (prefers-reduced-motion: no-preference) {
+  .hero:has(.hero__panel.is-revealed) .hero__photo {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 719px) {
+  .hero {
+    min-height: auto;
+    align-items: flex-end;
+    padding-block: var(--space-6) var(--space-7);
   }
 
-  .hero__visual {
-    margin-top: 0;
+  .hero__wash {
+    background:
+      linear-gradient(180deg, transparent 18%, rgba(244, 243, 241, 0.55) 48%, rgba(244, 243, 241, 0.92) 100%);
+  }
+
+  .hero__panel {
+    width: 100%;
+    border-radius: 1.25rem;
   }
 }
 </style>

@@ -189,7 +189,7 @@ defineProps<{
   border-radius: var(--radius-card);
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 70% 30%, rgba(200, 147, 58, 0.18), transparent 55%),
+    radial-gradient(ellipse at 70% 30%, rgba(255, 106, 22, 0.18), transparent 55%),
     radial-gradient(ellipse at 20% 80%, rgba(47, 169, 140, 0.12), transparent 50%),
     var(--ink-raised);
 }

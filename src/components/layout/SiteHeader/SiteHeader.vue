@@ -100,12 +100,7 @@ watch(menuOpen, async (open, wasOpen) => {
         </RouterLink>
 
         <nav class="header__nav" aria-label="Primary">
-          <RouterLink
-            v-for="link in PRIMARY_NAV"
-            :key="link.to"
-            :to="link.to"
-            class="header__link"
-          >
+          <RouterLink v-for="link in PRIMARY_NAV" :key="link.to" :to="link.to" class="header__link">
             {{ link.label }}
           </RouterLink>
         </nav>

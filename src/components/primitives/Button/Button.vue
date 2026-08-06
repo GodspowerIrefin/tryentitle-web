@@ -84,6 +84,7 @@ const bindings = computed<Record<string, unknown>>(() => {
     background-color var(--duration-fast) var(--ease-standard),
     border-color var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard),
     transform var(--duration-fast) var(--ease-standard);
 }
 
@@ -93,17 +94,20 @@ const bindings = computed<Record<string, unknown>>(() => {
 }
 
 /*
- * Primary — the seal pill. Ink text on ochre is 8.6:1; ochre text on either
- * ground would not clear AA, so the accent is always a FILL under dark text.
+ * Primary — the seal pill. Ink text on orange clears AA; orange text on either
+ * ground would not, so the accent is always a FILL under dark text.
  */
 .btn--primary {
   background-color: var(--action);
   color: var(--on-action);
 }
 
-.btn--primary:hover {
-  background-color: #d9a651;
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  background-color: color-mix(in srgb, var(--action) 82%, var(--ink));
   color: var(--on-action);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--action) 38%, transparent);
+  outline: none;
 }
 
 /* Secondary — hairline outline, band-aware. */
@@ -113,9 +117,12 @@ const bindings = computed<Record<string, unknown>>(() => {
   border-color: var(--rule-on-bond);
 }
 
-.btn--secondary:hover {
+.btn--secondary:hover,
+.btn--secondary:focus-visible {
+  background-color: var(--seal-wash);
   border-color: var(--seal);
-  color: var(--text-on-bond);
+  color: var(--seal-ink);
+  outline: none;
 }
 
 .on-ink .btn--secondary {
@@ -123,9 +130,11 @@ const bindings = computed<Record<string, unknown>>(() => {
   border-color: var(--rule-on-ink);
 }
 
-.on-ink .btn--secondary:hover {
+.on-ink .btn--secondary:hover,
+.on-ink .btn--secondary:focus-visible {
+  background-color: color-mix(in srgb, var(--seal) 14%, transparent);
   border-color: var(--seal);
-  color: var(--text-on-ink);
+  color: var(--seal);
 }
 
 /* Ghost — text-only affordance. */
@@ -135,19 +144,34 @@ const bindings = computed<Record<string, unknown>>(() => {
   padding-inline: var(--space-2);
 }
 
-.btn--ghost:hover {
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
+  color: var(--seal-ink);
   text-decoration: underline;
   text-underline-offset: 0.2em;
+  outline: none;
+}
+
+.on-ink .btn--ghost:hover,
+.on-ink .btn--ghost:focus-visible {
+  color: var(--seal);
 }
 
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .btn--primary:hover {
-    transform: translateY(-1px);
+  .btn:hover:not(:disabled),
+  .btn:focus-visible:not(:disabled) {
+    transform: translateY(-2px);
+  }
+
+  .btn:active:not(:disabled) {
+    transform: translateY(0);
   }
 }
 </style>

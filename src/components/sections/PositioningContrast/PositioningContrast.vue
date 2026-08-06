@@ -199,7 +199,7 @@ defineProps<{
 }
 
 .col--ours .col__facts {
-  border-top-color: rgba(200, 147, 58, 0.35);
+  border-top-color: rgba(255, 106, 22, 0.35);
 }
 
 .fact dt {

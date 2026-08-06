@@ -11,10 +11,10 @@ export const SERVICES_PAGE = {
 
 export const INDUSTRIES_PAGE = {
   eyebrow: 'Industries',
-  title: 'Built around the documents your field runs on.',
-  intro: 'Pick a field to see the workflows we redesign — with a person on the exceptions.',
-  note: 'If your work is document-heavy and repetitive, it likely applies.',
-  noteCta: 'Tell us what your week looks like',
+  title: '',
+  intro: '',
+  note: '',
+  noteCta: '',
 } as const
 
 /**

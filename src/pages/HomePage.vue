@@ -7,7 +7,7 @@
  * cost) into BOND (the solution — clean process, clear deliverables), and back to
  * ink for the ask. Reordering these changes the argument, not just the layout.
  *
- *   1  Hero + Live Workflow Strip   bond   comprehension in five seconds
+ *   1  Hero                         bond   comprehension in five seconds
  *   2  Systems marquee              ink    credibility + stack qualification
  *   3  Cost of manual work          ink    agitate the pain, name the leaks
  *   4  Positioning contrast         bond   kill the "generic AI tool" objection

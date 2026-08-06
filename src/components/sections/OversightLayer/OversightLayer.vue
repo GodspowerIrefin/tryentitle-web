@@ -195,7 +195,7 @@ const hasExamples = () => Boolean(props.examples?.length)
 }
 
 .legend__item--human {
-  border-color: rgba(200, 147, 58, 0.4);
+  border-color: rgba(255, 106, 22, 0.4);
 }
 
 .legend__swatch {
@@ -230,9 +230,9 @@ const hasExamples = () => Boolean(props.examples?.length)
   flex-direction: column;
   gap: var(--space-2);
   padding: var(--space-4);
-  border: 1px solid rgba(200, 147, 58, 0.3);
+  border: 1px solid rgba(255, 106, 22, 0.3);
   border-radius: var(--radius-card);
-  background-color: rgba(200, 147, 58, 0.07);
+  background-color: rgba(255, 106, 22, 0.07);
 }
 
 .examples li {

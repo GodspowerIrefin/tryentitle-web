@@ -487,7 +487,7 @@ const trailTo = TRAIL
 
 /* ─── Ambient washes ─────────────────────────────────────────────────── */
 /*
- * Kept deliberately weak. `--seal-wash` is a warm tint on a cool paper ground,
+ * Kept deliberately weak. `--seal-wash` is a warm tint on the off-white ground,
  * so at any real strength it stops reading as light and starts reading as a
  * stain on the page — the opposite of what a company selling precise paperwork
  * wants behind its headline.

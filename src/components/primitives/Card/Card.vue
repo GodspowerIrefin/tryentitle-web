@@ -162,7 +162,7 @@ function handleMove(event: PointerEvent) {
   transition: opacity var(--duration-base) var(--ease-standard);
   background: radial-gradient(
     18rem circle at var(--mx, 50%) var(--my, 50%),
-    rgba(200, 147, 58, 0.14),
+    rgba(255, 106, 22, 0.14),
     transparent 60%
   );
 }

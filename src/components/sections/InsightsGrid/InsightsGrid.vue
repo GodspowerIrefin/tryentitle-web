@@ -110,16 +110,7 @@ onBeforeUnmount(() => {
           @click="open(insight, $event)"
         >
           <span class="card__media" aria-hidden="true">
-            <img
-              class="card__img"
-              :src="insight.image"
-              :alt="''"
-              loading="lazy"
-              decoding="async"
-              width="800"
-              height="500"
-            />
-            <span class="card__media-wash" />
+            <span class="card__logo" />
           </span>
 
           <span class="card__body">
@@ -156,14 +147,7 @@ onBeforeUnmount(() => {
             :aria-labelledby="`insight-title-${active.id}`"
           >
             <div class="reader__hero">
-              <img
-                class="reader__hero-img"
-                :src="active.image"
-                :alt="active.imageAlt"
-                width="1200"
-                height="360"
-              />
-              <div class="reader__hero-shade" aria-hidden="true" />
+              <div class="reader__logo" aria-hidden="true" />
               <div class="reader__bar">
                 <p class="reader__meta">
                   <span class="card__source" :data-kind="active.source.kind">
@@ -274,11 +258,6 @@ onBeforeUnmount(() => {
   .card:focus-visible {
     transform: translateY(-4px);
   }
-
-  .card:hover .card__img,
-  .card:focus-visible .card__img {
-    transform: scale(1.04);
-  }
 }
 
 .card__media {
@@ -287,7 +266,8 @@ onBeforeUnmount(() => {
   aspect-ratio: 16 / 10;
   overflow: hidden;
   background:
-    linear-gradient(135deg, var(--seal-wash), var(--verify-wash) 55%, var(--bond));
+    radial-gradient(ellipse 70% 80% at 50% 45%, rgba(255, 106, 22, 0.14), transparent 62%),
+    var(--ink);
 }
 
 .card--feature .card__media {
@@ -308,21 +288,22 @@ onBeforeUnmount(() => {
   }
 }
 
-.card__img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  transition: transform var(--duration-slow) var(--ease-standard);
-}
-
-.card__media-wash {
+.card__logo {
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(to top, rgba(19, 26, 34, 0.28), transparent 45%),
-    linear-gradient(120deg, rgba(200, 147, 58, 0.12), transparent 40%);
+  background-image: url('/brand/logo-mark.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: min(38%, 7.5rem) auto;
+  opacity: 0.92;
+  transition: transform var(--duration-slow) var(--ease-standard), opacity var(--duration-fast)
+    var(--ease-standard);
+}
+
+.card:hover .card__logo,
+.card:focus-visible .card__logo {
+  transform: scale(1.06);
+  opacity: 1;
 }
 
 .card__body {
@@ -423,21 +404,20 @@ onBeforeUnmount(() => {
   position: relative;
   flex-shrink: 0;
   height: clamp(6.5rem, 14vh, 8.5rem);
-  background: var(--ink);
+  background:
+    radial-gradient(ellipse 70% 90% at 50% 50%, rgba(255, 106, 22, 0.16), transparent 65%),
+    var(--ink);
 }
 
-.reader__hero-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-.reader__hero-shade {
+.reader__logo {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(to top, rgba(19, 26, 34, 0.72) 0%, rgba(19, 26, 34, 0.2) 55%, transparent 100%);
+  background-image: url('/brand/logo-mark.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto min(52%, 3.25rem);
+  opacity: 0.9;
+  pointer-events: none;
 }
 
 .reader__bar {
@@ -460,7 +440,7 @@ onBeforeUnmount(() => {
   letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
   color: var(--text-on-ink);
-  background: rgba(19, 26, 34, 0.55);
+  background: rgba(15, 31, 26, 0.55);
   border: 1px solid rgba(242, 243, 240, 0.18);
   border-radius: var(--radius-chip);
 }
@@ -478,7 +458,7 @@ onBeforeUnmount(() => {
   width: 2.5rem;
   height: 2.5rem;
   color: var(--text-on-ink);
-  background: rgba(19, 26, 34, 0.55);
+  background: rgba(15, 31, 26, 0.55);
   border: 1px solid rgba(242, 243, 240, 0.18);
   border-radius: var(--radius-chip);
   cursor: pointer;
