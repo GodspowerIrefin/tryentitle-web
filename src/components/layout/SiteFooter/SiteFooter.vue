@@ -47,7 +47,7 @@ const year = new Date().getFullYear()
       </div>
 
       <div class="footer__bottom">
-        <p>© {{ year }} TryEntitle. All rights reserved.</p>
+        <p>© {{ year }} <span class="footer__name">TryEntitle</span>. All rights reserved.</p>
       </div>
     </Container>
   </footer>
@@ -147,5 +147,10 @@ const year = new Date().getFullYear()
   border-top: 1px solid var(--rule-on-ink);
   color: var(--text-on-ink-muted);
   font-size: var(--text-body-sm);
+}
+
+.footer__name {
+  color: var(--seal);
+  font-weight: 600;
 }
 </style>

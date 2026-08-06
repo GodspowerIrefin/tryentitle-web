@@ -484,8 +484,8 @@ function onKeydown(event: KeyboardEvent, index: number) {
   width: 44px;
   height: 44px;
   border-radius: var(--radius-card);
-  background-color: var(--ink-raised);
-  color: var(--seal);
+  background-color: var(--seal);
+  color: var(--ink);
   margin-bottom: var(--space-2);
 }
 

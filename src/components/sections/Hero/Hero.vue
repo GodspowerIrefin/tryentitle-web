@@ -111,8 +111,18 @@ onMounted(() => {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(244, 243, 241, 0.72) 0%, rgba(244, 243, 241, 0.28) 42%, transparent 68%),
-    linear-gradient(180deg, rgba(244, 243, 241, 0.35) 0%, transparent 28%, rgba(244, 243, 241, 0.2) 100%);
+    linear-gradient(
+      90deg,
+      rgba(244, 243, 241, 0.72) 0%,
+      rgba(244, 243, 241, 0.28) 42%,
+      transparent 68%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(244, 243, 241, 0.35) 0%,
+      transparent 28%,
+      rgba(244, 243, 241, 0.2) 100%
+    );
 }
 
 .hero__frame {
@@ -140,7 +150,7 @@ onMounted(() => {
   font-weight: 600;
   letter-spacing: var(--tracking-display);
   line-height: 1.05;
-  color: var(--seal-ink);
+  color: var(--seal);
 }
 
 .hero__title {
@@ -256,8 +266,12 @@ onMounted(() => {
   }
 
   .hero__wash {
-    background:
-      linear-gradient(180deg, transparent 18%, rgba(244, 243, 241, 0.55) 48%, rgba(244, 243, 241, 0.92) 100%);
+    background: linear-gradient(
+      180deg,
+      transparent 18%,
+      rgba(244, 243, 241, 0.55) 48%,
+      rgba(244, 243, 241, 0.92) 100%
+    );
   }
 
   .hero__panel {

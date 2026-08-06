@@ -1,11 +1,9 @@
 <script setup lang="ts">
 /**
- * PainPoints — "Where the hours go", Ink band (design spec §4.4, PRD FR8)
+ * PainPoints — "What we do" / where the hours go (design spec §4.4, PRD FR8)
  *
- * Six cards in a 3×2 grid on desktop. Each uses the shared FeatureCard anatomy
- * with a redline time chip — redline here means "this is costing you".
- *
- * Presentational; items arrive via props (PRD §11.3 rule 3).
+ * Cream (bond) band with orange brand cards and dark text — six items in a
+ * responsive grid. Presentational; items arrive via props (PRD §11.3 rule 3).
  */
 import Section from '@/components/primitives/Section'
 import Container from '@/components/primitives/Container'
@@ -22,7 +20,7 @@ defineProps<{
 </script>
 
 <template>
-  <Section tone="ink" labelledby="painpoints-title">
+  <Section tone="bond" class="pain-points" labelledby="painpoints-title">
     <Container>
       <SectionHeader
         :eyebrow="eyebrow ?? ''"
@@ -40,6 +38,7 @@ defineProps<{
             :stat="item.stat"
             :to="item.to"
             cta="See full details"
+            surface="seal"
             stat-tone="redline"
           />
         </li>
@@ -49,11 +48,19 @@ defineProps<{
 </template>
 
 <style scoped>
+.pain-points {
+  background:
+    radial-gradient(ellipse 70% 55% at 10% 0%, var(--seal-wash), transparent 55%),
+    var(--bond);
+}
+
 .leaks {
   display: grid;
   gap: var(--space-4);
   margin-top: var(--space-8);
   grid-template-columns: 1fr;
+  list-style: none;
+  padding: 0;
 }
 
 @media (min-width: 640px) {

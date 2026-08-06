@@ -52,9 +52,12 @@ withDefaults(defineProps<{ tone?: 'default' | 'inverse' | 'plated'; markOnly?: b
   letter-spacing: -0.02em;
   line-height: 1;
   font-variation-settings: 'wdth' 95;
-  /* Band-aware by inheritance: the header and footer set their own text colour,
-     and a bond placement inherits ink. */
   color: inherit;
+}
+
+/* Site name always carries the orange brand — independent of band inheritance. */
+.logo__word {
+  color: var(--seal);
 }
 
 /*
@@ -82,6 +85,10 @@ withDefaults(defineProps<{ tone?: 'default' | 'inverse' | 'plated'; markOnly?: b
 
 .logo--inverse {
   color: var(--text-on-ink);
+}
+
+.logo--inverse .logo__word {
+  color: var(--seal);
 }
 
 .logo--mark-only {
