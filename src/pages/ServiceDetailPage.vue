@@ -3,8 +3,8 @@
  * Service detail (PRD FR14).
  *
  * Composition:
- *   1. Ink hero — icon, outcome headline, chips, booking CTA
- *   2. Narrative body from the Markdown content layer
+ *   1. Photo hero — inset paper panel with the name, outcome, and booking CTA
+ *   2. Narrative body — summary lead, sticky contents rail, Markdown prose
  *   3. Use-case grid — concrete "show me" situations (data/service-detail.ts)
  *   4. Related industries — cross-links into the field pages
  *   5. Closing CTA
@@ -39,6 +39,12 @@ const slug = computed(() => String(route.params.slug))
 const doc = computed(() => getServiceContent(slug.value))
 const service = computed(() => getService(slug.value))
 const detail = computed(() => getServiceDetail(slug.value))
+
+/**
+ * Same threshold ArticleLayout uses (PRD §13): a rail is navigation, and a
+ * document with two headings does not need navigating.
+ */
+const showToc = computed(() => (doc.value?.toc.length ?? 0) > 2)
 
 const relatedIndustries = computed(() =>
   (detail.value?.industries ?? [])
@@ -89,14 +95,27 @@ useHead(head)
       eyebrow="Service"
       :title="service.name"
       :headline="service.headline"
-      :summary="service.summary"
       :chips="service.chips ?? []"
       :icon="service.icon"
     />
 
     <Section tone="bond" id="service-body" aria-label="About this service">
-      <Container width="content">
-        <Prose :html="doc.html" />
+      <Container>
+        <div class="body" :class="{ 'body--toc': showToc }">
+          <aside v-if="showToc" class="toc" aria-label="On this page">
+            <p class="toc__label">On this page</p>
+            <ul>
+              <li v-for="entry in doc.toc" :key="entry.id" :class="`toc__d${entry.depth}`">
+                <a :href="`#${entry.id}`">{{ entry.text }}</a>
+              </li>
+            </ul>
+          </aside>
+
+          <div class="body__main">
+            <p class="body__lead">{{ service.summary }}</p>
+            <Prose :html="doc.html" />
+          </div>
+        </div>
       </Container>
     </Section>
 
@@ -122,7 +141,7 @@ useHead(head)
           :eyebrow="SERVICE_DETAIL_COPY.industries.eyebrow"
           :title="SERVICE_DETAIL_COPY.industries.title"
           title-id="related-industries-title"
-          :intro="SERVICE_DETAIL_COPY.industries.intro"
+          :aside="SERVICE_DETAIL_COPY.industries.intro"
         />
         <ul class="related">
           <li v-for="industry in relatedIndustries" :key="industry.slug">
@@ -147,6 +166,106 @@ useHead(head)
 </template>
 
 <style scoped>
+/* ─── Body: contents rail + prose ────────────────────────────────────── */
+.body {
+  display: grid;
+  gap: var(--space-7);
+}
+
+/*
+ * The rail only earns a column once there is width for one. Below this the
+ * document is a single column and the rail sits above the prose as a plain list
+ * — a sticky rail on a narrow screen is a box that follows you down the page
+ * covering the thing you are trying to read.
+ */
+@media (min-width: 1000px) {
+  .body--toc {
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+    gap: var(--space-9);
+    align-items: start;
+  }
+}
+
+.body__main {
+  min-width: 0;
+}
+
+/*
+ * The service's one-line promise, set as the lead. It is the same string the
+ * services rail and the cards use, so it is the sentence a visitor arrived
+ * expecting to see confirmed.
+ */
+.body__lead {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-weight: 400;
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-heading);
+  color: var(--text-on-bond);
+  max-width: 34ch;
+  margin-bottom: var(--space-7);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--rule-on-bond);
+  text-wrap: pretty;
+}
+
+.toc {
+  position: static;
+}
+
+@media (min-width: 1000px) {
+  .toc {
+    position: sticky;
+    /* Clear of the sticky header, which is the compact height once scrolled. */
+    top: calc(var(--header-height) + var(--space-6));
+  }
+}
+
+.toc__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-utility);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--text-on-bond-muted);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--rule-on-bond);
+  margin-bottom: var(--space-3);
+}
+
+.toc ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc a {
+  color: var(--text-on-bond-muted);
+  font-size: var(--text-body-sm);
+  line-height: 1.4;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  padding-left: var(--space-3);
+  margin-left: -2px;
+  display: block;
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.toc a:hover {
+  color: var(--text-on-bond);
+  border-left-color: var(--seal);
+}
+
+/* h3s indent under their h2. */
+.toc__d3 a {
+  padding-left: var(--space-5);
+}
+
+/* ─── Related industries ─────────────────────────────────────────────── */
 .related {
   display: grid;
   gap: var(--space-3);

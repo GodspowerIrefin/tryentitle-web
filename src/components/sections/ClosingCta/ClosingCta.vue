@@ -1,6 +1,10 @@
 <script setup lang="ts">
 /**
- * ClosingCta — Ink band (design spec §4.14, PRD FR13)
+ * ClosingCta — Cream band (design spec §4.14, PRD FR13)
+ *
+ * Painted the same cream as the footer directly beneath it, so the ask and the
+ * chrome read as one continuous sheet closing the page rather than a dark slab
+ * dropped between the content and the footer.
  *
  * The final ask. Oversized centred display headline, one sub-paragraph, the seal
  * pill, and an email alternative for the visitor who will not book a slot but
@@ -31,27 +35,20 @@ withDefaults(
 </script>
 
 <template>
-  <Section tone="ink" class="closing-band" labelledby="closing-title">
+  <Section tone="bond" class="closing-band" labelledby="closing-title">
     <!--
-      Parallax backdrop. Decorative only — it carries no information, so it is
-      `aria-hidden`, and it is held far enough back that every contrast ratio in
-      the band is still measured against flat ink (see the scrim in the styles).
+      The parallax backdrop is gone with the ink ground.
 
-      `data-parallax` drifts it against the scroll; `.parallax-frame` oversizes
-      and clips the image so the drift never exposes an edge. Both resolve to a
-      static, correctly-positioned image when the motion layer is absent.
+      It was a dark circuit photograph under an 88% ink scrim. On cream every
+      pixel of it subtracts contrast instead of adding depth, and the scrim had to
+      go so near-opaque to keep the band flush with the footer that the only thing
+      left of the image was a faint mottling — which is exactly what broke the
+      blend. An image nobody can see is a lazy-loaded download and a parallax
+      subscription for nothing, so it is removed rather than hidden. Restoring a
+      backdrop here means choosing a light-ground photograph, not re-tuning this
+      one's scrim.
     -->
-    <div class="closing__backdrop parallax-frame" aria-hidden="true">
-      <img
-        src="/images/closing-infra.jpg"
-        alt=""
-        loading="lazy"
-        decoding="async"
-        data-parallax="0.12"
-      />
-    </div>
-
-    <Container class="closing__container">
+    <Container>
       <div class="closing" data-reveal>
         <Heading id="closing-title" :level="2" size="h1" class="closing__title" data-split-lines>
           {{ title }}
@@ -72,44 +69,10 @@ withDefaults(
 </template>
 
 <style scoped>
-/*
- * The band clips its own backdrop. Without this the oversized parallax image
- * bleeds past the section edges and, at the bottom of the page, extends the
- * document into a horizontal or vertical overflow (NFR1).
- */
 .closing-band {
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.closing__backdrop {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-}
-
-/*
- * Two things hold the contrast: the image is dimmed, and a near-opaque ink scrim
- * sits over it. The scrim is what makes this safe — headline and body copy are
- * effectively still on flat `--ink`, so the band's measured ratios are unchanged
- * from the plain version and no accessibility exemption is needed for the image.
- */
-.closing__backdrop::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-color: color-mix(in srgb, var(--ink) 88%, transparent);
-}
-
-.closing__backdrop img {
-  filter: grayscale(1) contrast(1.1);
-  opacity: 0.5;
-}
-
-/* Establishes the stacking context the negative-z backdrop sits behind. */
-.closing__container {
-  position: relative;
-  z-index: 1;
+  /* Not the `bond` tone's own ground: this band has to match the footer exactly
+     or the join between them shows as a seam. */
+  background-color: var(--cream);
 }
 
 .closing {
@@ -125,7 +88,7 @@ withDefaults(
 }
 
 .closing__body {
-  color: var(--text-on-ink-muted);
+  color: var(--text-on-bond-muted);
   font-size: var(--text-body-lg);
   max-width: 58ch;
 }
@@ -135,7 +98,13 @@ withDefaults(
 }
 
 .closing__alt {
-  color: var(--text-on-ink-muted);
+  color: var(--text-on-bond-muted);
   font-size: var(--text-body);
+}
+
+/* The address is body-size text, so it takes the darkened accent rather than raw
+   seal (2.6:1 on paper) — same rule as the footer links. */
+.closing__alt a {
+  color: var(--seal-ink);
 }
 </style>

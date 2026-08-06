@@ -45,11 +45,19 @@ withDefaults(
 <template>
   <Section :tone="tone" labelledby="usecases-title">
     <Container>
+      <!--
+        `aside`, not `intro`. Both callers pass a long heading ("What this looks
+        like on a real workflow." / "Where are your best people doing the most
+        manual work?") plus a two-line supporting paragraph, which is the exact
+        case SectionHeader documents the split layout for: in the narrow `intro`
+        column the heading broke to three lines and the right half of the band sat
+        empty above the cards.
+      -->
       <SectionHeader
         :eyebrow="eyebrow"
         :title="title"
         title-id="usecases-title"
-        :intro="intro"
+        :aside="intro"
       />
 
       <ul class="usecases">

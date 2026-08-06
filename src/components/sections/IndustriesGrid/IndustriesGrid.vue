@@ -133,27 +133,34 @@ function fieldLabel(slug: string): string {
       <!-- Dossier cards (industries overview) -->
       <div v-else class="dossiers">
         <!-- Featured lead matter -->
-        <Card v-if="featured" :to="`/industries/${featured.slug}`" flush class="lead" data-reveal>
-          <div class="lead__mast on-ink">
-            <span class="lead__glyph" aria-hidden="true">
-              <Icon :name="featured.icon" :size="36" />
-            </span>
-            <component :is="cardHeadingTag" class="lead__title">
-              {{ featured.name }}
-            </component>
-            <p class="lead__deck">
-              The document paths this field runs on — redesigned end to end, with a person on the
-              exceptions.
-            </p>
-            <span class="lead__cta">
-              Learn more
-              <Icon name="arrow-right" :size="16" class="lead__arrow" />
-            </span>
-          </div>
+        <Card
+          v-if="featured"
+          :to="`/industries/${featured.slug}`"
+          flush
+          surface="seal"
+          class="lead"
+          data-reveal
+        >
+          <div class="lead__mast">
+            <div class="lead__head">
+              <span class="lead__glyph" aria-hidden="true">
+                <Icon :name="featured.icon" :size="36" />
+              </span>
+              <component :is="cardHeadingTag" class="lead__title">
+                {{ featured.name }}
+              </component>
+            </div>
 
-          <div class="lead__index">
-            <p class="lead__index-label mono-label">What changes</p>
-            <p class="lead__outcome">{{ featured.outcome }}</p>
+            <div class="lead__say">
+              <p class="lead__deck">
+                The document paths this field runs on redesigned end to end, with a person on the
+                exceptions.
+              </p>
+              <span class="lead__cta">
+                Learn more
+                <Icon name="arrow-right" :size="16" class="lead__arrow" />
+              </span>
+            </div>
           </div>
         </Card>
 
@@ -359,37 +366,52 @@ function fieldLabel(slug: string): string {
   margin-top: var(--space-8);
 }
 
-/* Featured lead — ink masthead + process index */
+/*
+ * Featured lead — one seal card, edge to edge.
+ *
+ * It used to be a split: seal masthead beside a white "What changes" panel. The
+ * fill now comes from Card's `surface="seal"`, not a background on the masthead,
+ * so the whole card — border, hover glow, and lift — is one seal object rather
+ * than a seal div sitting inside a white one.
+ */
 .lead {
-  display: grid;
-  grid-template-columns: 1fr;
   overflow: hidden;
-  min-height: 100%;
-}
-
-@media (min-width: 900px) {
-  .lead {
-    grid-template-columns: minmax(16rem, 0.95fr) minmax(0, 1.15fr);
-    min-height: 22rem;
-  }
 }
 
 .lead__mast {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  padding: var(--space-6);
+}
+
+/*
+ * Two columns once there is width for them. With the right-hand panel gone, a
+ * single stacked column left the deck and CTA in a narrow strip with the whole
+ * right half of a full-bleed card empty — the name carries the left, the
+ * sentence and the CTA carry the right.
+ */
+@media (min-width: 900px) {
+  .lead__mast {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-8);
+    padding: var(--space-8) var(--space-7);
+  }
+}
+
+.lead__head {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-4);
-  padding: var(--space-6);
-  background: var(--seal);
-  color: var(--ink);
-  box-shadow: 0 12px 28px color-mix(in srgb, var(--seal) 28%, transparent);
 }
 
-@media (min-width: 900px) {
-  .lead__mast {
-    padding: var(--space-7);
-    justify-content: space-between;
-  }
+.lead__say {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
 }
 
 .lead__meta {
@@ -450,43 +472,6 @@ function fieldLabel(slug: string): string {
   .matter:hover .matter__arrow {
     transform: translateX(4px);
   }
-}
-
-.lead__index {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-6);
-  background-color: var(--bond-raised);
-}
-
-@media (min-width: 900px) {
-  .lead__index {
-    padding: var(--space-7);
-    justify-content: center;
-  }
-}
-
-.lead__index-label {
-  color: var(--seal-ink);
-}
-
-/*
- * The outcome replaces the numbered process index, so it carries that panel on
- * its own: set larger than body and ruled top and bottom, it still reads as a
- * filed statement rather than a stray paragraph in a wide empty panel.
- */
-.lead__outcome {
-  margin: 0;
-  padding-block: var(--space-5);
-  border-block: 1px solid var(--rule-on-bond);
-  max-width: 40ch;
-  font-family: var(--font-body);
-  font-size: var(--text-body-lg);
-  font-weight: 500;
-  line-height: 1.5;
-  color: var(--text-on-bond);
-  text-wrap: pretty;
 }
 
 /* Filed matters grid */
