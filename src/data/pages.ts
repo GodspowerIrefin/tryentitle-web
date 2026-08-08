@@ -5,8 +5,7 @@
 export const SERVICES_PAGE = {
   eyebrow: 'Services',
   title: '',
-  intro:
-    'Each is scoped to your business — you do not buy a package, you get a redesigned process with automation inside it and a person on the exceptions.',
+  intro: '',
 } as const
 
 export const INDUSTRIES_PAGE = {

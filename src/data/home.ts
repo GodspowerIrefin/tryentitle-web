@@ -104,7 +104,7 @@ export const HOME_COPY = {
   },
 
   proof: {
-    eyebrow: 'Why trust us yet',
+    eyebrow: 'Why trust us',
     title: '',
   },
 

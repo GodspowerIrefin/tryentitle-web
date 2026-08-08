@@ -233,13 +233,21 @@ onMounted(() => {
   max-width: 14ch;
 }
 
+/*
+ * The rule under the service name, and the headline's distance from it.
+ *
+ * `--stack-block` rather than a raw space step: this is the gap between the
+ * page's name and the line that explains it, so it belongs to the rhythm scale
+ * like every other block gap on the site, and it grows with the viewport
+ * instead of sitting at a flat 16px from 360px to 1440px.
+ */
 .panel__foot {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-5);
   margin-top: auto;
-  padding-top: var(--space-4);
+  padding-top: var(--stack-block);
   border-top: 1px solid var(--rule-on-bond);
 }
 
@@ -272,9 +280,26 @@ onMounted(() => {
 /* The foot goes side-by-side once there is room for the pill beside the line —
    the reference layout's copy-left / action-right row. */
 @media (min-width: 720px) {
+  /*
+   * `align-items: start`, NOT `flex-end`.
+   *
+   * Bottom-aligning this row made the headline's position a side effect of the
+   * booking pill's height. The pill is ~56px; a headline that wraps to one line
+   * is ~29px, so it was pushed down 24px to meet the pill's baseline — and a
+   * headline that wrapped to two lines was not. The gap under the service name
+   * therefore came out at 41px or 66px depending on how that particular name's
+   * headline happened to wrap at that particular width: 66px on Workflow Agents
+   * and Integrations & Process Intelligence, 41px on Workflow Strategy
+   * Assessment, all on the same breakpoint.
+   *
+   * Aligning to the start pins the headline directly under the rule at every
+   * width and on every service. The pill keeps its bottom-right anchor through
+   * `align-self`, so the intended copy-left / action-right row survives — the
+   * button now follows the text instead of the text following the button.
+   */
   .panel__foot {
     flex-direction: row;
-    align-items: flex-end;
+    align-items: start;
     justify-content: space-between;
     gap: var(--space-6);
   }
@@ -286,6 +311,7 @@ onMounted(() => {
 
   .panel__actions {
     flex: none;
+    align-self: flex-end;
   }
 }
 
