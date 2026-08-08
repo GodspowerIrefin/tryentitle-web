@@ -138,10 +138,10 @@ watch(menuOpen, async (open, wasOpen) => {
 
 <style scoped>
 /*
- * The header is ALWAYS cream paper — a bond band, so its children take the
+ * The header is ALWAYS white paper — a bond band, so its children take the
  * `-on-bond` side of every token pair.
  *
- * The spec asks for "transparent over hero, solidifies on scroll" (§4.1). Cream
+ * The spec asks for "transparent over hero, solidifies on scroll" (§4.1). White
  * gets that for free on every route: the hero and the top of every inner page are
  * both light, so the bar merges into the page and only the rule appears on
  * scroll. Literal transparency is still wrong — the hero photograph runs under
@@ -152,9 +152,7 @@ watch(menuOpen, async (open, wasOpen) => {
   position: sticky;
   top: 0;
   z-index: 50;
-  /* Warm white, a shade lighter and warmer than the bond page ground, so the
-     bar reads as a sheet laid over the page rather than part of it. */
-  --nav-stock: var(--cream);
+  --nav-stock: var(--bond-raised);
   background-color: var(--nav-stock);
   color: var(--text-on-bond);
   border-bottom: 1px solid transparent;

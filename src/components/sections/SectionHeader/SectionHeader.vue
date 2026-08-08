@@ -17,10 +17,12 @@
  * Band-aware through inheritance: colours resolve from the `.on-ink` context
  * that Section sets, so this never needs a dark variant of its own.
  */
+import { computed } from 'vue'
+
 import Eyebrow from '@/components/primitives/Eyebrow'
 import Heading from '@/components/primitives/Heading'
 
-defineProps<{
+const props = defineProps<{
   eyebrow: string
   title: string
   titleId: string
@@ -31,12 +33,34 @@ defineProps<{
   /** Heading level for correct document outline. Section leads are usually h2. */
   level?: 1 | 2 | 3
 }>()
+
+/*
+ * Several sections are deliberately eyebrow-only — their `title` is an empty
+ * string in the copy data. Rendering `<h2></h2>` for those still costs a full
+ * display-size line box plus the lead's gap (~60px on desktop), so those bands
+ * opened with a hole under the eyebrow that no spacing token could close.
+ *
+ * When there is no title the eyebrow BECOMES the heading: it takes the heading
+ * element and the `titleId`, rather than the heading being dropped outright.
+ *
+ * Promoting rather than dropping matters. `/services` and `/industries` both
+ * pass `level=1` with an empty title, so their eyebrow is the only page title
+ * that exists — simply omitting the element left those pages with zero `h1`,
+ * which breaks the one-h1-per-page rule (NFR5, asserted in smoke.spec.ts) and
+ * leaves the Section's `aria-labelledby` pointing at nothing. The eyebrow keeps
+ * its mono styling either way: `.mono-label` outranks the bare `h1, h2` rule in
+ * globals.css, so this changes the element, not the look.
+ */
+const hasTitle = computed(() => props.title.trim().length > 0)
+
+/** The eyebrow's element: a real heading whenever it is carrying the title. */
+const eyebrowTag = computed(() => (hasTitle.value ? 'p' : `h${props.level ?? 2}`))
 </script>
 
 <template>
   <div class="section-header" :class="{ 'section-header--split': aside }" data-reveal>
     <div class="section-header__lead">
-      <Eyebrow>{{ eyebrow }}</Eyebrow>
+      <Eyebrow :as="eyebrowTag" :id="hasTitle ? undefined : titleId">{{ eyebrow }}</Eyebrow>
       <!--
         `data-split-lines` opts this heading into the line-mask entrance: the
         motion layer splits it into its real visual lines and each slides up from
@@ -49,7 +73,7 @@ defineProps<{
         stays one heading to assistive tech. With JS off, or under reduced
         motion, the attribute is inert and the heading renders as plain text.
       -->
-      <Heading :id="titleId" :level="level ?? 2" size="h2" data-split-lines>
+      <Heading v-if="hasTitle" :id="titleId" :level="level ?? 2" size="h2" data-split-lines>
         {{ title }}
       </Heading>
       <p v-if="intro" class="section-header__intro">{{ intro }}</p>

@@ -28,8 +28,12 @@ useHead(
 <template>
   <Section labelledby="insights-title" class="insights">
     <Container>
+      <!-- The eyebrow IS the page title here — there is no display heading in
+           this layout — so it carries the h1 and the id the Section labels
+           itself with. `.mono-label` outranks the bare `h1` rule in globals.css,
+           so it still renders as an eyebrow. -->
       <div class="insights__intro">
-        <Eyebrow>Insights</Eyebrow>
+        <Eyebrow as="h1" id="insights-title">Insights</Eyebrow>
       </div>
 
       <div class="insights__list">
@@ -61,14 +65,8 @@ useHead(
   max-width: 40rem;
 }
 
-.insights__lead {
-  margin-top: var(--space-4);
-  color: var(--text-on-bond-muted);
-  font-size: var(--text-body-lg);
-}
-
 .insights__list {
   position: relative;
-  margin-top: var(--space-8);
+  margin-top: var(--stack-lead);
 }
 </style>

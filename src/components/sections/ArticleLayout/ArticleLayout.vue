@@ -122,7 +122,7 @@ const showToc = computed(() => props.toc.length > 2)
   flex-direction: column;
   gap: var(--space-3);
   max-width: var(--measure);
-  margin-top: var(--space-5);
+  margin-top: var(--stack-block);
 }
 
 .article-head__lead {
@@ -135,7 +135,7 @@ const showToc = computed(() => props.toc.length > 2)
 }
 
 .article-body {
-  margin-top: var(--space-8);
+  margin-top: var(--stack-lead);
 }
 
 @media (min-width: 960px) {

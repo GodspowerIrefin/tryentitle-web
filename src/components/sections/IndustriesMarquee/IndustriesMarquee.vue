@@ -12,7 +12,6 @@
  * Links to detail pages. Pauses on hover/focus. Reduced motion: static wrap, no
  * horizontal page scroll (NFR1).
  */
-import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import Section from '@/components/primitives/Section'
 import Container from '@/components/primitives/Container'
@@ -24,29 +23,12 @@ defineProps<{
   eyebrow: string
   title: string
   intro?: string
-  note: string
-  noteCta?: string
 }>()
 
 /** Two identical tracks — shift by one track plus one gap for a seamless loop. */
 const LOOP = 2
 
 const items = INDUSTRIES.filter((i) => i.slug !== 'professional-services')
-
-/** Full catalog index, so FIELD 01–07 stay stable even though one is omitted. */
-const fieldNumbers = new Map(INDUSTRIES.map((item, i) => [item.slug, i + 1]))
-
-const workflowCount = computed(() =>
-  items.reduce((total, industry) => total + industry.workflows.length, 0),
-)
-
-function pad(n: number): string {
-  return String(n).padStart(2, '0')
-}
-
-function fieldCode(slug: string): string {
-  return pad(fieldNumbers.get(slug) ?? 0)
-}
 </script>
 
 <template>
@@ -134,10 +116,14 @@ function fieldCode(slug: string): string {
    * gradient on a neutral grey leaves the top pink and the bottom cold, and the
    * hand-off between them reads as a band across the tray.
    */
-  --tray-grey: color-mix(in srgb, var(--bond) 88%, var(--graphite) 12%);
+  /* Greige at 12% graphite was a FIFTH neutral on the page — cool enough to read
+     as its own material against the warm ladder either side of it. At 3% the
+     tray is a shadow of the page ground, and the separation comes from the cream
+     cards and the seal cap instead of from a different colour. */
+  --tray-grey: color-mix(in srgb, var(--bond) 97%, var(--graphite) 3%);
   --tray-base: color-mix(in srgb, var(--tray-grey) 96%, var(--seal) 4%);
-  --tray-stock: color-mix(in srgb, var(--tray-grey) 92%, var(--seal) 8%);
-  --tray-wash: color-mix(in srgb, var(--seal) 5%, transparent);
+  --tray-stock: color-mix(in srgb, var(--tray-grey) 94%, var(--seal) 6%);
+  --tray-wash: color-mix(in srgb, var(--seal) 4%, transparent);
   --tray-rule: color-mix(in srgb, var(--ink) 6%, transparent);
   /* Cream, not white — the card has to stay warmer than the tray it sits on. */
   --tile-stock: color-mix(in srgb, var(--bond-raised) 93%, var(--seal) 7%);
@@ -149,58 +135,11 @@ function fieldCode(slug: string): string {
   --marquee-duration: 48s;
 }
 
-/* ─── Ledger line under the header ───────────────────────────────────── */
-.ledger {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-3);
-  margin-top: var(--space-6);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--rule-on-bond);
-  color: var(--text-on-bond-muted);
-}
-
-.ledger__item {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.ledger__item + .ledger__item::before {
-  content: '';
-  width: 3px;
-  height: 3px;
-  flex: none;
-  border-radius: 50%;
-  background-color: var(--rule-hover);
-}
-
-.ledger__stat {
-  color: var(--seal-ink);
-  font-weight: 600;
-}
-
-/* The affordance differs by input, so only one of the two hints is ever shown. */
-.ledger__hint--touch {
-  display: none;
-}
-
-@media (hover: none), (pointer: coarse) {
-  .ledger__hint {
-    display: none;
-  }
-
-  .ledger__hint--touch {
-    display: inline-flex;
-  }
-}
-
 /* ─── The ink tray ───────────────────────────────────────────────────── */
 .ribbon {
   position: relative;
-  margin-top: var(--space-7);
-  padding-block: var(--space-7);
+  margin-top: var(--stack-lead);
+  padding-block: var(--section-rhythm-compact);
   /* Warm at the top edge, settling into greige — depth under the cards. */
   background:
     radial-gradient(140% 180% at 50% -40%, var(--tray-wash), transparent 70%),
@@ -373,10 +312,6 @@ function fieldCode(slug: string): string {
   gap: var(--space-3);
 }
 
-.tile__meta {
-  color: var(--ink);
-}
-
 .tile__icon {
   display: inline-flex;
   align-items: center;
@@ -500,55 +435,8 @@ function fieldCode(slug: string): string {
   }
 }
 
-/* ─── Foot ───────────────────────────────────────────────────────────── */
-.foot {
-  display: grid;
-  gap: var(--space-7);
-  margin-top: var(--space-8);
-}
-
-@media (min-width: 900px) {
-  .foot {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--space-8);
-    align-items: start;
-  }
-}
-
-.foot__index,
-.invite {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-3);
-  padding-top: var(--space-5);
-  border-top: 1px solid var(--rule-on-bond);
-}
-
-.foot__label,
-.invite__label {
-  color: var(--seal-ink);
-}
-
-.foot__text,
-.invite__text {
-  color: var(--text-on-bond-muted);
-  font-size: var(--text-body);
-  max-width: 46ch;
-}
-
-.foot__index :deep(a),
-.invite :deep(a) {
-  margin-top: var(--space-2);
-}
-
 /* ─── Reduced motion — static wall, no drift, no horizontal overflow ─── */
 @media (prefers-reduced-motion: reduce) {
-  .ledger__hint,
-  .ledger__hint--touch {
-    display: none;
-  }
-
   .ribbon__viewport {
     mask-image: none;
     -webkit-mask-image: none;

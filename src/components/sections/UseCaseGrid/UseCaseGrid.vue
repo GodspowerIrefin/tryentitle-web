@@ -92,7 +92,7 @@ withDefaults(
 .usecases {
   display: grid;
   gap: var(--space-4);
-  margin-top: var(--space-8);
+  margin-top: var(--stack-lead);
   grid-template-columns: 1fr;
 }
 

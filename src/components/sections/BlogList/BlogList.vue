@@ -96,7 +96,7 @@ const pages = computed(() => Array.from({ length: totalPages.value }, (_, i) => 
 .pager {
   display: flex;
   gap: var(--space-2);
-  margin-top: var(--space-6);
+  margin-top: var(--stack-block);
 }
 
 .pager__link {

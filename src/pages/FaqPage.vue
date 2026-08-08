@@ -32,9 +32,12 @@ useHead({
 </script>
 
 <template>
+  <!-- `level=1`: this accordion is the whole page here, so its lead is the page
+       title. On the home page the same component keeps the default h2. -->
   <FaqAccordion
     eyebrow="FAQ"
     title="Questions teams ask before they book."
+    :level="1"
     :items="FAQ_ITEMS"
   />
   <ClosingCta :title="CLOSING.title" :body="CLOSING.body" placement="faq" />

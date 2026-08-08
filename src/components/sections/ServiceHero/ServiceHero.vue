@@ -119,12 +119,16 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.service-hero {
+/* `.section.service-hero` — see Hero: outranks Section's own rhythm rule instead
+   of tying with it. */
+.section.service-hero {
   position: relative;
   isolation: isolate;
   overflow: clip;
+  /* Sized by `min-height` like the home Hero — this is the floor that keeps the
+     panel off the band edges, not the section rhythm. */
   min-height: min(72vh, 42rem);
-  padding-block: clamp(2rem, 4vw, 4rem);
+  padding-block: var(--section-rhythm-compact);
   display: flex;
   align-items: center;
   background-color: var(--bond);
@@ -294,18 +298,22 @@ onMounted(() => {
 
 /* ─── Entrance ───────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: no-preference) {
+  /*
+   * TRANSFORM ONLY — no opacity. Same rule the scroll reveals follow, and for
+   * the same reason (globals.css): a contrast checker measures the BLENDED
+   * colour of a fading element, so while this panel eased in, the booking
+   * button measured #53575b on #ff9356 — 3.31:1 — and the a11y gate failed
+   * whenever the scan landed inside the transition. It was intermittent, which
+   * is worse than a steady failure: the same commit passed or failed on timing.
+   */
   .panel__step {
     transform: translateY(12px);
-    opacity: 0;
-    transition:
-      transform var(--duration-slow) var(--ease-standard),
-      opacity var(--duration-slow) var(--ease-standard);
+    transition: transform var(--duration-slow) var(--ease-standard);
     transition-delay: calc(var(--i, 0) * 70ms);
   }
 
   .panel.is-revealed .panel__step {
     transform: translateY(0);
-    opacity: 1;
   }
 
   .service-hero__photo {
@@ -321,10 +329,11 @@ onMounted(() => {
 /* Narrow: the photo becomes a backdrop the panel sits on top of, so the wash
    flips to vertical and the panel takes the full gutter width. */
 @media (max-width: 719px) {
-  .service-hero {
+  /* Matches the specificity of the base rule above, which it has to override. */
+  .section.service-hero {
     min-height: auto;
     align-items: flex-end;
-    padding-block: var(--space-6) var(--space-7);
+    padding-block: var(--section-rhythm-compact);
   }
 
   .service-hero__wash {

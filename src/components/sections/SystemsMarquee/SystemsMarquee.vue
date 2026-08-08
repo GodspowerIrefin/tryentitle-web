@@ -57,7 +57,7 @@ const rowB = SYSTEMS.slice(half)
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  margin-top: var(--space-6);
+  margin-top: var(--stack-lead);
   /* REQUIRED: the rows are `width: max-content` and are wider than the viewport.
      Without this clip they push the page into horizontal scroll at every
      breakpoint (NFR1) — not just the narrow ones. */

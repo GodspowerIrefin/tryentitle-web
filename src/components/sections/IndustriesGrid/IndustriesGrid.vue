@@ -209,7 +209,7 @@ function fieldLabel(slug: string): string {
 .industries {
   display: flex;
   flex-direction: column;
-  margin-top: var(--space-8);
+  margin-top: var(--stack-lead);
   border-top: 1px solid var(--rule-on-bond);
 }
 
@@ -363,16 +363,11 @@ function fieldLabel(slug: string): string {
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  margin-top: var(--space-8);
+  margin-top: var(--stack-lead);
 }
 
 /*
- * Featured lead — one seal card, edge to edge.
- *
- * It used to be a split: seal masthead beside a white "What changes" panel. The
- * fill now comes from Card's `surface="seal"`, not a background on the masthead,
- * so the whole card — border, hover glow, and lift — is one seal object rather
- * than a seal div sitting inside a white one.
+ * Featured lead — full orange seal fill, edge to edge.
  */
 .lead {
   overflow: hidden;
@@ -385,17 +380,9 @@ function fieldLabel(slug: string): string {
   padding: var(--space-6);
 }
 
-/*
- * Two columns once there is width for them. With the right-hand panel gone, a
- * single stacked column left the deck and CTA in a narrow strip with the whole
- * right half of a full-bleed card empty — the name carries the left, the
- * sentence and the CTA carry the right.
- */
 @media (min-width: 900px) {
   .lead__mast {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: center;
-    gap: var(--space-8);
+    gap: var(--space-6);
     padding: var(--space-8) var(--space-7);
   }
 }
@@ -412,10 +399,6 @@ function fieldLabel(slug: string): string {
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-4);
-}
-
-.lead__meta {
-  color: var(--ink);
 }
 
 .lead__glyph {
@@ -446,7 +429,13 @@ function fieldLabel(slug: string): string {
   max-width: 28ch;
   font-size: var(--text-body);
   line-height: 1.5;
-  color: color-mix(in srgb, var(--ink) 75%, transparent);
+  /*
+   * 85% is the FLOOR on a seal fill, not a preference. Seal is a bright ground:
+   * 75% ink blends to #4e2e1f and measures 4.22:1, which fails AA for body size
+   * and fails the a11y gate. 85% measures 5.03:1 and is visually all but
+   * identical. Do not mix this further toward transparent.
+   */
+  color: color-mix(in srgb, var(--ink) 85%, transparent);
 }
 
 .lead__cta {
@@ -503,7 +492,7 @@ function fieldLabel(slug: string): string {
   gap: var(--space-4);
   height: 100%;
   padding: var(--space-5);
-  background-color: var(--bond-raised);
+  background-color: var(--cream);
   overflow: hidden;
 }
 
@@ -540,10 +529,6 @@ function fieldLabel(slug: string): string {
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-3);
-}
-
-.matter__meta {
-  color: var(--text-on-bond-muted);
 }
 
 .matter__tile {
@@ -597,7 +582,7 @@ function fieldLabel(slug: string): string {
 }
 
 .more {
-  margin-top: var(--space-6);
+  margin-top: var(--stack-block);
 }
 
 .invite {
@@ -605,8 +590,8 @@ function fieldLabel(slug: string): string {
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-3);
-  margin-top: var(--space-7);
-  padding-top: var(--space-6);
+  margin-top: var(--stack-block);
+  padding-top: var(--stack-block);
   border-top: 1px solid var(--rule-on-bond);
 }
 

@@ -100,7 +100,7 @@ function marker(i: number): string {
 .track {
   display: grid;
   gap: var(--space-4);
-  margin-top: var(--space-8);
+  margin-top: var(--stack-lead);
   grid-template-columns: 1fr;
 }
 
@@ -111,7 +111,7 @@ function marker(i: number): string {
   flex-direction: column;
   gap: var(--space-3);
   padding: var(--space-5);
-  background-color: var(--bond-raised);
+  background-color: var(--cream);
   border: 1px solid var(--rule-on-bond);
   border-radius: var(--radius-card);
 }

@@ -2,8 +2,9 @@
 /**
  * PainPoints — "What we do" / where the hours go (design spec §4.4, PRD FR8)
  *
- * Cream (bond) band with orange brand cards and dark text — six items in a
- * responsive grid. Presentational; items arrive via props (PRD §11.3 rule 3).
+ * Bond band carrying six marked cream cards in a responsive grid — each one
+ * seal-ruled at the head rather than seal-filled, so the row reads as filed
+ * paper. Presentational; items arrive via props (PRD §11.3 rule 3).
  */
 import Section from '@/components/primitives/Section'
 import Container from '@/components/primitives/Container'
@@ -38,7 +39,7 @@ defineProps<{
             :stat="item.stat"
             :to="item.to"
             cta="See full details"
-            surface="seal"
+            surface="marked"
             stat-tone="redline"
           />
         </li>
@@ -48,16 +49,16 @@ defineProps<{
 </template>
 
 <style scoped>
+/* Transparent base, not `--bond` — the page gradient has to keep running under
+   this band or the wash sits on a flat patch with visible edges. */
 .pain-points {
-  background:
-    radial-gradient(ellipse 70% 55% at 10% 0%, var(--seal-wash), transparent 55%),
-    var(--bond);
+  background: radial-gradient(ellipse 70% 55% at 10% 0%, var(--seal-wash), transparent 55%);
 }
 
 .leaks {
   display: grid;
   gap: var(--space-4);
-  margin-top: var(--space-8);
+  margin-top: var(--stack-lead);
   grid-template-columns: 1fr;
   list-style: none;
   padding: 0;

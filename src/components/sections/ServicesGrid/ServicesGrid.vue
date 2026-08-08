@@ -42,6 +42,16 @@ const props = defineProps<{
   eyebrow?: string
   title?: string
   items: ServiceSummary[]
+  /**
+   * Heading level for the section lead. `/services` passes 1, where this grid is
+   * the page and its lead is the page's h1; the home band keeps the default h2.
+   *
+   * This was previously undeclared, so the page's `:level="1"` fell through to
+   * the root element as a stray `level` attribute and never reached
+   * SectionHeader — leaving `/services` with no h1 at all.
+   */
+  level?: 1 | 2 | 3
+  intro?: string
 }>()
 
 const active = ref(0)
@@ -186,7 +196,13 @@ function onKeydown(event: KeyboardEvent, index: number) {
 <template>
   <Section tone="bond" labelledby="services-title" class="services">
     <Container>
-      <SectionHeader :eyebrow="eyebrow ?? ''" :title="title ?? ''" title-id="services-title" />
+      <SectionHeader
+        :eyebrow="eyebrow ?? ''"
+        :title="title ?? ''"
+        :intro="intro"
+        :level="level"
+        title-id="services-title"
+      />
     </Container>
 
     <!-- ─── Desktop: pinned, scroll-driven rail ─────────────────────── -->
@@ -300,7 +316,7 @@ function onKeydown(event: KeyboardEvent, index: number) {
 .cards {
   display: grid;
   gap: var(--space-4);
-  margin-top: var(--space-5);
+  margin-top: var(--stack-lead);
   grid-template-columns: 1fr;
 }
 
@@ -317,7 +333,7 @@ function onKeydown(event: KeyboardEvent, index: number) {
 
   .scrolly {
     display: block;
-    margin-top: var(--space-5);
+    margin-top: var(--stack-lead);
   }
 
   /* `--steps` comes from the template so the travel always matches the number of
@@ -430,7 +446,7 @@ function onKeydown(event: KeyboardEvent, index: number) {
 .tab.is-active {
   color: var(--text-on-bond);
   font-weight: 600;
-  background-color: var(--bond-raised);
+  background-color: var(--cream);
 }
 
 /* Inactive tabs recede while pinned so the current one is unmistakable. */
@@ -502,13 +518,6 @@ function onKeydown(event: KeyboardEvent, index: number) {
   color: var(--text-on-bond-muted);
   font-size: var(--text-body-lg);
   max-width: 52ch;
-}
-
-.panel__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-top: var(--space-1);
 }
 
 .panel__action {

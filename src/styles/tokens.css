@@ -41,14 +41,47 @@
   --bond-raised: #ffffff; /* Cards on light bands                          */
   /*
    * The cream sheet: warm white, a shade lighter than the bond page ground.
-   * Shared by the header, the footer, and the closing band so the chrome and the
-   * final ask read as one continuous surface. Derived rather than a hex of its
-   * own — a rebrand of `--seal` or `--bond-raised` carries it automatically.
+   * Shared by the header, the footer, the closing band, and every raised card
+   * so the chrome, the surfaces, and the final ask read as one continuous
+   * material. Derived rather than a hex of its own — a rebrand of `--seal` or
+   * `--bond-raised` carries it automatically.
+   *
+   * THE LADDER. These four grounds are the whole palette of surfaces, and three
+   * of them sit within a few points of each other on purpose:
+   *
+   *   --ink          the one dark band per page — the single hard contrast
+   *   --bond         the page itself
+   *   --cream        raised surfaces: cards, header, footer, closing band
+   *   --bond-raised  pure white, reserved for the one panel that must read as
+   *                  the brightest thing on screen (the calculator shell)
+   *
+   * Anything that needs to "stand out" moves ONE rung, not to a new hue. That
+   * is what makes the scroll read as one document instead of a stack of
+   * differently-coloured slides.
    */
   --cream: color-mix(in srgb, var(--bond-raised) 96%, var(--seal) 4%);
 
-  /* ─── Accents ──────────────────────────────────────────────────────── */
-  --seal: #ff6a16; /* Secondary orange. Fills, rules, rail marker         */
+  /*
+   * ─── Accents ──────────────────────────────────────────────────────────
+   *
+   * WHERE SEAL IS ALLOWED TO BE A GROUND
+   *
+   * Seal is an accent, not a surface. It marks — icon tiles, rules, filing
+   * tabs, slider fills, the arrow on a CTA — and at that size a vivid orange
+   * reads as precision. Spread across a card it stops being a mark and becomes
+   * the ground, and a page of orange grounds reads loud rather than expensive.
+   *
+   * So the page gets exactly ONE full-strength seal field: the calculator's
+   * result panel, which is the moment the argument pays off. Everything else
+   * that used to be a seal fill — the six home cards, the four commitment
+   * marks, the industries lead card — is warm paper carrying a seal mark.
+   * Buttons are the standing exception; an action colour has to be the action.
+   *
+   * Before filling a new element with `--seal`, check whether it is marking
+   * something or just being coloured. If it is the second, it wants `--cream`
+   * with a seal detail on it.
+   */
+  --seal: #ff6a16; /* Secondary orange. Marks, rules, tabs, tiles         */
   --seal-text-lg: #d95a13; /* ~3.5:1 on bond — LARGE text only (≥24px)    */
   --seal-ink: #a6450e; /* ~5.4:1 on bond — safe for body-size text        */
   --seal-wash: #fff0e8; /* Faint orange tint for chips on bond            */
@@ -92,9 +125,39 @@
   --space-9: 6rem;
   --space-10: 8rem;
 
-  /* Section rhythm — 72px mobile → 128px desktop (spec §1 Layout) */
-  --section-rhythm: clamp(4.5rem, 3rem + 6.5vw, 1.1875rem);
-  --section-rhythm-compact: clamp(3rem, 2rem + 4vw, 5rem);
+  /*
+   * ─── Vertical rhythm ────────────────────────────────────────────────
+   *
+   * FOUR steps, and only four. Every vertical gap on the site is one of these;
+   * nothing reaches into the raw `--space-*` scale for block separation, which
+   * is what let the same relationship (a section header and the body under it)
+   * end up at 24px in one section and 64px in the next.
+   *
+   *   --section-rhythm          band padding — the gap BETWEEN sections
+   *   --section-rhythm-compact  same, for dense secondary bands
+   *   --stack-lead              a section header → the body it introduces
+   *   --stack-block             sibling blocks inside one section
+   *
+   * The steps stay in proportion at every width — 64 / 44 / 40 / 28 on desktop,
+   * 44 / 32 / 28 / 20 at 390px — so a compact band is always tighter than a
+   * default one and a within-section gap is always tighter than the band padding
+   * around it.
+   *
+   * Read the rhythm values as HALF the gap you see: adjacent bands each pad
+   * their own edge, so 64px of section rhythm is 128px between two sections.
+   * That doubling is why these numbers look small next to the raw space scale,
+   * and why raising `--section-rhythm` to a "normal-looking" 96px pushes the
+   * page to 192px between bands.
+   *
+   * The previous `--section-rhythm` clamped to a MAX smaller than its own MIN
+   * (`clamp(4.5rem, …, 1.1875rem)`), which CSS resolves to the min — the token
+   * was pinned at 72px at every viewport while the compact token grew past it to
+   * 80px, so "compact" sections were spaced wider than default ones.
+   */
+  --section-rhythm: clamp(2.75rem, 2.1rem + 2.6vw, 4rem); /*      44 → 64 */
+  --section-rhythm-compact: clamp(2rem, 1.65rem + 1.4vw, 2.75rem); /* 32 → 44 */
+  --stack-lead: clamp(1.75rem, 1.45rem + 1.2vw, 2.5rem); /*       28 → 40 */
+  --stack-block: clamp(1.25rem, 1.05rem + 0.8vw, 1.75rem); /*     20 → 28 */
 
   /* ─── Layout ───────────────────────────────────────────────────────── */
   --content-max: 1240px;

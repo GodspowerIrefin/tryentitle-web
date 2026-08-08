@@ -235,7 +235,7 @@ onBeforeUnmount(() => {
   overflow: hidden;
   text-align: left;
   color: inherit;
-  background-color: var(--bond-raised);
+  background-color: var(--cream);
   border: 1px solid var(--rule-on-bond);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
@@ -505,7 +505,7 @@ onBeforeUnmount(() => {
 }
 
 .reader__external {
-  margin-top: var(--space-8);
+  margin-top: var(--stack-block);
   padding-top: var(--space-5);
   border-top: 1px solid var(--rule-on-bond);
 }

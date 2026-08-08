@@ -4,6 +4,10 @@
  * Discipline notes:
  * - `Section` owns ALL vertical rhythm. There is no section-level padding-block
  *   or margin-block here or anywhere else (PRD §12.4).
+ * - Vertical gaps come from the four rhythm tokens only — `--section-rhythm`,
+ *   `--section-rhythm-compact`, `--stack-lead`, `--stack-block`. The raw
+ *   `--space-*` scale is for spacing INSIDE a component (card padding, gaps
+ *   between an icon and its label), never for separating blocks on a page.
  * - No bare margin-top on shared components; prefer `gap`.
  * - No `!important`, no nesting deeper than two levels.
  * - Colour is BAND-DEPENDENT. The page alternates ink and bond grounds, so
@@ -30,9 +34,33 @@ html {
   scroll-padding-top: calc(var(--header-height) + var(--space-4));
 }
 
+/*
+ * THE PAGE IS ONE GROUND.
+ *
+ * Every light band used to paint its own background, so each boundary between
+ * two sections was a hard edge between two flat fills — and with four warm
+ * neutrals in play those edges read as a stack of separate slides.
+ *
+ * Instead the document carries a single gradient, top to bottom, and light
+ * Sections are transparent over it (see Section.vue). The warmth drifts from
+ * bond at the masthead to cream at the closing band, which is the same stock
+ * the footer is already on, so the page ends without a seam. Nothing is
+ * "blended" per boundary — there are simply no boundaries left to blend.
+ *
+ * The gradient is on `body` with no `background-attachment`, so it is painted
+ * once across the FULL document height. `fixed` would pin it to the viewport
+ * and turn the drift into a static vignette that never changes as you scroll.
+ */
 body {
   min-height: 100dvh;
   background-color: var(--bond);
+  background-image: linear-gradient(
+    180deg,
+    var(--bond) 0%,
+    color-mix(in srgb, var(--bond) 45%, var(--cream)) 58%,
+    var(--cream) 100%
+  );
+  background-repeat: no-repeat;
   color: var(--text-on-bond);
   font-family: var(--font-body);
   font-size: var(--text-body);

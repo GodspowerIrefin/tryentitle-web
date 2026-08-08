@@ -169,7 +169,7 @@ useHead(head)
 /* ─── Body: contents rail + prose ────────────────────────────────────── */
 .body {
   display: grid;
-  gap: var(--space-7);
+  gap: var(--stack-lead);
 }
 
 /*
@@ -181,7 +181,7 @@ useHead(head)
 @media (min-width: 1000px) {
   .body--toc {
     grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
-    gap: var(--space-9);
+    gap: var(--space-8);
     align-items: start;
   }
 }
@@ -203,8 +203,8 @@ useHead(head)
   line-height: var(--leading-heading);
   color: var(--text-on-bond);
   max-width: 34ch;
-  margin-bottom: var(--space-7);
-  padding-bottom: var(--space-6);
+  margin-bottom: var(--stack-block);
+  padding-bottom: var(--stack-block);
   border-bottom: 1px solid var(--rule-on-bond);
   text-wrap: pretty;
 }
@@ -269,7 +269,7 @@ useHead(head)
 .related {
   display: grid;
   gap: var(--space-3);
-  margin-top: var(--space-8);
+  margin-top: var(--stack-lead);
   grid-template-columns: 1fr;
 }
 
@@ -287,7 +287,7 @@ useHead(head)
   padding: var(--space-5);
   border: 1px solid var(--rule-on-bond);
   border-radius: var(--radius-card);
-  background-color: var(--bond-raised);
+  background-color: var(--cream);
   color: inherit;
   text-decoration: none;
   transition:
