@@ -57,12 +57,6 @@ onMounted(() => {
 
     <Container class="hero__frame">
       <div ref="copy" class="hero__panel" :class="{ 'is-revealed': revealed }">
-        <!--
-          Headline and supporting line share a row, the same split the rest of
-          the site uses for a long heading (SectionHeader's `aside`). At full
-          panel width a stacked headline left the entire right half of the card
-          empty and the copy reading as one isolated column.
-        -->
         <div class="hero__head hero__step" style="--i: 1">
           <Heading id="hero-title" :level="1" size="h1" class="hero__title">
             {{ title }}
@@ -82,13 +76,22 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.hero {
+/* `.section.hero`, not `.hero`: this is the one place a component overrides the
+   rhythm Section owns, and at equal specificity the winner would depend on which
+   scoped stylesheet the bundler emitted last. */
+.section.hero {
   position: relative;
   isolation: isolate;
   overflow: clip;
-  /* Full-viewport banner under the sticky header. */
+  /* Full-viewport banner under the sticky header.
+
+     The band is sized by `min-height` and centres its panel, so it deliberately
+     runs tighter than the standard rhythm — this padding is only the floor that
+     keeps the panel off the edges once the viewport is shorter than the banner.
+     Taken from the compact step rather than a one-off clamp so it still moves
+     with the rest of the scale. */
   min-height: min(92vh, 52rem);
-  padding-block: clamp(2rem, 4vw, 4rem);
+  padding-block: var(--section-rhythm-compact);
   display: flex;
   align-items: center;
   background-color: var(--bond);
@@ -231,24 +234,6 @@ onMounted(() => {
   }
 }
 
-@media (min-width: 900px) {
-  /*
-   * Headline and supporting line side by side. `end` alignment sits the smaller
-   * text on the headline's last baseline rather than floating it at the top of a
-   * three-line block.
-   */
-  .hero__head {
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-    align-items: end;
-    gap: var(--space-8);
-  }
-
-  .hero__subhead {
-    max-width: 34ch;
-    padding-bottom: var(--space-2);
-  }
-}
-
 @media (min-width: 1000px) {
   .hero__panel {
     min-height: 24rem;
@@ -257,18 +242,17 @@ onMounted(() => {
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  /* TRANSFORM ONLY — no opacity. See the note in ServiceHero and the reveal
+     block in globals.css: a fade makes every contrast check inside the
+     transition window measure a blended colour and fail intermittently. */
   .hero__step {
     transform: translateY(12px);
-    opacity: 0;
-    transition:
-      transform var(--duration-slow) var(--ease-standard),
-      opacity var(--duration-slow) var(--ease-standard);
+    transition: transform var(--duration-slow) var(--ease-standard);
     transition-delay: calc(var(--i, 0) * 70ms);
   }
 
   .hero__panel.is-revealed .hero__step {
     transform: translateY(0);
-    opacity: 1;
   }
 
   .hero__photo {
@@ -284,10 +268,11 @@ onMounted(() => {
 }
 
 @media (max-width: 719px) {
-  .hero {
+  /* Matches the specificity of the base rule above, which it has to override. */
+  .section.hero {
     min-height: auto;
     align-items: flex-end;
-    padding-block: var(--space-6) var(--space-7);
+    padding-block: var(--section-rhythm-compact);
   }
 
   .hero__wash {

@@ -41,7 +41,7 @@ const hasProof = props.items.length > 0
 .proof {
   display: grid;
   gap: var(--space-6);
-  margin-top: var(--space-6);
+  margin-top: var(--stack-lead);
   grid-template-columns: 1fr;
 }
 

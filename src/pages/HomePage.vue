@@ -102,8 +102,6 @@ useHead({
   <IndustriesMarquee
     :eyebrow="HOME_COPY.industries.eyebrow"
     :title="HOME_COPY.industries.title"
-    :note="HOME_COPY.industries.note"
-    :note-cta="HOME_COPY.industries.noteCta"
   />
 
   <HoursCalculator

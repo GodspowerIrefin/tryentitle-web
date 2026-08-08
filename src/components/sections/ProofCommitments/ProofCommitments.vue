@@ -116,7 +116,7 @@ function marker(i: number): string {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  margin-top: var(--space-8);
+  margin-top: var(--stack-lead);
 }
 
 .row {
@@ -152,22 +152,34 @@ function marker(i: number): string {
   gap: var(--space-5);
   min-height: 210px;
   padding: var(--space-5) var(--space-6);
-  background-color: var(--seal);
-  color: var(--ink);
+  /*
+   * A blush well, not an orange panel. The row alternates mark and copy, and
+   * that alternation used to be carried by flipping between full seal and white
+   * — four large orange fields down one section. It is now the faintest tint of
+   * the same hue (`--seal-wash`, the token the chips already use) against cream,
+   * so the rhythm survives at a fraction of the intensity. A neutral well was
+   * tried first and read as accidental grey; keeping the accent's hue and
+   * dropping only its saturation is what makes the panel look chosen.
+   */
+  background-color: var(--seal-wash);
+  color: var(--text-on-bond);
+  border: 1px solid color-mix(in srgb, var(--seal) 16%, transparent);
   border-radius: var(--radius-card);
   overflow: hidden;
-  box-shadow: 0 12px 28px color-mix(in srgb, var(--seal) 28%, transparent);
 }
 
+/* Ink, not the accent: `--seal-ink` is an alias of `--seal`, and raw seal on the
+   blush well is ~2.5:1. The panel's colour is carried by the burst, not by
+   tinting its label to the point of illegibility. */
 .mark__label,
 .mark__index {
   align-self: flex-start;
-  color: var(--ink);
+  color: var(--text-on-bond);
 }
 
 .mark__index {
   align-self: flex-end;
-  color: color-mix(in srgb, var(--ink) 65%, transparent);
+  color: var(--text-on-bond-muted);
 }
 
 .mark__burst {
@@ -192,22 +204,22 @@ function marker(i: number): string {
  * arc rather than a ring.
  */
 .burst__tick {
-  stroke: color-mix(in srgb, var(--ink) 45%, transparent);
+  stroke: color-mix(in srgb, var(--seal) 70%, transparent);
   stroke-width: 1.5;
   opacity: 1;
 }
 
 .burst__ring {
   fill: none;
-  stroke: var(--ink);
+  stroke: var(--seal);
   stroke-width: 1;
-  opacity: 0.35;
+  opacity: 0.6;
 }
 
 .mark__glyph {
   position: absolute;
   display: inline-flex;
-  color: var(--ink);
+  color: var(--seal-ink);
 }
 
 /* The burst turns slowly — one continuous, very low-amplitude motion rather than
@@ -239,7 +251,7 @@ function marker(i: number): string {
   justify-content: center;
   gap: var(--space-3);
   padding: var(--space-7);
-  background-color: var(--bond-raised);
+  background-color: var(--cream);
   border: 1px solid var(--rule-on-bond);
   border-radius: var(--radius-card);
 }
@@ -262,7 +274,7 @@ function marker(i: number): string {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  margin-top: var(--space-6);
+  margin-top: var(--stack-block);
   padding-top: var(--space-5);
   border-top: 1px solid var(--rule-on-bond);
 }

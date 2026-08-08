@@ -71,14 +71,14 @@ defineProps<{
   display: flex;
   flex-direction: column;
   gap: var(--space-7);
-  margin-top: var(--space-8);
+  margin-top: var(--stack-lead);
 }
 
 .band__flow {
   display: flex;
   justify-content: center;
   padding: var(--space-5);
-  background-color: var(--bond-raised);
+  background-color: var(--cream);
   border: 1px solid var(--rule-on-bond);
   border-radius: var(--radius-card);
 }
@@ -100,7 +100,7 @@ defineProps<{
   flex-direction: column;
   gap: var(--space-3);
   padding: var(--space-5);
-  background-color: var(--bond-raised);
+  background-color: var(--cream);
   border: 1px solid var(--rule-on-bond);
   border-radius: var(--radius-card);
 }

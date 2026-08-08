@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { ROUTES } from './routes'
+import { BOOKING_LABEL, ROUTES } from './routes'
 
 /**
  * NFR1 — responsive from 360px through 1920px with no horizontal scroll at any
@@ -35,7 +35,7 @@ test.describe('hero above the fold', () => {
     await page.setViewportSize({ width: 360, height: 640 })
     await page.goto('/')
     await expect(
-      page.locator('main').getByRole('link', { name: /book a workflow review/i }).first(),
+      page.locator('main').getByRole('link', { name: BOOKING_LABEL }).first(),
     ).toBeInViewport()
   })
 })

@@ -98,13 +98,13 @@ const hasExamples = () => Boolean(props.examples?.length)
 <style scoped>
 .oversight {
   display: grid;
-  gap: var(--space-8);
+  gap: var(--stack-lead);
 }
 
 @media (min-width: 960px) {
   .oversight {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--space-9);
+    gap: var(--space-8);
     align-items: center;
   }
 }
@@ -249,28 +249,4 @@ const hasExamples = () => Boolean(props.examples?.length)
   color: var(--seal);
 }
 
-/* ─── Claims row ─────────────────────────────────────────────────────── */
-.oversight__claims {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--rule-on-ink);
-}
-
-.oversight__claims li {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  color: var(--text-on-ink-muted);
-}
-
-.oversight__claims li::before {
-  content: '';
-  width: 5px;
-  height: 5px;
-  flex: none;
-  border-radius: var(--radius-pill);
-  background-color: var(--verify);
-}
 </style>

@@ -306,8 +306,11 @@ watch(
   /* Soft atmosphere behind the paper shell — consulting-landing air, not a tinted box. */
   background:
     radial-gradient(ellipse 80% 70% at 12% 0%, var(--seal-wash), transparent 55%),
-    radial-gradient(ellipse 60% 50% at 100% 80%, color-mix(in srgb, var(--seal) 8%, transparent), transparent 50%),
-    var(--bond);
+    radial-gradient(
+      ellipse 60% 50% at 100% 80%,
+      color-mix(in srgb, var(--seal) 8%, transparent),
+      transparent 50%
+    );
 }
 
 .shell {
@@ -474,14 +477,21 @@ watch(
   color: var(--ink);
 }
 
+/*
+ * 85%, not 72%. Muted text has to stay muted RELATIVE to the figure above it,
+ * but seal is a bright ground: at 72% ink the blend lands on 4.0:1, under AA for
+ * body size. 85% measures 5.03:1 and still reads a clear step below the full-ink
+ * figure (6.1:1). Any further mixing toward transparent on this panel fails —
+ * this is the floor, not a preference.
+ */
 .result__caption {
   font-size: var(--text-body);
-  color: color-mix(in srgb, var(--ink) 72%, transparent);
+  color: color-mix(in srgb, var(--ink) 85%, transparent);
 }
 
 .result__note {
   margin-top: auto;
-  color: color-mix(in srgb, var(--ink) 72%, transparent);
+  color: color-mix(in srgb, var(--ink) 85%, transparent);
   font-size: var(--text-body-sm);
   max-width: 36ch;
   line-height: var(--leading-body);
@@ -509,7 +519,7 @@ watch(
   font-size: var(--text-utility);
   letter-spacing: var(--tracking-utility);
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--ink) 72%, transparent);
+  color: color-mix(in srgb, var(--ink) 85%, transparent);
 }
 
 .exits__row {

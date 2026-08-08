@@ -62,18 +62,17 @@ const year = new Date().getFullYear()
 
 <style scoped>
 .footer {
-  /* The shared cream sheet — same surface as the header and the closing band. */
-  background-color: var(--cream);
+  background-color: var(--bond-raised);
   color: var(--text-on-bond);
-  padding-block: clamp(3rem, 6vw, 5rem);
-  /* The page ground is bond and the footer is a shade lighter, so without a rule
-     the boundary is ambiguous wherever the last band is also light. */
+  /* The footer is not a Section, so it states its rhythm — but from the same
+     scale, at the compact step, so it never lands between two of the steps. */
+  padding-block: var(--section-rhythm-compact);
   border-top: 1px solid var(--rule-on-bond);
 }
 
 .footer__top {
   display: grid;
-  gap: var(--space-8);
+  gap: var(--stack-lead);
 }
 
 @media (min-width: 900px) {
@@ -154,7 +153,7 @@ const year = new Date().getFullYear()
   flex-wrap: wrap;
   justify-content: space-between;
   gap: var(--space-2);
-  margin-top: var(--space-8);
+  margin-top: var(--stack-block);
   padding-top: var(--space-5);
   border-top: 1px solid var(--rule-on-bond);
   color: var(--text-on-bond-muted);

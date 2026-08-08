@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { BOOKING_LABEL } from './routes'
 
 /**
  * Navigation behaviour (PRD §6.1, FR1, NFR5, §12.5).
@@ -24,7 +25,7 @@ test.describe('desktop navigation', () => {
     await page.evaluate(() => window.scrollTo(0, 3000))
     // The sticky header keeps the booking CTA reachable without scrolling back up.
     await expect(
-      page.locator('header').getByRole('link', { name: /book a workflow review/i }),
+      page.locator('header').getByRole('link', { name: BOOKING_LABEL }),
     ).toBeInViewport()
   })
 })
@@ -66,7 +67,7 @@ test.describe('mobile navigation', () => {
     await page.goto('/')
     await page.getByRole('button', { name: 'Open menu' }).click()
     const dialog = page.getByRole('dialog', { name: 'Site navigation' })
-    await expect(dialog.getByRole('link', { name: /book a workflow review/i })).toBeInViewport()
+    await expect(dialog.getByRole('link', { name: BOOKING_LABEL })).toBeInViewport()
   })
 })
 

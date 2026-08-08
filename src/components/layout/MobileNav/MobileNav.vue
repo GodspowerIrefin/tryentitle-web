@@ -151,7 +151,7 @@ onBeforeUnmount(() => {
   flex-direction: column;
   width: min(90vw, 360px);
   height: 100dvh;
-  background-color: var(--bond-raised);
+  background-color: var(--cream);
   box-shadow: var(--shadow-overlay);
   padding: var(--space-4);
 }

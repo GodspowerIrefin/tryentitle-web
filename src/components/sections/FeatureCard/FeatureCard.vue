@@ -44,15 +44,15 @@ withDefaults(
     statTone?: 'neutral' | 'seal' | 'verify' | 'redline'
     /** Heading level, for correct document outline. */
     level?: 2 | 3 | 4
-    /** Orange brand fill with dark text. */
-    surface?: 'default' | 'seal'
+    /** `marked` adds Card's seal head-rule. Not a fill — see tokens.css. */
+    surface?: 'default' | 'marked'
   }>(),
   { statTone: 'redline', level: 3, surface: 'default' },
 )
 </script>
 
 <template>
-  <Card :to="to" class="fcard" :class="{ 'fcard--seal': surface === 'seal' }" :surface="surface">
+  <Card :to="to" class="fcard" :surface="surface">
     <div v-if="icon || stat" class="fcard__top">
       <span v-if="icon" class="fcard__tile" aria-hidden="true">
         <Icon :name="icon" :size="20" />
@@ -108,9 +108,11 @@ withDefaults(
   color: var(--ink);
 }
 
+/* The tile is where seal earns its keep on a dark band — a small saturated mark
+   against `--ink-raised`, rather than the card itself going orange. */
 .on-ink .fcard__tile {
-  background-color: var(--ink);
-  color: var(--seal);
+  background-color: var(--seal);
+  color: var(--ink);
   border: none;
 }
 
@@ -123,7 +125,7 @@ withDefaults(
 }
 
 .on-ink .fcard__eyebrow {
-  color: var(--ink);
+  color: var(--seal);
 }
 
 .fcard__title {
@@ -135,7 +137,7 @@ withDefaults(
 }
 
 .on-ink .fcard__title {
-  color: var(--ink);
+  color: var(--text-on-ink);
 }
 
 .fcard__body {
@@ -147,7 +149,7 @@ withDefaults(
 }
 
 .on-ink .fcard__body {
-  color: color-mix(in srgb, var(--ink) 78%, transparent);
+  color: var(--text-on-ink-muted);
 }
 
 .fcard__chips {
@@ -170,32 +172,8 @@ withDefaults(
 }
 
 .on-ink .fcard__cta {
-  border-top-color: color-mix(in srgb, var(--ink) 22%, transparent);
-  color: var(--ink);
-}
-
-/* Orange surface — ink (near-black) type on seal fill. */
-.fcard--seal .fcard__tile {
-  background-color: var(--ink);
+  border-top-color: var(--rule-on-ink);
   color: var(--seal);
-  border: none;
-}
-
-.fcard--seal .fcard__eyebrow {
-  color: var(--ink);
-}
-
-.fcard--seal .fcard__title {
-  color: var(--ink);
-}
-
-.fcard--seal .fcard__body {
-  color: color-mix(in srgb, var(--ink) 78%, transparent);
-}
-
-.fcard--seal .fcard__cta {
-  border-top-color: color-mix(in srgb, var(--ink) 22%, transparent);
-  color: var(--ink);
 }
 
 /* Arrow nudge — the third cue of the single hover gesture (spec §2). */

@@ -74,7 +74,7 @@ const teasers = () => props.items.slice(0, 3)
 .notes {
   display: grid;
   gap: var(--space-4);
-  margin-top: var(--space-8);
+  margin-top: var(--stack-lead);
   grid-template-columns: 1fr;
 }
 

@@ -21,6 +21,12 @@ defineProps<{
   eyebrow?: string
   title: string
   items: readonly FaqItem[]
+  /**
+   * Heading level for the section lead. Defaults to h2 for the home band; the
+   * /faq page passes 1, where this accordion is the entire page and its lead is
+   * therefore the page's h1.
+   */
+  level?: 1 | 2 | 3
   /** Optional link to the full FAQ page (home short set only). */
   moreHref?: string
   moreLabel?: string
@@ -38,7 +44,12 @@ function toggle(index: number) {
     <Container>
       <div class="faq-layout">
         <div class="faq-layout__head">
-          <SectionHeader :eyebrow="eyebrow ?? ''" :title="title ?? ''" title-id="faq-title" />
+          <SectionHeader
+            :eyebrow="eyebrow ?? ''"
+            :title="title ?? ''"
+            :level="level"
+            title-id="faq-title"
+          />
           <RouterLink v-if="moreHref" :to="moreHref" class="faq-more">
             {{ moreLabel ?? 'See all questions' }}
             <Icon name="arrow-right" :size="16" />
@@ -85,15 +96,18 @@ function toggle(index: number) {
 </template>
 
 <style scoped>
+/* Stacked, the gap between the head and the questions is the same header → body
+   relationship every other section has, so it uses the same token. Side by side
+   it becomes a column gutter and the vertical value no longer applies. */
 .faq-layout {
   display: grid;
-  gap: var(--space-8);
+  gap: var(--stack-lead);
 }
 
 @media (min-width: 960px) {
   .faq-layout {
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-    gap: var(--space-9);
+    gap: var(--space-8);
     align-items: start;
   }
 }
