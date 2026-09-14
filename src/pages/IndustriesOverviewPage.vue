@@ -27,9 +27,6 @@ useHead({
   ],
 })
 
-/** Healthcare's pulse glyph, as drawn in the design. */
-const FEATURED_ICON = 'M3 12h4l2-5 3 10 2-5h4'
-
 const featured = INDUSTRIES[0]!
 /** Professional Services reads as its workflow list, exactly as in the design. */
 const rest = INDUSTRIES.slice(1).map((ind) => ({
@@ -46,20 +43,6 @@ const rest = INDUSTRIES.slice(1).map((ind) => ({
 
   <section class="featured-wrap">
     <RouterLink :to="`/industries/${featured.slug}`" class="featured">
-      <span class="featured__icon" aria-hidden="true">
-        <svg
-          width="26"
-          height="26"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path :d="FEATURED_ICON" />
-        </svg>
-      </span>
       <h2 class="featured__name">{{ featured.name }}</h2>
       <p class="featured__blurb">{{ featured.outcome }}</p>
       <span class="featured__more">Learn more <span class="featured__arrow" aria-hidden="true">→</span></span>
@@ -137,27 +120,10 @@ h2 {
   transform: translateY(-3px);
 }
 
-.featured__icon {
-  width: 66px;
-  height: 66px;
-  border-radius: 14px;
-  background: var(--charcoal);
-  color: var(--orange);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.featured__icon svg {
-  width: 26px;
-  height: 26px;
-}
-
 .featured__name {
   font-size: clamp(40px, 5.4vw, 68px);
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: -0.03em;
-  margin-top: 34px;
   color: var(--black);
 }
 
