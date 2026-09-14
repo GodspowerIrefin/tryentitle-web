@@ -2,21 +2,15 @@
 /**
  * MobileNav
  *
- * The full-height mobile navigation panel (PRD §6.1). Client-interactive by
- * necessity — this is the smallest leaf that owns the open/close behaviour so
- * the rest of the header stays static (PRD §11.3 rule 7 intent).
+ * The full-height mobile navigation panel (PRD §6.1), in the premium design's
+ * charcoal chrome.
  *
  * Accessibility contract (PRD NFR5, §12.5):
- * - Rendered as a modal dialog: focus is trapped inside while open, Tab and
- *   Shift+Tab cycle within the panel, Escape closes it, and focus returns to the
- *   trigger on close (handled by the parent via the `close` event).
+ * - Modal dialog: focus is trapped inside while open, Tab and Shift+Tab cycle
+ *   within the panel, Escape closes it, and focus returns to the trigger on
+ *   close (handled by the parent via the `close` event).
  * - The booking CTA is pinned inside the panel and never scrolls out of reach.
- * - Background scroll is locked while the panel is open.
- * - The rest of the app is marked `inert` while open, so background content is
- *   removed from the accessibility tree, from tab order, and from hit-testing.
- *   `aria-modal` alone only advises screen readers; it leaves the background
- *   live for everything else (and an axe scan flags contrast on content sitting
- *   under the 40% scrim, which is real — that text is genuinely unreadable).
+ * - Background scroll is locked and the rest of the app is marked `inert`.
  */
 import { nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
@@ -59,10 +53,7 @@ function onKeydown(e: KeyboardEvent) {
   }
 }
 
-/**
- * Toggle `inert` on the app root. The panel is teleported to <body>, so it is a
- * SIBLING of #app and stays interactive while everything behind it goes inert.
- */
+/** The panel is teleported to <body>, so it stays live while #app goes inert. */
 function setBackgroundInert(inert: boolean) {
   const app = document.getElementById('app')
   if (!app) return
@@ -128,7 +119,7 @@ onBeforeUnmount(() => {
           </nav>
 
           <div class="panel__cta">
-            <BookingButton placement="mobile-nav" variant="primary" size="lg" />
+            <BookingButton placement="mobile-nav" pill hover="paper" class="panel__pill" />
           </div>
         </div>
       </div>
@@ -141,7 +132,7 @@ onBeforeUnmount(() => {
   position: fixed;
   inset: 0;
   z-index: 90;
-  background-color: var(--scrim);
+  background-color: rgb(0 0 0 / 0.6);
   display: flex;
   justify-content: flex-end;
 }
@@ -151,65 +142,66 @@ onBeforeUnmount(() => {
   flex-direction: column;
   width: min(90vw, 360px);
   height: 100dvh;
-  background-color: var(--cream);
-  box-shadow: var(--shadow-overlay);
-  padding: var(--space-4);
+  background-color: var(--charcoal);
+  color: var(--paper);
+  padding: 20px;
 }
 
 .panel__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-block: var(--space-2) var(--space-4);
-  border-bottom: 1px solid var(--rule-on-bond);
+  padding-block: 8px 16px;
+  border-bottom: 1px solid var(--charcoal-rule);
 }
 
 .panel__label {
-  font-family: var(--font-mono);
-  font-size: var(--text-utility);
-  letter-spacing: var(--tracking-utility);
+  font-size: 12px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-on-bond-muted);
+  color: var(--stone-550);
 }
 
 .panel__close {
   display: inline-flex;
-  padding: var(--space-2);
-  color: var(--text-on-bond);
+  padding: 8px;
+  color: var(--paper);
 }
 
 .panel__nav {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  padding-block: var(--space-4);
+  gap: 4px;
+  padding-block: 16px;
   overflow-y: auto;
   flex: 1 0 auto;
 }
 
 .panel__link {
-  font-family: var(--font-display);
-  font-size: var(--text-h3);
-  font-weight: 400;
-  color: var(--text-on-bond);
-  padding-block: var(--space-2);
+  font-size: 30px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--paper);
+  text-decoration: none;
+  padding-block: 8px;
 }
 
 .panel__link:hover {
-  color: var(--text-on-bond);
+  color: var(--orange);
 }
 
-/* CTA pinned to the bottom of the panel, never scrolls out of reach */
 .panel__cta {
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--rule-on-bond);
+  padding-top: 16px;
+  border-top: 1px solid var(--charcoal-rule);
 }
 
-.panel__cta :deep(.btn) {
+.panel__pill {
   width: 100%;
+  justify-content: center;
+  padding: 15px 30px;
+  font-size: 16px;
 }
 
-/* Slide-in; motion respects the reduced-motion reset in globals.css */
 .panel-enter-active,
 .panel-leave-active {
   transition: opacity var(--duration-base) var(--ease-standard);

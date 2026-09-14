@@ -176,7 +176,10 @@ const showToc = computed(() => props.toc.length > 2)
   padding-inline-start: var(--space-5);
 }
 
+/* Block + 24px line box keeps every entry at the WCAG 2.2 minimum target size. */
 .toc a {
+  display: inline-block;
+  line-height: 24px;
   color: var(--text-on-bond-muted);
   font-size: var(--text-body-sm);
 }

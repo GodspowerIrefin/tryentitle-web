@@ -35,9 +35,9 @@
 
 :root {
   /* ─── Grounds ──────────────────────────────────────────────────────── */
-  --ink: #131a22; /* Primary dark ground; nav on scroll; footer            */
-  --ink-raised: #1c2733; /* Cards, tabs, panels on dark bands             */
-  --bond: #f4f3f1; /* Warm off-white paper ground                         */
+  --ink: #1c1c1a; /* Primary dark ground; header; footer                   */
+  --ink-raised: #32322f; /* Cards, tabs, panels on dark bands             */
+  --bond: #ffffff; /* Paper ground                                        */
   --bond-raised: #ffffff; /* Cards on light bands                          */
   /*
    * The cream sheet: warm white, a shade lighter than the bond page ground.
@@ -83,9 +83,9 @@
    * something or just being coloured. If it is the second, it wants `--cream`
    * with a seal detail on it.
    */
-  --seal: #ff6a16; /* Secondary orange. Marks, rules, tabs, tiles         */
-  --seal-text-lg: #d95a13; /* ~3.5:1 on bond — LARGE text only (≥24px)    */
-  --seal-ink: #a6450e; /* ~5.4:1 on bond — safe for body-size text        */
+  --seal: #f26522; /* Secondary orange. Marks, rules, tabs, tiles         */
+  --seal-text-lg: #c0521c; /* 4.7:1 on white                                */
+  --seal-ink: #a8481a; /* 5.3:1 on --seal-wash — body-size text on tints   */
   --seal-wash: #fff0e8; /* Faint orange tint for chips on bond            */
 
   --verify: #2fa98c; /* Completion, "automated" states. Fill-only on bond  */
@@ -97,8 +97,36 @@
                               previous #e0705c measured only 4.29:1 */
   --redline-wash: #fbe9e6;
 
-  --graphite: #5a6672; /* Muted body text and rules ON BOND (5.27:1)       */
-  --muted-on-ink: #97a3af; /* Muted body text ON INK (6.83:1)              */
+  --graphite: #5a594f; /* Muted body text and rules ON BOND                */
+  --muted-on-ink: #a8a6a1; /* Muted body text ON INK                       */
+
+  /*
+   * ─── Premium palette — the TryEntitle.dc.html design file ────────────
+   * Warm stone neutrals named by lightness. The site chrome (header, footer,
+   * newsletter band) and the home / services / industries pages use these.
+   */
+  --paper: #ffffff;
+  --charcoal: #1c1c1a;
+  --charcoal-rule: #32322f;
+  --black: #111112;
+  --black-hover: #2e2f2b;
+  --orange: #f26522;
+  --orange-text: #c0521c; /* 4.7:1 on white only */
+  --orange-text-strong: #b04a19; /* 5.1:1 on --stone-50 panels */
+  --peach: #f2a277;
+  --placeholder-on-orange: #4a2a16;
+  --stone-50: #f7f7f6;
+  --stone-100: #dfdeda;
+  --stone-200: #e6e5e2;
+  --stone-300: #d2d1cd;
+  --stone-400: #a8a6a1;
+  --stone-450: #b0ada7;
+  --stone-500: #94918b;
+  --stone-550: #8f8d88;
+  --stone-600: #6b6a63;
+  --stone-650: #5a594f;
+  --stone-700: #4a4a44;
+  --stone-800: #3d3d37;
 
   /* ─── Semantic aliases — components use these, never the scale ─────── */
   --text-on-bond: var(--ink); /* 13.9:1                                    */
@@ -187,11 +215,9 @@
   --duration-slow: 400ms;
 
   /* ─── Type families ────────────────────────────────────────────────── */
-  --font-display:
-    'Bricolage Grotesque Variable', 'Bricolage Grotesque', 'Arial Narrow', system-ui, sans-serif;
-  --font-body:
-    'Instrument Sans Variable', 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', 'Menlo', monospace;
+  --font-display: 'Newsreader Variable', Newsreader, Georgia, serif;
+  --font-body: 'Newsreader Variable', Newsreader, Georgia, serif;
+  --font-mono: 'Newsreader Variable', Newsreader, Georgia, serif;
 
   /* ─── Type scale — spec §1, mobile → desktop ───────────────────────── */
   /*

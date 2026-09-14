@@ -12,16 +12,10 @@ import './styles/motion.css'
 // Self-hosted fonts (PRD NFR7). Fontsource ships woff2 + `font-display: swap`
 // with no external requests at runtime. Latin subsets only.
 //
-// Bricolage Grotesque carries H1–H2 only. `standard.css` includes both the
-// weight and WIDTH axes — the width axis is what lets display type narrow at
-// large sizes for the engineered feel the spec asks for (§1 Typography).
-import '@fontsource-variable/bricolage-grotesque/standard.css'
-// Instrument Sans covers all body copy, cards, and nav across 400–600.
-import '@fontsource-variable/instrument-sans/standard.css'
-// Plex Mono is the utility face: eyebrows, stage labels, stat figures, and the
-// process rail. It is the personality carrier — every label reads as a record
-// entry, which is what sells "auditable process" (§1).
-import '@fontsource/ibm-plex-mono/500.css'
+// Newsreader is the one face across the whole site — display, body, and labels —
+// matching the premium design file. `opsz.css` carries the weight (200–800) AND
+// optical-size axes, so large headlines get the display cut automatically.
+import '@fontsource-variable/newsreader/opsz.css'
 
 /**
  * ViteSSG statically generates every route at build time and hydrates on the
