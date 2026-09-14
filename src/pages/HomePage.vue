@@ -921,11 +921,20 @@ h3 {
     gap: 56px;
   }
   .differ__bar {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
   }
   .differ__auto,
   .differ__human {
     height: auto;
+    padding: 20px 16px;
+  }
+  .differ__label {
+    font-size: 20px;
+    line-height: 1.15;
+  }
+  .differ__sub {
+    font-size: 13px;
+    line-height: 1.35;
   }
   .differ__label--auto {
     width: auto;

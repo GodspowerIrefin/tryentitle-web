@@ -238,13 +238,6 @@ const COVER = { width: 1600, height: 900 } as const
 </template>
 
 <style scoped>
-/* One value for both places a cover appears — the grid tile and the reader
-   banner — so the art never sits at two different strengths across the click. */
-.grid,
-.scrim {
-  --cover-opacity: 0.85;
-}
-
 .grid {
   display: grid;
   gap: var(--space-5);
@@ -363,13 +356,6 @@ const COVER = { width: 1600, height: 900 } as const
    * chart's colour (the only saturated thing in the frame) from going with it.
    */
   filter: brightness(0.72) contrast(1.12) saturate(1.22);
-  /*
-   * Held back off full strength so the ink ground behind it reads through the
-   * render rather than being covered by it — the cover sits in the card's
-   * palette instead of on top of it. Paired with the filter above: brightness
-   * darkens the art, this settles it into the tile.
-   */
-  opacity: var(--cover-opacity);
   transition: transform var(--duration-slow) var(--ease-standard);
 }
 
@@ -499,7 +485,6 @@ const COVER = { width: 1600, height: 900 } as const
   object-fit: cover;
   object-position: 50% 30%;
   filter: brightness(0.72) contrast(1.12) saturate(1.22);
-  opacity: var(--cover-opacity);
   pointer-events: none;
 }
 
