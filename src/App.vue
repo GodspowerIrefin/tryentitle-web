@@ -9,6 +9,7 @@
  * screen-reader users land in the new page's content, not back at the top.
  */
 import { RouterView } from 'vue-router'
+import { Analytics } from '@vercel/analytics/vue'
 import SkipToContent from '@/components/layout/SkipToContent'
 import SiteHeader from '@/components/layout/SiteHeader'
 import NewsletterBand from '@/components/layout/NewsletterBand'
@@ -38,6 +39,7 @@ import SiteFooter from '@/components/layout/SiteFooter'
   </main>
   <NewsletterBand />
   <SiteFooter />
+  <Analytics />
 </template>
 
 <style scoped>
