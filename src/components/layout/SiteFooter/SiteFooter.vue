@@ -21,7 +21,7 @@ const year = new Date().getFullYear()
   <footer class="footer">
     <div class="footer__top">
       <div>
-        <RouterLink to="/" class="footer__logo" aria-label="TryEntitle — home">
+        <RouterLink to="/" class="footer__logo" aria-label="TryEntitle home">
           <img
             src="/brand/logo-mark@2x.png"
             alt=""
@@ -31,7 +31,9 @@ const year = new Date().getFullYear()
             loading="lazy"
             decoding="async"
           />
-          <span class="footer__word" aria-hidden="true"><span class="logo__word-try">Try</span>Entitle</span>
+          <span class="footer__word" aria-hidden="true"
+            ><span class="logo__word-try">Try</span>Entitle</span
+          >
         </RouterLink>
         <p class="footer__tagline">{{ SITE_TAGLINE }}</p>
         <BookingButton placement="footer" pill hover="paper" class="footer__cta" />

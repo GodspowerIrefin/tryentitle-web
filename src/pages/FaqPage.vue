@@ -15,7 +15,7 @@ useHead({
   ...buildHead({
     title: 'FAQ',
     description:
-      'Answers to the questions teams ask before a workflow review — software, staffing, cost, data, and what happens if you do not move forward.',
+      'Answers to the questions teams ask before a workflow review: software, staffing, cost, data, and what happens if you do not move forward.',
     path: '/faq',
     image: '/og/home.png',
   }),

@@ -42,8 +42,8 @@ const cardHeadingTag = computed(() => `h${props.level === 1 ? 2 : 3}`)
 
 const defaultAside = computed(() =>
   props.variant === 'cards'
-    ? 'Seven fields we know the paperwork of. Pick one for the workflows we redesign — and how a person stays on the exceptions.'
-    : 'A sample of the fields we know the paperwork of. Open one for the workflows — or see the full list.',
+    ? 'Seven fields we know the paperwork of. Pick one for the workflows we redesign, and how a person stays on the exceptions.'
+    : 'A sample of the fields we know the paperwork of. Open one for the workflows, or see the full list.',
 )
 
 const featured = computed(() => (props.variant === 'cards' ? props.items[0] : undefined))

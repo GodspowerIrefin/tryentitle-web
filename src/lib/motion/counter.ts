@@ -30,7 +30,9 @@ function easeOut(t: number): number {
  * Split "1,240+" into prefix "", digits "1,240", suffix "+".
  * Returns null when there is no numeric run to animate.
  */
-function parse(text: string): { prefix: string; value: number; suffix: string; decimals: number } | null {
+function parse(
+  text: string,
+): { prefix: string; value: number; suffix: string; decimals: number } | null {
   const match = /-?[\d,]*\.?\d+/.exec(text)
   if (!match) return null
 

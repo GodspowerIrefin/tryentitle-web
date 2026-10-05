@@ -4,7 +4,7 @@ description: We follow your operation end to end and show you where the time, th
 order: 1
 ---
 
-Before anything gets automated, we watch how the work actually happens — not how the process doc says it happens. The assessment is a short, focused engagement that produces a map of one or more of your processes and a clear recommendation for each step.
+Before anything gets automated, we watch how the work actually happens, not how the process doc says it happens. The assessment is a short, focused engagement that produces a map of one or more of your processes and a clear recommendation for each step.
 
 ## The symptoms it addresses
 
@@ -15,7 +15,7 @@ Before anything gets automated, we watch how the work actually happens — not h
 ## What we deliver
 
 - A workflow map showing every handoff, wait, and rekey in the process as it runs today.
-- A step-by-step recommendation — automate, redesign, or leave alone — with the reason for each.
+- A step-by-step recommendation of automate, redesign, or leave alone, with the reason for each.
 - A rough estimate of the time each change would give back per week.
 
 ## Where a human stays in the loop

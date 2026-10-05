@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" aria-label="A magnifier held over a rising chart beside a stack of coins and a question-mark badge">
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF3EC"/>
+      <stop offset="100%" stop-color="#FDEFE6"/>
+    </linearGradient>
+    <radialGradient id="pool" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1C1C1A" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#1C1C1A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#ground)"/>
+  <ellipse cx="800" cy="884" rx="460" ry="54" fill="url(#pool)"/>
+
+  <!-- ── The claim being checked ─────────────────────────────────────── -->
+  <g>
+    <rect x="300" y="208" width="700" height="520" rx="30" fill="#2A2A27"/>
+    <rect x="300" y="208" width="700" height="506" rx="30" fill="#FFFFFF"/>
+    <rect x="300" y="208" width="700" height="66" rx="30" fill="#1C1C1A"/>
+    <rect x="300" y="242" width="700" height="32" fill="#1C1C1A"/>
+    <circle cx="340" cy="241" r="10" fill="#F26522"/>
+    <circle cx="374" cy="241" r="10" fill="#2FA98C"/>
+    <circle cx="408" cy="241" r="10" fill="#5A594F"/>
+
+    <rect x="356" y="636" width="592" height="6" rx="3" fill="#E6E5E2"/>
+
+    <!-- claimed, then measured -->
+    <rect x="384" y="520" width="78" height="116" rx="12" fill="#E6E5E2"/>
+    <rect x="384" y="470" width="78" height="50" rx="12" fill="#F2A277"/>
+
+    <rect x="508" y="470" width="78" height="166" rx="12" fill="#E6E5E2"/>
+    <rect x="508" y="406" width="78" height="64" rx="12" fill="#F2A277"/>
+
+    <rect x="632" y="412" width="78" height="224" rx="12" fill="#2FA98C"/>
+    <rect x="756" y="364" width="78" height="272" rx="12" fill="#F26522"/>
+    <rect x="880" y="320" width="78" height="316" rx="12" fill="#1C1C1A"/>
+  </g>
+
+  <!-- ── Magnifier over the numbers ──────────────────────────────────── -->
+  <g>
+    <path d="M1016 652 L1148 784" stroke="#2A2A27" stroke-width="48" stroke-linecap="round"/>
+    <path d="M1016 652 L1148 784" stroke="#46463F" stroke-width="26" stroke-linecap="round"/>
+    <circle cx="930" cy="566" r="166" fill="#2A2A27"/>
+    <circle cx="920" cy="556" r="166" fill="#46463F"/>
+    <circle cx="920" cy="556" r="134" fill="#FFFFFF" fill-opacity="0.92"/>
+    <circle cx="920" cy="556" r="134" fill="none" stroke="#F26522" stroke-width="10"/>
+    <path d="M866 586 L908 534 L944 560 L1000 492" fill="none" stroke="#F26522"
+          stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- ── What it cost, what it returned ──────────────────────────────── -->
+  <g>
+    <!-- coin stack -->
+    <ellipse cx="1312" cy="796" rx="130" ry="40" fill="#C0521C"/>
+    <rect x="1182" y="728" width="260" height="68" fill="#C0521C"/>
+    <ellipse cx="1312" cy="728" rx="130" ry="40" fill="#F26522"/>
+    <rect x="1182" y="656" width="260" height="64" fill="#C0521C"/>
+    <ellipse cx="1312" cy="656" rx="130" ry="40" fill="#F26522"/>
+    <rect x="1182" y="584" width="260" height="64" fill="#C0521C"/>
+    <ellipse cx="1312" cy="584" rx="130" ry="40" fill="#F58A4E"/>
+    <ellipse cx="1312" cy="584" rx="84" ry="24" fill="#FFD9C4"/>
+  </g>
+
+  <!-- ── The question ────────────────────────────────────────────────── -->
+  <g>
+    <circle cx="1296" cy="300" r="128" fill="#23856E"/>
+    <circle cx="1286" cy="290" r="128" fill="#2FA98C"/>
+    <path d="M1240 250 a46 46 0 1 1 46 46 v26" fill="none" stroke="#FFFFFF"
+          stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="1286" cy="356" r="17" fill="#FFFFFF"/>
+  </g>
+</svg>

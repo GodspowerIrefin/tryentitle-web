@@ -39,6 +39,14 @@ function slugify(s: string): string {
 
 function createRenderer(): MarkdownIt {
   const md = new MarkdownIt({ html: false, linkify: true, typographer: true })
+  /*
+   * Typography is on for the quotes and apostrophes, but its text replacements
+   * are not: that rule rewrites "(c)" as "©", which silently corrupted the GDPR
+   * citation "Art. 6(1)(c)" on the privacy page. Legal text has to survive the
+   * renderer verbatim. Smart quotes come from the separate `smartquotes` rule
+   * and are unaffected; the content writes its own em dashes.
+   */
+  md.disable('replacements')
   md.use(anchor, {
     slugify,
     permalink: anchor.permalink.linkInsideHeader({
@@ -104,9 +112,7 @@ function compile(id: string): string {
       const issues = result.error.issues
         .map((iss) => `  - ${iss.path.join('.') || '(root)'}: ${iss.message}`)
         .join('\n')
-      throw new Error(
-        `md-content: invalid frontmatter in ${collection}/${slug}.md\n${issues}`,
-      )
+      throw new Error(`md-content: invalid frontmatter in ${collection}/${slug}.md\n${issues}`)
     }
   }
 

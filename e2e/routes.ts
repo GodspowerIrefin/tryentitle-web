@@ -23,7 +23,6 @@ export const SERVICE_SLUGS = [
   'systems-integration',
   'managed-operations',
   'operational-intelligence',
-  'integrations-process-intelligence',
 ]
 
 export const INDUSTRY_SLUGS = [
@@ -36,7 +35,7 @@ export const INDUSTRY_SLUGS = [
   'professional-services',
 ]
 
-export const LEGAL_SLUGS = ['privacy', 'terms', 'security', 'dpa']
+export const LEGAL_SLUGS = ['privacy', 'terms', 'security']
 
 export const ROUTES: string[] = [
   '/',

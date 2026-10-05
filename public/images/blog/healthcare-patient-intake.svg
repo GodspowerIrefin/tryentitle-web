@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" aria-label="A patient intake form on a clipboard beside a booked appointment card, a medical cross badge and a stopwatch">
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF3EC"/>
+      <stop offset="100%" stop-color="#FDEFE6"/>
+    </linearGradient>
+    <radialGradient id="pool" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1C1C1A" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#1C1C1A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#ground)"/>
+  <ellipse cx="800" cy="884" rx="460" ry="54" fill="url(#pool)"/>
+
+  <!-- ── Clipboard: the intake form, completed before arrival ────────── -->
+  <g>
+    <rect x="236" y="212" width="440" height="580" rx="30" fill="#2A2A27"/>
+    <rect x="236" y="212" width="440" height="566" rx="30" fill="#46463F"/>
+    <rect x="272" y="264" width="368" height="478" rx="16" fill="#FFFFFF"/>
+    <!-- clip -->
+    <rect x="396" y="184" width="120" height="64" rx="18" fill="#C0521C"/>
+    <rect x="396" y="184" width="120" height="52" rx="18" fill="#F26522"/>
+
+    <rect x="306" y="308" width="180" height="18" rx="9" fill="#1C1C1A"/>
+
+    <!-- answered fields -->
+    <g>
+      <rect x="306" y="366" width="300" height="46" rx="12" fill="#F7F7F6"/>
+      <rect x="326" y="382" width="150" height="14" rx="7" fill="#C9C8C3"/>
+      <circle cx="580" cy="389" r="15" fill="#2FA98C"/>
+
+      <rect x="306" y="432" width="300" height="46" rx="12" fill="#F7F7F6"/>
+      <rect x="326" y="448" width="196" height="14" rx="7" fill="#C9C8C3"/>
+      <circle cx="580" cy="455" r="15" fill="#2FA98C"/>
+
+      <rect x="306" y="498" width="300" height="46" rx="12" fill="#F7F7F6"/>
+      <rect x="326" y="514" width="120" height="14" rx="7" fill="#C9C8C3"/>
+      <circle cx="580" cy="521" r="15" fill="#2FA98C"/>
+
+      <!-- the one still missing, flagged rather than guessed -->
+      <rect x="298" y="564" width="316" height="54" rx="14" fill="#FFF0E8" stroke="#F26522" stroke-width="3"/>
+      <rect x="326" y="584" width="164" height="14" rx="7" fill="#F26522"/>
+      <circle cx="580" cy="591" r="15" fill="#F26522"/>
+    </g>
+
+    <rect x="306" y="664" width="238" height="48" rx="24" fill="#2FA98C"/>
+    <rect x="348" y="682" width="154" height="12" rx="6" fill="#FFFFFF"/>
+  </g>
+
+  <!-- ── Appointment card ────────────────────────────────────────────── -->
+  <g>
+    <rect x="788" y="268" width="420" height="330" rx="26" fill="#2A2A27"/>
+    <rect x="788" y="268" width="420" height="318" rx="26" fill="#FFFFFF"/>
+    <rect x="788" y="268" width="420" height="72" rx="26" fill="#F26522"/>
+    <rect x="788" y="308" width="420" height="32" fill="#F26522"/>
+    <rect x="856" y="248" width="26" height="56" rx="13" fill="#C0521C"/>
+    <rect x="1114" y="248" width="26" height="56" rx="13" fill="#C0521C"/>
+
+    <g fill="#E6E5E2">
+      <rect x="824" y="376" width="72" height="56" rx="12"/>
+      <rect x="912" y="376" width="72" height="56" rx="12"/>
+      <rect x="1088" y="376" width="72" height="56" rx="12"/>
+      <rect x="824" y="448" width="72" height="56" rx="12"/>
+      <rect x="1000" y="448" width="72" height="56" rx="12"/>
+      <rect x="1088" y="448" width="72" height="56" rx="12"/>
+      <rect x="824" y="520" width="72" height="56" rx="12"/>
+      <rect x="912" y="520" width="72" height="56" rx="12"/>
+      <rect x="1000" y="520" width="72" height="56" rx="12"/>
+    </g>
+    <!-- the slot that got booked -->
+    <rect x="1000" y="376" width="72" height="56" rx="12" fill="#2FA98C"/>
+    <rect x="912" y="448" width="72" height="56" rx="12" fill="#1C1C1A"/>
+    <rect x="1088" y="520" width="72" height="56" rx="12" fill="#F2A277"/>
+  </g>
+
+  <!-- ── Care badge ──────────────────────────────────────────────────── -->
+  <g>
+    <circle cx="1310" cy="716" r="110" fill="#23856E"/>
+    <circle cx="1300" cy="706" r="110" fill="#2FA98C"/>
+    <rect x="1276" y="650" width="48" height="112" rx="14" fill="#FFFFFF"/>
+    <rect x="1244" y="682" width="112" height="48" rx="14" fill="#FFFFFF"/>
+  </g>
+
+  <!-- ── Stopwatch: turnaround ───────────────────────────────────────── -->
+  <g>
+    <rect x="1292" y="232" width="56" height="34" rx="12" fill="#2A2A27"/>
+    <circle cx="1320" cy="384" r="124" fill="#2A2A27"/>
+    <circle cx="1312" cy="376" r="124" fill="#46463F"/>
+    <circle cx="1312" cy="376" r="94" fill="#FFFFFF"/>
+    <path d="M1312 376 V308" stroke="#1C1C1A" stroke-width="14" stroke-linecap="round"/>
+    <path d="M1312 376 L1362 404" stroke="#F26522" stroke-width="14" stroke-linecap="round"/>
+    <circle cx="1312" cy="376" r="12" fill="#1C1C1A"/>
+  </g>
+</svg>

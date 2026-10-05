@@ -92,16 +92,15 @@ onBeforeUnmount(() => {
   <Teleport to="body">
     <Transition name="panel">
       <div v-if="open" class="scrim" @click.self="emit('close')">
-        <div
-          ref="panel"
-          class="panel"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Site navigation"
-        >
+        <div ref="panel" class="panel" role="dialog" aria-modal="true" aria-label="Site navigation">
           <div class="panel__head">
             <span class="panel__label">Menu</span>
-            <button type="button" class="panel__close" aria-label="Close menu" @click="emit('close')">
+            <button
+              type="button"
+              class="panel__close"
+              aria-label="Close menu"
+              @click="emit('close')"
+            >
               <Icon name="close" :size="24" />
             </button>
           </div>

@@ -34,7 +34,9 @@ describe('UseCaseGrid', () => {
     expect(wrapper.findAll('.usecase')).toHaveLength(2)
     expect(wrapper.text()).toContain('Prior-authorization packets')
     expect(wrapper.text()).toContain('The packet is assembled by hand for every payer.')
-    expect(wrapper.text()).toContain('Assemble the packet from the chart and track it to a decision.')
+    expect(wrapper.text()).toContain(
+      'Assemble the packet from the chart and track it to a decision.',
+    )
     expect(wrapper.text()).toContain('Fewer packets returned incomplete')
     expect(wrapper.findAll('.impact')).toHaveLength(3)
   })

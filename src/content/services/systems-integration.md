@@ -20,4 +20,4 @@ Most of the manual work in a document-heavy business is the same four steps, ove
 
 ## Where a human stays in the loop
 
-When a field is unreadable, a value looks wrong, or a document is not what it claims to be, it is routed to a person to resolve — never guessed at silently. The routine documents flow through; the odd ones get a human's attention.
+When a field is unreadable, a value looks wrong, or a document is not what it claims to be, it is routed to a person to resolve, never guessed at silently. The routine documents flow through; the odd ones get a human's attention.

@@ -22,8 +22,7 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     question: 'Will this replace my staff?',
-    answer:
-      'No. It removes repetitive work so your team can focus on higher-value decisions.',
+    answer: 'No. It removes repetitive work so your team can focus on higher-value decisions.',
   },
   {
     question: "What if we don't move forward after the review?",
@@ -37,21 +36,16 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: 'How long until something is actually running?',
     answer:
-      'The assessment takes about a week. For most scopes the first workflow is live two to four weeks after that, because we build against one real process rather than a platform rollout.',
+      'The assessment takes about a week. For most scopes the first workflow is live two to four weeks after that.',
   },
   {
     question: 'What does it cost?',
     answer:
-      'Scoped per engagement after the assessment, because a three-person firm and a sixty-person operation aren’t the same job. You see a fixed number before anything is built.',
+      "It's scoped per engagement after the assessment. You see a fixed price before anything is built.",
   },
   {
     question: 'Is our client data safe?',
     answer:
-      'We work inside your systems under your permissions, sign a DPA, and don’t move data anywhere it doesn’t already live. Details are on the Security page.',
-  },
-  {
-    question: 'What if our process is a mess?',
-    answer:
-      'That’s the normal starting condition. The mapping step exists precisely because nobody’s process is documented accurately.',
+      "Security is our top priority. We work inside your systems under your permissions, keep your data separate from every other client's, and never move it anywhere it doesn't already live",
   },
 ]

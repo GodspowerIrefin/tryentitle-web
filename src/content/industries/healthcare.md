@@ -7,10 +7,10 @@ Healthcare runs on documents that arrive in the least convenient formats: a fax 
 
 ## Workflows we take on
 
-- **Prior-authorization packets** — assembling the clinical notes, codes, and forms each payer wants, and tracking the request until it is approved or denied.
-- **Referral intake** — capturing inbound referrals from fax and portal, checking they are complete, and getting them into the EHR without a rekey.
-- **New-patient intake** — turning intake forms and insurance cards into structured records before the first visit.
-- **Explanation-of-benefits and claim follow-up** — reconciling EOBs against what was billed and flagging the ones that need a person.
+- **Prior-authorization packets:** assembling the clinical notes, codes, and forms each payer wants, and tracking the request until it is approved or denied.
+- **Referral intake:** capturing inbound referrals from fax and portal, checking they are complete, and getting them into the EHR without a rekey.
+- **New-patient intake:** turning intake forms and insurance cards into structured records before the first visit.
+- **Explanation-of-benefits and claim follow-up:** reconciling EOBs against what was billed and flagging the ones that need a person.
 
 ## Where a human stays in the loop
 

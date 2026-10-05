@@ -46,9 +46,9 @@ const SYNC_X = nodes[3]!.x
   >
     <title id="rail-title">How the work flows</title>
     <desc id="rail-desc">
-      A document moves through five automated stages — intake, extract, validate, sync, filed. At
-      the exception between validate and sync it is pulled out to a human review step, then rejoins
-      the flow.
+      A document moves through five automated stages: intake, extract, validate, sync, filed. At the
+      exception between validate and sync it is pulled out to a human review step, then rejoins the
+      flow.
     </desc>
 
     <defs>
@@ -115,14 +115,7 @@ const SYNC_X = nodes[3]!.x
       marker-end="url(#rail-arrow-brass)"
     />
 
-    <rect
-      class="rail-review"
-      :x="BRANCH_X - 92"
-      y="202"
-      width="184"
-      height="44"
-      rx="3"
-    />
+    <rect class="rail-review" :x="BRANCH_X - 92" y="202" width="184" height="44" rx="3" />
     <circle class="rail-review-dot" :cx="BRANCH_X - 70" cy="224" r="4" />
     <text class="rail-review-text" :x="BRANCH_X + 8" y="229" text-anchor="middle">
       HUMAN REVIEW

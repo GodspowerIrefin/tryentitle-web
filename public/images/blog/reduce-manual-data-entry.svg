@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" aria-label="A paper form feeding through an arrow into a system of record, with a keyboard below and a sync badge above">
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF3EC"/>
+      <stop offset="100%" stop-color="#FDEFE6"/>
+    </linearGradient>
+    <radialGradient id="pool" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1C1C1A" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#1C1C1A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#ground)"/>
+  <ellipse cx="800" cy="884" rx="470" ry="54" fill="url(#pool)"/>
+
+  <!-- ── The same form, typed more than once ─────────────────────────── -->
+  <g>
+    <rect x="186" y="236" width="300" height="396" rx="20" fill="#E6E5E2"/>
+    <rect x="156" y="206" width="300" height="396" rx="20" fill="#F2F1EE"/>
+    <rect x="126" y="176" width="300" height="396" rx="20" fill="#FFFFFF"/>
+    <rect x="126" y="176" width="300" height="396" rx="20" fill="none" stroke="#E6E5E2" stroke-width="3"/>
+    <rect x="162" y="216" width="150" height="16" rx="8" fill="#1C1C1A"/>
+    <rect x="162" y="266" width="228" height="13" rx="6.5" fill="#E6E5E2"/>
+    <rect x="162" y="302" width="188" height="13" rx="6.5" fill="#E6E5E2"/>
+    <!-- the field that keeps getting retyped -->
+    <rect x="150" y="338" width="252" height="48" rx="12" fill="#FFF0E8" stroke="#F26522" stroke-width="3"/>
+    <rect x="166" y="356" width="130" height="13" rx="6.5" fill="#F26522"/>
+    <rect x="162" y="412" width="212" height="13" rx="6.5" fill="#E6E5E2"/>
+    <rect x="162" y="448" width="236" height="13" rx="6.5" fill="#E6E5E2"/>
+    <rect x="162" y="484" width="160" height="13" rx="6.5" fill="#E6E5E2"/>
+  </g>
+
+  <!-- ── One pass across, instead of many ────────────────────────────── -->
+  <path d="M470 372 L874 372" fill="none" stroke="#F26522" stroke-width="26" stroke-linecap="round"/>
+  <path d="M858 318 L946 372 L858 426 Z" fill="#F26522"/>
+  <circle cx="672" cy="372" r="46" fill="#FFFFFF" stroke="#F26522" stroke-width="8"/>
+  <path d="M655 372 l12 13 22 -26" fill="none" stroke="#2FA98C" stroke-width="10"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- ── System of record ────────────────────────────────────────────── -->
+  <g>
+    <rect x="968" y="196" width="470" height="392" rx="26" fill="#2A2A27"/>
+    <rect x="968" y="196" width="470" height="378" rx="26" fill="#3A3A36"/>
+    <rect x="968" y="196" width="470" height="62" rx="26" fill="#1C1C1A"/>
+    <rect x="968" y="232" width="470" height="26" fill="#1C1C1A"/>
+    <circle cx="1004" cy="226" r="9" fill="#F26522"/>
+    <circle cx="1034" cy="226" r="9" fill="#2FA98C"/>
+    <circle cx="1064" cy="226" r="9" fill="#5A594F"/>
+
+    <g>
+      <rect x="1004" y="296" width="398" height="54" rx="12" fill="#46463F"/>
+      <rect x="1028" y="316" width="196" height="14" rx="7" fill="#A8A6A1"/>
+      <circle cx="1364" cy="323" r="16" fill="#2FA98C"/>
+
+      <rect x="1004" y="368" width="398" height="54" rx="12" fill="#46463F"/>
+      <rect x="1028" y="388" width="238" height="14" rx="7" fill="#A8A6A1"/>
+      <circle cx="1364" cy="395" r="16" fill="#2FA98C"/>
+
+      <rect x="1004" y="440" width="398" height="54" rx="12" fill="#46463F"/>
+      <rect x="1028" y="460" width="160" height="14" rx="7" fill="#A8A6A1"/>
+      <circle cx="1364" cy="467" r="16" fill="#2FA98C"/>
+
+      <!-- the one a person still looks at -->
+      <rect x="1004" y="512" width="398" height="54" rx="12" fill="#55300F"/>
+      <rect x="1028" y="532" width="206" height="14" rx="7" fill="#F2A277"/>
+      <circle cx="1364" cy="539" r="16" fill="#F26522"/>
+    </g>
+  </g>
+
+  <!-- ── Keyboard, quieter than it was ───────────────────────────────── -->
+  <g>
+    <rect x="596" y="690" width="520" height="150" rx="22" fill="#2A2A27"/>
+    <rect x="596" y="690" width="520" height="136" rx="22" fill="#46463F"/>
+    <g fill="#6E6D64">
+      <rect x="630" y="724" width="62" height="34" rx="9"/>
+      <rect x="704" y="724" width="62" height="34" rx="9"/>
+      <rect x="778" y="724" width="62" height="34" rx="9"/>
+      <rect x="852" y="724" width="62" height="34" rx="9"/>
+      <rect x="926" y="724" width="62" height="34" rx="9"/>
+      <rect x="1000" y="724" width="82" height="34" rx="9"/>
+      <rect x="630" y="772" width="86" height="34" rx="9"/>
+      <rect x="728" y="772" width="256" height="34" rx="9"/>
+      <rect x="996" y="772" width="86" height="34" rx="9"/>
+    </g>
+  </g>
+
+  <!-- ── Sync badge ──────────────────────────────────────────────────── -->
+  <g>
+    <circle cx="1246" cy="700" r="76" fill="#2FA98C"/>
+    <circle cx="1238" cy="692" r="76" fill="#3CC0A1"/>
+    <path d="M1200 684 a40 40 0 0 1 68 -22" fill="none" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>
+    <path d="M1276 700 a40 40 0 0 1 -68 22" fill="none" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>
+    <path d="M1252 646 l22 12 -12 22 Z" fill="#FFFFFF"/>
+    <path d="M1224 738 l-22 -12 12 -22 Z" fill="#FFFFFF"/>
+  </g>
+</svg>

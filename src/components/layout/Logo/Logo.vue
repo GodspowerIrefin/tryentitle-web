@@ -30,7 +30,11 @@ withDefaults(
 </script>
 
 <template>
-  <span class="logo" :class="[`logo--${tone}`, { 'logo--mark-only': markOnly }]" aria-label="TryEntitle">
+  <span
+    class="logo"
+    :class="[`logo--${tone}`, { 'logo--mark-only': markOnly }]"
+    aria-label="TryEntitle"
+  >
     <img
       class="logo__mark"
       src="/brand/logo-mark.png"
@@ -42,7 +46,9 @@ withDefaults(
     />
     <!-- One text node, deliberately unbroken: any whitespace or newline between
          the two spans renders as a space inside the wordmark. -->
-    <span v-if="!markOnly" class="logo__word" aria-hidden="true"><span class="logo__word-try">Try</span>Entitle</span>
+    <span v-if="!markOnly" class="logo__word" aria-hidden="true"
+      ><span class="logo__word-try">Try</span>Entitle</span
+    >
   </span>
 </template>
 

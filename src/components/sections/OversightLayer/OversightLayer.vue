@@ -248,5 +248,4 @@ const hasExamples = () => Boolean(props.examples?.length)
   margin-top: 3px;
   color: var(--seal);
 }
-
 </style>

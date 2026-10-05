@@ -29,13 +29,16 @@ interface Crumb {
 const props = withDefaults(
   defineProps<{
     breadcrumbs: Crumb[]
-    eyebrow: string
+    /** Omit to run the title straight under the breadcrumb (industry pages). */
+    eyebrow?: string
     title: string
+    /** Sets the title in caps — the industry pages' treatment. */
+    uppercaseTitle?: boolean
     lead?: string
     html: string
     toc?: TocEntry[]
   }>(),
-  { toc: () => [] },
+  { toc: () => [], uppercaseTitle: false },
 )
 
 const showToc = computed(() => props.toc.length > 2)
@@ -55,8 +58,14 @@ const showToc = computed(() => props.toc.length > 2)
         </nav>
 
         <header class="article-head">
-          <Eyebrow>{{ eyebrow }}</Eyebrow>
-          <Heading id="article-title" :level="1" size="h2">{{ title }}</Heading>
+          <Eyebrow v-if="eyebrow">{{ eyebrow }}</Eyebrow>
+          <Heading
+            id="article-title"
+            :level="1"
+            size="h2"
+            :class="{ 'article-head__title--upper': uppercaseTitle }"
+            >{{ title }}</Heading
+          >
           <p v-if="lead" class="article-head__lead">{{ lead }}</p>
           <div class="article-head__meta">
             <slot name="meta" />
@@ -106,7 +115,10 @@ const showToc = computed(() => props.toc.length > 2)
 .crumbs li:not(:last-child)::after {
   content: '/';
   margin-inline-start: var(--space-2);
-  color: var(--rule-on-bond);
+  /* The rule colour is a hairline tint — at this size the separator all but
+     disappeared, so the trail read as two unrelated words. It takes the same
+     muted text colour as the crumbs themselves. */
+  color: var(--text-on-bond-muted);
 }
 
 .crumbs a {
@@ -123,6 +135,10 @@ const showToc = computed(() => props.toc.length > 2)
   gap: var(--space-3);
   max-width: var(--measure);
   margin-top: var(--stack-block);
+}
+
+.article-head__title--upper {
+  text-transform: uppercase;
 }
 
 .article-head__lead {

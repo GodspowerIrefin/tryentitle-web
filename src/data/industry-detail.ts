@@ -236,7 +236,7 @@ export const INDUSTRY_DETAIL: IndustryDetail[] = [
     ],
     human:
       'Coverage decisions and advice stay with your licensed staff. The forms and follow-ups run on their own; anything that changes an exposure, or a submission a carrier questions, goes to a producer with the file already in hand.',
-    services: ['systems-integration', 'process-design-optimization', 'integrations-process-intelligence'],
+    services: ['systems-integration', 'process-design-optimization'],
     useCases: [
       {
         title: 'ACORD form intake',
@@ -500,7 +500,7 @@ export const INDUSTRY_DETAIL: IndustryDetail[] = [
     ],
     human:
       'Approvals on a draw or a change order stay with your project managers. The system tracks, assembles, and chases; a person approves, and any missing waiver or lapsed certificate is raised before it holds up a payment — not discovered after.',
-    services: ['systems-integration', 'process-design-optimization', 'integrations-process-intelligence'],
+    services: ['systems-integration', 'process-design-optimization'],
     useCases: [
       {
         title: 'Lien waivers',
@@ -588,11 +588,7 @@ export const INDUSTRY_DETAIL: IndustryDetail[] = [
     ],
     human:
       'Scope, pricing, and client judgment stay with your team. The documents assemble and route themselves; a person approves anything that commits the firm, and a stalled onboarding or an unusual time entry is surfaced rather than passed through silently.',
-    services: [
-      'managed-operations',
-      'operational-intelligence',
-      'integrations-process-intelligence',
-    ],
+    services: ['managed-operations', 'operational-intelligence'],
     useCases: [
       {
         title: 'Proposals and statements of work',

@@ -17,7 +17,7 @@ useHead(
   buildHead({
     title: 'Insights',
     description:
-      'Notes on operations, document workflows, and where automation helps — plus curated external reading.',
+      'Notes on operations, document workflows, and where automation helps, plus curated external reading.',
     path: '/blog',
     image: '/og/blog.png',
   }),

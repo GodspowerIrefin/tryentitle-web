@@ -88,8 +88,8 @@ const inboundPath = computed(() => `M ${ENTRY} ${MID} L ${X0} ${MID}`)
 
 const description = computed(() =>
   showAfter.value
-    ? 'After: a document moves through six automated stages — intake, extract, validate, human check, route, delivered. The human check is the single point where a person makes a judgment call.'
-    : 'Before: a document passes through six manual stages — email inbox, printed, re-keyed, chased, approved, filed — sitting unread, being entered twice, and waiting on approval along the way.',
+    ? 'After: a document moves through six automated stages: intake, extract, validate, human check, route, delivered. The human check is the single point where a person makes a judgment call.'
+    : 'Before: a document passes through six manual stages: email inbox, printed, re-keyed, chased, approved, filed, sitting unread, being entered twice, and waiting on approval along the way.',
 )
 
 function prefersReducedMotion(): boolean {
@@ -132,7 +132,7 @@ function stampY(node: WorkflowStage & { y: number }): number {
   <div class="strip" :style="track" data-flow-panel>
     <div class="strip__head">
       <p class="strip__state mono-label">
-        {{ showAfter ? 'After — one process, one exception' : 'Before — six handoffs, no queue' }}
+        {{ showAfter ? 'After: one process, one exception' : 'Before: six handoffs, no queue' }}
       </p>
 
       <button
@@ -160,7 +160,6 @@ function stampY(node: WorkflowStage & { y: number }): number {
     >
       <title id="strip-title">How a document moves through the process</title>
       <desc id="strip-desc">{{ description }}</desc>
-
 
       <!-- ─── Before layer ─────────────────────────────────────────── -->
       <g class="layer layer--before" :class="{ 'is-hidden': showAfter }" :aria-hidden="showAfter">
@@ -459,8 +458,8 @@ function stampY(node: WorkflowStage & { y: number }): number {
    * comes round, which is the correct opening state anyway.
    */
   .layer--after:not(.is-hidden) .stage .node--after {
-    animation: stage-node-lit var(--cycle) var(--ease-standard)
-      calc((var(--i) + 1) * var(--step)) infinite;
+    animation: stage-node-lit var(--cycle) var(--ease-standard) calc((var(--i) + 1) * var(--step))
+      infinite;
   }
 
   .layer--after:not(.is-hidden) .stage .node-ring {
