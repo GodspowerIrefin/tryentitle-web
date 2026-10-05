@@ -1,18 +1,18 @@
 ---
 title: Accounting
-description: Client documents, reconciliations, and filing deadlines the busy-season load handled without another temp hire.
+description: Document collection, client reminders, and recurring engagements handled so the work starts when the documents arrive, not weeks later.
 ---
 
-An accounting or bookkeeping practice spends much of the year collecting documents from clients who send them in every format imaginable, then reconciling and assembling from that pile. The judgment is yours; the collecting, sorting, and chasing does not have to be. We take on the document logistics so your staff stays on the work that needs a CPA.
+An accounting practice spends a surprising share of its year waiting on clients: for a W-2, a bank statement, a signed engagement letter. Most of the work around the work is collection, sorting, and follow-up. We take on that handling so your team spends its time on the return and the advice.
 
 ## Workflows we take on
 
-- **Client source documents** — collecting W-2s, 1099s, bank and brokerage statements, checking the set is complete, and organizing it by client and period.
-- **Bank and account reconciliations** — matching transactions from source statements and flagging only the items that do not tie out.
-- **Engagement letters** — issuing and tracking engagement letters at the start of each season.
-- **Filing deadlines** — tracking each client's deadlines and the documents still outstanding against them.
-- **Client follow-up** — chasing missing items on a schedule so your staff is not the one sending the fourth reminder.
+- **Client document collection:** requesting, receiving, and checking documents against what each engagement needs, with reminders until the set is complete.
+- **Client onboarding:** engagement letters, intake questionnaires, and setup in your practice system from one set of details.
+- **Recurring engagements:** starting monthly, quarterly, and annual cycles on schedule with the right checklist.
+- **Deadline tracking:** pulling filing and payment dates into your calendar so nothing depends on memory.
+- **Billing and invoicing:** generating invoices from completed work and following up on unpaid ones.
 
 ## Where a human stays in the loop
 
-Every return and reconciliation is reviewed and signed off by your staff. The system gathers, organizes, and flags exceptions; it does not make an accounting judgment, and a reconciliation item that does not match is sent to a person, not forced to balance.
+Preparation, review, and advice stay with your accountants. We collect, organize, and route; a person reviews every return and filing before it goes out, and any missing or inconsistent document is flagged for a person.

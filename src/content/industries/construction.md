@@ -1,18 +1,18 @@
 ---
 title: Construction
-description: Lien waivers, submittals, and pay applications chased across subcontractors tracked so a draw is never held up by missing paper.
+description: Submittals, change orders, and approvals tracked in one place from bid to closeout.
 ---
 
-A construction project is a document engine: every draw, every subcontractor, every material has paper attached, and a single missing waiver can hold up a payment. The coordination is relentless and mostly manual. We take on the document tracking so your project managers stay on the build, not the paperwork chase.
+A construction project generates a steady stream of documents that each hold up someone else: a submittal waiting on review, a change order waiting on sign-off, an RFI sitting in an inbox. We take on the tracking and routing so project managers spend their time on the build, not on finding out where a document is.
 
 ## Workflows we take on
 
-- **Lien waivers** — collecting conditional and unconditional waivers from each subcontractor for every draw and flagging what is missing before the pay period closes.
-- **Pay applications** — assembling AIA G702/G703 pay applications with the supporting documentation and tracking them through approval.
-- **Submittals and RFIs** — logging submittals and RFIs, tracking who owns the response, and surfacing the ones going overdue.
-- **Subcontractor compliance** — keeping certificates of insurance and licenses current, and catching the ones about to lapse.
-- **Change order routing** — moving change orders to the right approver and escalating the ones sitting past their window.
+- **Submittals and RFIs:** logging each one, routing it to the right reviewer, and tracking it until it is answered.
+- **Change orders:** capturing the change, routing it for approval, and keeping the cost record current.
+- **Subcontractor compliance:** collecting insurance certificates, licenses, and lien waivers and flagging what is expiring.
+- **Daily logs and field reports:** pulling updates from the field into one organized record.
+- **Closeout documentation:** assembling warranties, manuals, and as-builts so closeout doesn't stall the final payment.
 
 ## Where a human stays in the loop
 
-Approvals on a draw or a change order stay with your project managers. The system tracks, assembles, and chases; a person approves, and any missing waiver or lapsed certificate is raised before it holds up a payment not discovered after.
+Approvals, pricing, and scope decisions stay with your project team. The documents are logged and routed; a person decides, and any overdue approval or expiring compliance document is escalated rather than left to sit.

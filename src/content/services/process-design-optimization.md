@@ -4,7 +4,7 @@ description: We redesign how work gets done to remove bottlenecks, unnecessary s
 order: 2
 ---
 
-A workflow agent is an automated step that moves a piece of work forward — pulling a document from an inbox, entering it into a system, checking it against a rule, routing it to the right person. Each agent has a defined job and a defined point where it hands off to a human when the answer is not obvious.
+A workflow agent is an automated step that moves a piece of work forward: pulling a document from an inbox, entering it into a system, checking it against a rule, routing it to the right person. Each agent has a defined job and a defined point where it hands off to a human when the answer is not obvious.
 
 ## The symptoms it addresses
 
@@ -20,4 +20,4 @@ A workflow agent is an automated step that moves a piece of work forward — pul
 
 ## Where a human stays in the loop
 
-Agents carry the repeatable path. The moment a case is ambiguous — a mismatch, a missing field, an exception to the rule — it goes to a person, with the context already assembled. Your team spends its time on the decisions, not the retyping.
+Agents carry the repeatable path. The moment a case is ambiguous, whether a mismatch, a missing field, or an exception to the rule, it goes to a person, with the context already assembled. Your team spends its time on the decisions, not the retyping.

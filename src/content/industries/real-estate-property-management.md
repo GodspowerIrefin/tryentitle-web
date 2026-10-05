@@ -7,11 +7,11 @@ Real estate and property management run on documents with deadlines: a lease tha
 
 ## Workflows we take on
 
-- **Closing binders** — assembling the documents a closing requires and tracking what is still outstanding as the date approaches.
-- **Leases and renewals** — generating leases from the deal terms, routing them for signature, and starting the renewal cycle on time.
-- **Tenant applications** — collecting applications and supporting documents, checking the set is complete before it reaches a person to decide.
-- **Maintenance requests** — capturing requests from email, portal, and phone into one queue so none is lost between inboxes.
-- **Lead response** — answering inbound inquiries the hour they arrive, day or night, and getting the showing on the calendar.
+- **Closing binders:** assembling the documents a closing requires and tracking what is still outstanding as the date approaches.
+- **Leases and renewals:** generating leases from the deal terms, routing them for signature, and starting the renewal cycle on time.
+- **Tenant applications:** collecting applications and supporting documents, checking the set is complete before it reaches a person to decide.
+- **Maintenance requests:** capturing requests from email, portal, and phone into one queue so none is lost between inboxes.
+- **Lead response:** answering inbound inquiries the hour they arrive, day or night, and getting the showing on the calendar.
 
 ## Where a human stays in the loop
 

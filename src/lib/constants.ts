@@ -41,7 +41,7 @@ export const CONTACT = {
 } as const
 
 /**
- * Legal identity used by Terms, Privacy, DPA, and Security pages.
+ * Legal identity used by the Terms, Privacy, and Security pages.
  * Keep the markdown in `src/content/legal/` aligned with these values.
  */
 export const LEGAL = {
@@ -57,7 +57,7 @@ export const LEGAL = {
   venue: 'the courts of England and Wales',
   /** Website-use liability cap (informational site; engagement liability is contractual). */
   websiteLiabilityCap: 'one hundred pounds sterling (£100)',
-  /** Scheduling provider named in privacy / DPA. */
+  /** Scheduling provider named in the privacy policy. */
   scheduler: 'Calendly',
   /** Static host / CDN named in privacy / security. */
   host: 'Vercel',

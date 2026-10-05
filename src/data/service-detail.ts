@@ -27,56 +27,10 @@ export const SERVICE_DETAIL: ServiceDetail[] = [
   {
     slug: 'operations-assessment',
     industries: ['healthcare', 'accounting', 'professional-services'],
-    useCases: [
-      {
-        title: 'One process, followed end to end',
-        problem:
-          'You know a process is expensive, but not which step inside it costs the time.',
-        build:
-          'We follow live work from trigger to close, timing every handoff, wait, and rekey as it actually happens — not as the process doc describes it.',
-        impacts: [
-          'A map you can check against reality',
-          'Time located by step, not by department',
-          'Agreement on where the cost sits',
-        ],
-      },
-      {
-        title: 'The rekey count',
-        problem:
-          'The same details are typed into two or three systems, and nobody has counted how often.',
-        build:
-          'We count every duplicate entry, where each one originates, and what it would take to remove it.',
-        impacts: [
-          'Duplicate entry made visible',
-          'Integration work aimed at the worst offender',
-          'A number you can hold a decision against',
-        ],
-      },
-      {
-        title: 'Automate, redesign, or leave alone',
-        problem:
-          'Automation gets proposed for steps that should not exist at all, and skipped for the ones that quietly cost the most.',
-        build:
-          'Every step gets one of three recommendations with the reason attached — including the steps we advise you not to touch.',
-        impacts: [
-          'A defensible reason per step',
-          'Bad automation candidates ruled out early',
-          'Nothing changed in your systems yet',
-        ],
-      },
-      {
-        title: 'A first build you can actually start',
-        problem:
-          'Assessments end in a slide deck that nobody can act on next week.',
-        build:
-          'We scope one workflow — the sequence, the exception rules, the systems involved, and the rough effort — as a plan you could start from immediately.',
-        impacts: [
-          'One scoped workflow, not a wish list',
-          'Effort estimated before you commit',
-          'A clear decision point at the end',
-        ],
-      },
-    ],
+    /* The 'In practice' grid is deliberately empty for this service: the page
+       renders that section only when there are use cases, so leaving this list
+       empty removes the section from /services/operations-assessment. */
+    useCases: [],
   },
   {
     slug: 'process-design-optimization',
@@ -97,7 +51,7 @@ export const SERVICE_DETAIL: ServiceDetail[] = [
       {
         title: 'The chase',
         problem:
-          'Outstanding items — signatures, documents, approvals — only move when someone remembers to follow up.',
+          'Outstanding items such as signatures, documents, and approvals only move when someone remembers to follow up.',
         build:
           'An agent tracks what is outstanding, follows up on your schedule, and stops the moment the item comes back.',
         impacts: [
@@ -108,8 +62,7 @@ export const SERVICE_DETAIL: ServiceDetail[] = [
       },
       {
         title: 'Checks against your rules',
-        problem:
-          'Errors are caught late, by the person downstream who happens to notice.',
+        problem: 'Errors are caught late, by the person downstream who happens to notice.',
         build:
           'An agent validates each item against your rules before it is saved, and routes anything that fails to a review queue.',
         impacts: [
@@ -290,60 +243,6 @@ export const SERVICE_DETAIL: ServiceDetail[] = [
           'Receiving team starts, not restarts',
           'Fewer "who has this?" threads',
           'Context kept with the work',
-        ],
-      },
-    ],
-  },
-  {
-    slug: 'integrations-process-intelligence',
-    industries: ['insurance', 'healthcare', 'real-estate-property-management'],
-    useCases: [
-      {
-        title: 'Systems that stop needing a courier',
-        problem:
-          'People are the integration: copying records between tools you already pay for.',
-        build:
-          'Integrations between your existing systems, so data moves on its own and each system stays current.',
-        impacts: [
-          'No person carrying data across',
-          'Records current in every system',
-          'Tools you already pay for actually used',
-        ],
-      },
-      {
-        title: 'One current view of a record',
-        problem:
-          'The same client, matter, or property lives in three systems and none of them agree.',
-        build:
-          'A single current view assembled from the systems of record, with the source of each field identified.',
-        impacts: [
-          'One version people can act on',
-          'Field-level source always visible',
-          'Fewer decisions made on stale data',
-        ],
-      },
-      {
-        title: 'Conflicts surfaced, not overwritten',
-        problem:
-          'Sync tools quietly pick a winner when two systems disagree, and the wrong value spreads.',
-        build:
-          'Where systems conflict, the disagreement is surfaced for a person to resolve, with both values shown.',
-        impacts: [
-          'No silent overwrites',
-          'Disagreements resolved once',
-          'Data quality improves over time',
-        ],
-      },
-      {
-        title: 'Where the work actually waits',
-        problem:
-          'You suspect a step is the bottleneck, but you cannot show it — so improvement is guesswork.',
-        build:
-          'Process reporting that shows where work waits, how long, and how often, per step.',
-        impacts: [
-          'Bottleneck identified, not guessed',
-          'Change measured against a baseline',
-          'Effort aimed at the real constraint',
         ],
       },
     ],

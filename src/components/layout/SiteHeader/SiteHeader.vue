@@ -31,7 +31,7 @@ watch(menuOpen, async (open, wasOpen) => {
 <template>
   <header class="header">
     <div class="header__bar">
-      <RouterLink to="/" class="header__logo" aria-label="TryEntitle — home">
+      <RouterLink to="/" class="header__logo" aria-label="TryEntitle home">
         <img
           src="/brand/logo-mark@2x.png"
           alt=""
@@ -40,7 +40,9 @@ watch(menuOpen, async (open, wasOpen) => {
           class="header__mark"
           decoding="async"
         />
-        <span class="header__word" aria-hidden="true"><span class="logo__word-try">Try</span>Entitle</span>
+        <span class="header__word" aria-hidden="true"
+          ><span class="logo__word-try">Try</span>Entitle</span
+        >
       </RouterLink>
 
       <nav class="header__nav" aria-label="Primary">

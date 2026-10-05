@@ -28,11 +28,10 @@ useHead({
 })
 
 const featured = INDUSTRIES[0]!
-/** Professional Services reads as its workflow list, exactly as in the design. */
-const rest = INDUSTRIES.slice(1).map((ind) => ({
-  ...ind,
-  blurb: ind.slug === 'professional-services' ? ind.workflows.join(' · ') : ind.outcome,
-}))
+/* Every card leads with its outcome line now — the client's correction document
+   gives Professional Services its own blurb, so it no longer falls back to a
+   run of workflow names. */
+const rest = INDUSTRIES.slice(1)
 </script>
 
 <template>
@@ -45,20 +44,17 @@ const rest = INDUSTRIES.slice(1).map((ind) => ({
     <RouterLink :to="`/industries/${featured.slug}`" class="featured">
       <h2 class="featured__name">{{ featured.name }}</h2>
       <p class="featured__blurb">{{ featured.outcome }}</p>
-      <span class="featured__more">Learn more <span class="featured__arrow" aria-hidden="true">→</span></span>
+      <span class="featured__more"
+        >Learn more <span class="featured__arrow" aria-hidden="true">→</span></span
+      >
     </RouterLink>
   </section>
 
   <section class="grid-wrap">
     <div class="grid">
-      <RouterLink
-        v-for="ind in rest"
-        :key="ind.slug"
-        :to="`/industries/${ind.slug}`"
-        class="card"
-      >
+      <RouterLink v-for="ind in rest" :key="ind.slug" :to="`/industries/${ind.slug}`" class="card">
         <h2 class="card__name">{{ ind.name }}</h2>
-        <p class="card__blurb">{{ ind.blurb }}</p>
+        <p class="card__blurb">{{ ind.outcome }}</p>
         <span class="card__more">Learn more</span>
       </RouterLink>
     </div>

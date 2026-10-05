@@ -27,7 +27,7 @@ import SectionHeader from '@/components/sections/SectionHeader'
 import NotFoundPage from '@/pages/NotFoundPage.vue'
 
 import { getServiceContent } from '@/lib/content'
-import { getService } from '@/data/services'
+import { getService, SERVICES } from '@/data/services'
 import { getServiceDetail } from '@/data/service-detail'
 import { INDUSTRIES } from '@/data/industries'
 import { CLOSING, SERVICE_DETAIL_COPY } from '@/data/pages'
@@ -38,6 +38,14 @@ const route = useRoute()
 const slug = computed(() => String(route.params.slug))
 const doc = computed(() => getServiceContent(slug.value))
 const service = computed(() => getService(slug.value))
+/* Which sheet formation the hero scene holds — this service's own place in the
+   set, so every service page opens on a different arrangement. */
+const sceneIndex = computed(() =>
+  Math.max(
+    0,
+    SERVICES.findIndex((s) => s.slug === slug.value),
+  ),
+)
 const detail = computed(() => getServiceDetail(slug.value))
 
 /**
@@ -88,15 +96,12 @@ useHead(head)
 <template>
   <template v-if="doc && service">
     <ServiceHero
-      :breadcrumbs="[
-        { label: 'Services', to: '/services' },
-        { label: service.name },
-      ]"
-      eyebrow="Service"
+      :breadcrumbs="[{ label: 'Services', to: '/services' }, { label: service.name }]"
       :title="service.name"
       :headline="service.headline"
       :chips="service.chips ?? []"
-      :icon="service.icon"
+      :scene-index="sceneIndex"
+      :scene-count="SERVICES.length"
     />
 
     <Section tone="bond" id="service-body" aria-label="About this service">
@@ -131,11 +136,7 @@ useHead(head)
       tone="bond-raised"
     />
 
-    <Section
-      v-if="relatedIndustries.length"
-      tone="bond"
-      labelledby="related-industries-title"
-    >
+    <Section v-if="relatedIndustries.length" tone="bond" labelledby="related-industries-title">
       <Container>
         <SectionHeader
           :eyebrow="SERVICE_DETAIL_COPY.industries.eyebrow"

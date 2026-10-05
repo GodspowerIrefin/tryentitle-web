@@ -36,8 +36,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
   },
   {
     title: 'Process map & scope',
-    detail:
-      'We document the real workflow, show you where the hours are, and price a fixed scope.',
+    detail: 'We document the real workflow, show you where the hours are, and price a fixed scope.',
     timing: 'Week 1',
     output: 'A process map and a fixed price',
     note: 'Walk away here and you keep the map.',
@@ -45,7 +44,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
   {
     title: 'Build & pilot',
     detail:
-      'We build it, run it alongside your current process, and tune it against real cases — not test data.',
+      'We build it, run it alongside your current process, and tune it against real cases, not test data.',
     timing: 'Weeks 2–4',
     output: 'A working workflow, proven on real cases',
   },

@@ -28,7 +28,7 @@ export interface ProofCommitment {
 export const PROOF_COMMITMENTS: ProofCommitment[] = [
   {
     title: 'You keep the map.',
-    body: 'After the assessment, the process documentation is yours — whether or not we go further.',
+    body: 'After the assessment, the process documentation is yours, whether or not we go further.',
 
     icon: 'map',
   },

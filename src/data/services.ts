@@ -1,7 +1,7 @@
 /**
- * The six core services (design spec §4.6, PRD §8.2).
+ * The core services (design spec §4.6, PRD §8.2).
  *
- * THE SIX NAMES ARE FIXED. They must match across nav, home, services, footer,
+ * THE NAMES ARE FIXED. They must match across nav, home, services, footer,
  * and metadata. `name` and `slug` do not change without a PRD update.
  *
  * Each entry carries what the sticky tab rail needs: a `headline` (the outcome,
@@ -48,14 +48,6 @@ export const SERVICES: ServiceSummary[] = [
     icon: 'inbox',
   },
   {
-    slug: 'managed-operations',
-    name: 'Managed Operations',
-    headline: 'Keep Operations Performing',
-    summary:
-      'Ongoing oversight that keeps the operation running well and improving after the project ends.',
-    icon: 'document',
-  },
-  {
     slug: 'operational-intelligence',
     name: 'Operational Intelligence',
     headline: 'Know how the operation is performing',
@@ -63,14 +55,13 @@ export const SERVICES: ServiceSummary[] = [
       'Reporting built on live data, so cost, throughput, and bottlenecks are visible as they happen.',
     icon: 'users',
   },
-
   {
-    slug: 'integrations-process-intelligence',
-    name: 'Integrations & Process Intelligence',
-    headline: 'Your systems, finally talking',
+    slug: 'managed-operations',
+    name: 'Managed Operations',
+    headline: 'Keep Operations Performing',
     summary:
-      'Data moves between the tools you already pay for, and you can see where work slows down.',
-    icon: 'plug',
+      'Ongoing oversight that keeps the operation running well and improving after the project ends.',
+    icon: 'document',
   },
 ]
 

@@ -30,8 +30,8 @@ useHead(
         <Eyebrow>Error 404</Eyebrow>
         <Heading :level="1" size="h2">This page isn’t here.</Heading>
         <p class="notfound__body">
-          The link may be old or mistyped. Head back home, or book a workflow review and we’ll
-          point you the right way.
+          The link may be old or mistyped. Head back home, or book a workflow review and we’ll point
+          you the right way.
         </p>
         <div class="notfound__actions">
           <Button to="/" variant="secondary">Back to home</Button>

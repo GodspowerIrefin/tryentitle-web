@@ -2,7 +2,7 @@
 /**
  * Legal document page (PRD FR20/FR21, §13).
  *
- * All four legal documents — Privacy Policy, Terms of Service, Security, DPA —
+ * All three legal documents — Privacy Policy, Terms of Service, Security —
  * render through this one long-form template with a "Last updated" date, a table
  * of contents for longer documents, and Prose typography.
  *
@@ -63,11 +63,11 @@ useHead(head)
         </p>
         <!-- FR21 launch gate — must be resolved before this page goes live. -->
         <div v-if="!reviewed" class="legal-draft" role="note">
-          <p class="legal-draft__title">Unreviewed draft — not legally binding</p>
+          <p class="legal-draft__title">Unreviewed draft, not legally binding</p>
           <p>
             This document is a structural scaffold, not finished legal text. It has not been
-            reviewed by counsel and must not be relied on. It is excluded from search indexing
-            until it is reviewed.
+            reviewed by counsel and must not be relied on. It is excluded from search indexing until
+            it is reviewed.
           </p>
         </div>
       </template>

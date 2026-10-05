@@ -64,12 +64,4 @@ export const PAIN_POINTS: PainPoint[] = [
     stat: '5-10 minutes per report',
     to: '/services/operational-intelligence',
   },
-  {
-    id: 'integration-and-process-intelligence',
-    label: 'Integration & Process Intelligence',
-    symptom: 'Your existing systems finally share information with each other',
-    icon: 'plug',
-    stat: '1-2 days',
-    to: '/services/integrations-process-intelligence',
-  },
 ]

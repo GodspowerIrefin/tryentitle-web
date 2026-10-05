@@ -53,12 +53,7 @@ withDefaults(
         column the heading broke to three lines and the right half of the band sat
         empty above the cards.
       -->
-      <SectionHeader
-        :eyebrow="eyebrow"
-        :title="title"
-        title-id="usecases-title"
-        :aside="intro"
-      />
+      <SectionHeader :eyebrow="eyebrow" :title="title" title-id="usecases-title" :aside="intro" />
 
       <ul class="usecases">
         <li v-for="item in items" :key="item.title">

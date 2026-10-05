@@ -49,7 +49,7 @@ export const INDUSTRIES: IndustrySummary[] = [
       'Billing entry sync',
     ],
     outcome:
-      'Streamline intake, matter setup, and administrative workflows so your team can spend less time on repetitive work and more time on clients.',
+      'Handle matter intake, conflict checks, engagement letters, and discovery paperwork so your attorneys spend their time on the matter, not the paper trail.',
     icon: 'scale',
   },
   {
@@ -57,7 +57,7 @@ export const INDUSTRIES: IndustrySummary[] = [
     name: 'Insurance',
     workflows: ['Claims intake', 'Policy validation', 'Adjuster assignment', 'Renewal processing'],
     outcome:
-      'Simplify repetitive processes, improve document workflows, and reduce the administrative work that slows down your team.',
+      'Move quotes, applications, and policy documents through your team faster, with fewer re-keyed fields and fewer files stuck waiting on a missing page.',
     icon: 'shield',
   },
   {
@@ -70,7 +70,7 @@ export const INDUSTRIES: IndustrySummary[] = [
       'Recurring report generation',
     ],
     outcome:
-      'Make document collection, client communication, and recurring workflows easier to manage while reducing the manual work behind the scenes.',
+      'Stop chasing clients for documents. Collect them, check them, and keep recurring engagements moving without the manual follow-up.',
     icon: 'calculator',
   },
   {
@@ -78,7 +78,7 @@ export const INDUSTRIES: IndustrySummary[] = [
     name: 'Real Estate',
     workflows: ['Transaction document handling', 'Client onboarding', 'Closing coordination'],
     outcome:
-      'Improve lead response, tenant communication, maintenance workflows, and day-to-day property operations without adding more administrative work.',
+      'Pull closing binders, leases, and maintenance requests into one workflow, and answer every lead the hour it arrives.',
     icon: 'building',
   },
   {
@@ -91,7 +91,7 @@ export const INDUSTRIES: IndustrySummary[] = [
       'Change order routing',
     ],
     outcome:
-      'Improve project workflows, reduce administrative bottlenecks, and keep documentation, approvals, and communication organized from start to finish.',
+      'Keep submittals, change orders, approvals, and project documents organized from bid to closeout, without the inbox hunt.',
     icon: 'hardhat',
   },
   {
@@ -104,7 +104,7 @@ export const INDUSTRIES: IndustrySummary[] = [
       'Billing sync',
     ],
     outcome:
-      'Turn proposals around faster, onboard clients the same way every time, and protect margin without adding overhead to grow.',
+      'Automate client intake, proposal and contract routing, recurring reporting, and billing sync so your team bills more and chases less.',
     icon: 'briefcase',
   },
 ]

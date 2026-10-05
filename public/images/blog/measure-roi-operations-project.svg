@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" aria-label="A calculator beside a measured checklist, a stopwatch and a chart card showing hours and cycle time">
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF3EC"/>
+      <stop offset="100%" stop-color="#FDEFE6"/>
+    </linearGradient>
+    <radialGradient id="pool" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1C1C1A" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#1C1C1A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#ground)"/>
+  <ellipse cx="800" cy="884" rx="470" ry="54" fill="url(#pool)"/>
+
+  <!-- ── Calculator ──────────────────────────────────────────────────── -->
+  <g>
+    <rect x="176" y="236" width="400" height="560" rx="34" fill="#1C1C1A"/>
+    <rect x="176" y="236" width="400" height="544" rx="34" fill="#32322F"/>
+
+    <!-- read-out -->
+    <rect x="216" y="280" width="320" height="120" rx="18" fill="#FFFFFF"/>
+    <rect x="248" y="318" width="120" height="14" rx="7" fill="#C9C8C3"/>
+    <rect x="248" y="352" width="220" height="22" rx="11" fill="#1C1C1A"/>
+
+    <g fill="#46463F">
+      <rect x="216" y="436" width="84" height="72" rx="16"/>
+      <rect x="318" y="436" width="84" height="72" rx="16"/>
+      <rect x="420" y="436" width="84" height="72" rx="16"/>
+      <rect x="216" y="528" width="84" height="72" rx="16"/>
+      <rect x="318" y="528" width="84" height="72" rx="16"/>
+      <rect x="420" y="528" width="84" height="72" rx="16"/>
+      <rect x="216" y="620" width="84" height="72" rx="16"/>
+      <rect x="318" y="620" width="84" height="72" rx="16"/>
+    </g>
+    <rect x="420" y="620" width="84" height="116" rx="16" fill="#F26522"/>
+    <rect x="216" y="712" width="186" height="72" rx="16" fill="#2FA98C"/>
+  </g>
+
+  <!-- ── What gets measured ──────────────────────────────────────────── -->
+  <g>
+    <rect x="648" y="196" width="520" height="396" rx="28" fill="#2A2A27"/>
+    <rect x="648" y="196" width="520" height="384" rx="28" fill="#FFFFFF"/>
+    <rect x="648" y="196" width="520" height="58" rx="28" fill="#1C1C1A"/>
+    <rect x="648" y="226" width="520" height="28" fill="#1C1C1A"/>
+
+    <g>
+      <rect x="688" y="292" width="40" height="40" rx="12" fill="#2FA98C"/>
+      <path d="M700 312 l8 9 15 -18" fill="none" stroke="#FFFFFF" stroke-width="7"
+            stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="752" y="304" width="252" height="16" rx="8" fill="#E6E5E2"/>
+
+      <rect x="688" y="364" width="40" height="40" rx="12" fill="#2FA98C"/>
+      <path d="M700 384 l8 9 15 -18" fill="none" stroke="#FFFFFF" stroke-width="7"
+            stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="752" y="376" width="310" height="16" rx="8" fill="#E6E5E2"/>
+
+      <rect x="688" y="436" width="40" height="40" rx="12" fill="#2FA98C"/>
+      <path d="M700 456 l8 9 15 -18" fill="none" stroke="#FFFFFF" stroke-width="7"
+            stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="752" y="448" width="196" height="16" rx="8" fill="#E6E5E2"/>
+
+      <!-- the line still being counted -->
+      <rect x="688" y="508" width="40" height="40" rx="12" fill="#FFF0E8" stroke="#F26522" stroke-width="3"/>
+      <rect x="752" y="520" width="268" height="16" rx="8" fill="#F2A277"/>
+    </g>
+  </g>
+
+  <!-- ── Hours before and after ──────────────────────────────────────── -->
+  <g>
+    <rect x="648" y="628" width="520" height="226" rx="28" fill="#2A2A27"/>
+    <rect x="648" y="628" width="520" height="214" rx="28" fill="#FFFFFF"/>
+    <rect x="688" y="676" width="420" height="44" rx="22" fill="#F7F7F6"/>
+    <rect x="688" y="676" width="368" height="44" rx="22" fill="#D0503F"/>
+    <rect x="688" y="748" width="420" height="44" rx="22" fill="#F7F7F6"/>
+    <rect x="688" y="748" width="150" height="44" rx="22" fill="#2FA98C"/>
+  </g>
+
+  <!-- ── Cycle time ──────────────────────────────────────────────────── -->
+  <g>
+    <rect x="1304" y="268" width="56" height="34" rx="12" fill="#2A2A27"/>
+    <circle cx="1340" cy="420" r="148" fill="#2A2A27"/>
+    <circle cx="1330" cy="410" r="148" fill="#46463F"/>
+    <circle cx="1330" cy="410" r="114" fill="#FFFFFF"/>
+    <path d="M1330 410 V326" stroke="#1C1C1A" stroke-width="16" stroke-linecap="round"/>
+    <path d="M1330 410 L1390 444" stroke="#F26522" stroke-width="16" stroke-linecap="round"/>
+    <circle cx="1330" cy="410" r="14" fill="#1C1C1A"/>
+  </g>
+
+  <!-- ── Result badge ────────────────────────────────────────────────── -->
+  <g>
+    <rect x="1240" y="640" width="268" height="190" rx="26" fill="#23856E"/>
+    <rect x="1240" y="640" width="268" height="178" rx="26" fill="#2FA98C"/>
+    <path d="M1300 744 L1352 692 L1400 716 L1452 672" fill="none" stroke="#FFFFFF"
+          stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M1414 668 L1462 660 L1456 706 Z" fill="#FFFFFF"/>
+  </g>
+</svg>

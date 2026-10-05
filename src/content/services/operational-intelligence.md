@@ -20,4 +20,4 @@ The work between your own teams is often the least visible and the most manual. 
 
 ## Where a human stays in the loop
 
-Approvals stay with the people accountable for them — the system routes and reminds, but it does not decide. Exceptions in a reconciliation are flagged for a person to investigate rather than smoothed over.
+Approvals stay with the people accountable for them. The system routes and reminds, but it does not decide. Exceptions in a reconciliation are flagged for a person to investigate rather than smoothed over.

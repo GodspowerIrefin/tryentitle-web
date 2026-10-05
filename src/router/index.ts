@@ -72,12 +72,6 @@ export const routes: RouteRecordRaw[] = [
     component: () => import('@/pages/LegalPage.vue'),
     props: { slug: 'security' },
   },
-  {
-    path: '/dpa',
-    name: 'dpa',
-    component: () => import('@/pages/LegalPage.vue'),
-    props: { slug: 'dpa' },
-  },
 
   {
     // Custom 404 (PRD FR4). vite-ssg renders this to /404.html.

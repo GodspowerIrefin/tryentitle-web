@@ -349,13 +349,11 @@ const COVER = { width: 1600, height: 900 } as const
   height: 100%;
   object-fit: cover;
   /*
-   * All of the darkening happens HERE, on the image itself — there is no scrim
-   * over the art. These renders are near-white, and ink laid over white mixes
-   * to grey, so a covering layer turned the tiles foggy rather than dark. The
-   * brightness cut does the work instead, and the saturation lift keeps the
-   * chart's colour (the only saturated thing in the frame) from going with it.
+   * No filter. The covers were near-white 3D renders that needed darkening to
+   * sit in the tile; they are now flat vector illustrations drawn in the site's
+   * own palette, already carrying their own ground and contrast. Dimming them
+   * only muddied the seal and verify fills they are built from.
    */
-  filter: brightness(0.72) contrast(1.12) saturate(1.22);
   transition: transform var(--duration-slow) var(--ease-standard);
 }
 
@@ -484,7 +482,6 @@ const COVER = { width: 1600, height: 900 } as const
   height: 100%;
   object-fit: cover;
   object-position: 50% 30%;
-  filter: brightness(0.72) contrast(1.12) saturate(1.22);
   pointer-events: none;
 }
 

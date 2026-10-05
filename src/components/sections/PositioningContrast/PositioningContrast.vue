@@ -56,7 +56,11 @@ defineProps<{
           data-reveal
         >
           <p class="col__kicker">
-            <span class="col__verdict" :class="col.featured ? 'is-yes' : 'is-no'" aria-hidden="true">
+            <span
+              class="col__verdict"
+              :class="col.featured ? 'is-yes' : 'is-no'"
+              aria-hidden="true"
+            >
               <Icon :name="col.featured ? 'check' : 'close'" :size="13" />
             </span>
             <span class="mono-label">{{ col.kicker }}</span>

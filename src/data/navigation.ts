@@ -4,7 +4,7 @@
  * Header: Services, Industries, Insights + the primary CTA (rendered separately as a
  * BookingButton, not as a nav link, so it stays visually distinct).
  *
- * Footer groups: Solutions (the 6 services), Industries (the 7 industries),
+ * Footer groups: Solutions (the services), Industries (the 7 industries),
  * Company, Legal. Solutions and Industries are derived from the canonical data
  * so the footer can never drift from the source of truth.
  */
@@ -58,7 +58,6 @@ export const FOOTER_GROUPS: FooterGroup[] = [
       { label: 'Privacy Policy', to: '/privacy' },
       { label: 'Terms of Service', to: '/terms' },
       { label: 'Security', to: '/security' },
-      { label: 'Data Processing Agreement', to: '/dpa' },
     ],
   },
 ]

@@ -8,11 +8,17 @@
  * is what TryEntitle actually sells — instead of six unrelated animations:
  *
  *   0 Assessment    a flat survey grid — everything laid out to be measured
- *   1 Agents        a single moving chain — work carried between systems
- *   2 Documents     a sorted column — intake resolving into one filed stack
- *   3 Customer      an orbit around one point — the work circling a customer
- *   4 Internal      two facing columns — handoffs between your own teams
- *   5 Integrations  a connected ring — the systems you already pay for
+ *   1 Process        a single moving chain — work carried step to step
+ *   2 Integration    a connected ring — the systems you already pay for, talking
+ *   3 Intelligence   an orbit around one point — the work circling one view
+ *   4 Managed        two facing columns — handoffs held under oversight
+ *   5 Documents      a sorted column — intake resolving into one filed stack
+ *
+ * The index is a SERVICE's position in `SERVICES`, so the order above has to
+ * track that list. The ring moved from 5 to 2 when Systems Integration became
+ * the third service: it had been landing on the filing-stack formation, which
+ * says nothing about systems talking to each other. Formation 5 is now reached
+ * only by the home band, which cycles the whole set.
  *
  * One plane is always seal-coloured and sits slightly out of formation: the
  * human on the exception. It is the same argument as the hero's gold node and the
@@ -164,27 +170,29 @@ function build({ THREE, scene, camera, renderer, width, height }: SceneContext):
           r.set(-0.42, 0, 0)
           break
         }
-        // 1 — Agents: one chain carrying work left to right.
+        // 1 — Process: one chain carrying work left to right.
         case 1: {
           p.set((t - 0.5) * 5.2, Math.sin(t * TAU) * 0.34, Math.cos(t * TAU) * 0.34)
           r.set(0, t * 1.6, 0)
           linkTarget = 0.5
           break
         }
-        // 2 — Documents: a sorted column resolving into one filed stack.
+        // 2 — Integration: a connected ring, every system on the same loop.
         case 2: {
-          p.set(Math.sin(i * 1.9) * 0.1, (t - 0.5) * 3.1, Math.cos(i * 1.9) * 0.1)
-          r.set(-0.1, i * 0.09, 0)
+          const a = t * TAU
+          p.set(Math.cos(a) * 2.05, Math.sin(a) * 2.05, 0)
+          r.set(0, 0, a)
+          linkTarget = 0.6
           break
         }
-        // 3 — Customer: the work circling one point.
+        // 3 — Intelligence: the work circling one point.
         case 3: {
           const a = t * TAU
           p.set(Math.cos(a) * 1.85, Math.sin(a) * 0.55, Math.sin(a) * 1.85)
           r.set(0, -a, 0)
           break
         }
-        // 4 — Internal: two facing columns, handoffs between them.
+        // 4 — Managed: two facing columns, handoffs between them.
         case 4: {
           const side = i % 2 === 0 ? -1 : 1
           const rank = Math.floor(i / 2)
@@ -193,12 +201,11 @@ function build({ THREE, scene, camera, renderer, width, height }: SceneContext):
           linkTarget = 0.34
           break
         }
-        // 5 — Integrations: a connected ring of systems.
+        // 5 — Documents: a sorted column resolving into one filed stack. Only
+        // the home band reaches this one; see the formation list above.
         default: {
-          const a = t * TAU
-          p.set(Math.cos(a) * 2.05, Math.sin(a) * 2.05, 0)
-          r.set(0, 0, a)
-          linkTarget = 0.6
+          p.set(Math.sin(i * 1.9) * 0.1, (t - 0.5) * 3.1, Math.cos(i * 1.9) * 0.1)
+          r.set(-0.1, i * 0.09, 0)
           break
         }
       }
@@ -284,7 +291,12 @@ watch(
 
 <template>
   <div class="scene">
-    <canvas ref="canvas" class="scene__canvas" :class="{ 'is-active': active }" aria-hidden="true" />
+    <canvas
+      ref="canvas"
+      class="scene__canvas"
+      :class="{ 'is-active': active }"
+      aria-hidden="true"
+    />
     <!-- Static fallback: what shows before the chunk lands, without WebGL, and
          under prefers-reduced-motion. Kept in the a11y tree either way. -->
     <div class="scene__fallback" :class="{ 'is-replaced': active }">

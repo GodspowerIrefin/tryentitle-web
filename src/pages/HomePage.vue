@@ -146,7 +146,9 @@ function send() {
       </p>
       <div class="hero__actions">
         <BookingButton placement="hero" :label="HERO_CTA_LABEL" pill class="hero__cta" />
-        <a :href="`mailto:${CONTACT.general}`" class="quiet-link hero__mail">{{ CONTACT.general }}</a>
+        <a :href="`mailto:${CONTACT.general}`" class="quiet-link hero__mail">{{
+          CONTACT.general
+        }}</a>
       </div>
     </div>
     <div class="hero__visual" aria-hidden="true">
@@ -300,15 +302,33 @@ function send() {
       <div class="contact__grid">
         <label class="field">
           First name *
-          <input v-model="form.firstName" type="text" autocomplete="given-name" aria-required="true" class="field__input" />
+          <input
+            v-model="form.firstName"
+            type="text"
+            autocomplete="given-name"
+            aria-required="true"
+            class="field__input"
+          />
         </label>
         <label class="field">
           Last name *
-          <input v-model="form.lastName" type="text" autocomplete="family-name" aria-required="true" class="field__input" />
+          <input
+            v-model="form.lastName"
+            type="text"
+            autocomplete="family-name"
+            aria-required="true"
+            class="field__input"
+          />
         </label>
         <label class="field">
           Email *
-          <input v-model="form.email" type="email" autocomplete="email" aria-required="true" class="field__input" />
+          <input
+            v-model="form.email"
+            type="email"
+            autocomplete="email"
+            aria-required="true"
+            class="field__input"
+          />
         </label>
         <label class="field">
           Phone
@@ -320,7 +340,9 @@ function send() {
         <textarea v-model="form.message" rows="4" class="field__area"></textarea>
       </label>
       <p v-if="formError" class="contact__error" role="alert">{{ formError }}</p>
-      <button type="submit" class="contact__send">{{ sent ? 'Message sent' : 'Send message' }}</button>
+      <button type="submit" class="contact__send">
+        {{ sent ? 'Message sent' : 'Send message' }}
+      </button>
     </form>
   </section>
 
@@ -426,7 +448,10 @@ h3 {
 }
 
 .hero__title {
-  font-weight: 300;
+  /* 600, the weight the site's other headings carry. The hero had been set at
+     300, which left the first thing a visitor reads lighter than the section
+     headings under it. */
+  font-weight: 600;
   font-size: clamp(46px, 5.6vw, 82px);
   line-height: 0.98;
   letter-spacing: -0.028em;

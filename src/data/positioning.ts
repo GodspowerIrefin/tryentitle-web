@@ -34,7 +34,7 @@ export const POSITIONING: PositioningColumn[] = [
     kicker: 'What we do',
     title: 'Work with TryEntitle',
     body: 'We map your real process, redesign it, build the automation, and stay on the exceptions.',
-    breaks: 'Nothing — exceptions route to a person',
+    breaks: 'Nothing, exceptions route to a person',
     cost: 'One fixed-scope engagement, then it runs',
     featured: true,
   },

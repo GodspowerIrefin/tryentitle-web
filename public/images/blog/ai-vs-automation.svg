@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" aria-label="A balance weighing a fixed rule-based flow on one side against an AI node graph on the other">
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF3EC"/>
+      <stop offset="100%" stop-color="#FDEFE6"/>
+    </linearGradient>
+    <radialGradient id="pool" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1C1C1A" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#1C1C1A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#ground)"/>
+  <ellipse cx="800" cy="892" rx="420" ry="50" fill="url(#pool)"/>
+
+  <!-- ── Balance: post, beam, fulcrum ────────────────────────────────── -->
+  <rect x="770" y="300" width="60" height="520" rx="16" fill="#2A2A27"/>
+  <rect x="770" y="300" width="30" height="520" rx="15" fill="#46463F"/>
+  <path d="M676 820 h248 l44 60 H632 Z" fill="#2A2A27"/>
+  <rect x="612" y="872" width="376" height="34" rx="17" fill="#1C1C1A"/>
+  <rect x="612" y="872" width="376" height="17" rx="8.5" fill="#46463F"/>
+  <rect x="330" y="286" width="940" height="34" rx="17" fill="#2A2A27"/>
+  <rect x="330" y="286" width="940" height="17" rx="8.5" fill="#46463F"/>
+  <circle cx="800" cy="286" r="40" fill="#F26522"/>
+  <circle cx="792" cy="278" r="40" fill="#F58A4E"/>
+
+  <!-- hangers -->
+  <path d="M400 320 V392" stroke="#2A2A27" stroke-width="12" stroke-linecap="round"/>
+  <path d="M1200 320 V392" stroke="#2A2A27" stroke-width="12" stroke-linecap="round"/>
+
+  <!-- ── Left tray: automation, a fixed path ─────────────────────────── -->
+  <g>
+    <rect x="160" y="392" width="480" height="300" rx="26" fill="#2A2A27"/>
+    <rect x="160" y="392" width="480" height="288" rx="26" fill="#FFFFFF"/>
+    <rect x="160" y="392" width="480" height="54" rx="26" fill="#2FA98C"/>
+    <rect x="160" y="420" width="480" height="26" fill="#2FA98C"/>
+
+    <!-- a rule that always runs the same way -->
+    <path d="M228 560 H572" stroke="#E6E5E2" stroke-width="12" stroke-linecap="round"/>
+    <g>
+      <rect x="206" y="528" width="64" height="64" rx="16" fill="#2FA98C"/>
+      <rect x="326" y="528" width="64" height="64" rx="16" fill="#2FA98C"/>
+      <rect x="446" y="528" width="64" height="64" rx="16" fill="#2FA98C"/>
+      <rect x="540" y="528" width="64" height="64" rx="16" fill="#1C1C1A"/>
+    </g>
+    <rect x="206" y="628" width="200" height="14" rx="7" fill="#E6E5E2"/>
+  </g>
+
+  <!-- ── Right tray: AI, a judgement about messy input ───────────────── -->
+  <g>
+    <rect x="960" y="392" width="480" height="300" rx="26" fill="#2A2A27"/>
+    <rect x="960" y="392" width="480" height="288" rx="26" fill="#FFFFFF"/>
+    <rect x="960" y="392" width="480" height="54" rx="26" fill="#F26522"/>
+    <rect x="960" y="420" width="480" height="26" fill="#F26522"/>
+
+    <!-- a node graph: many inputs, one proposed answer -->
+    <g stroke="#F2A277" stroke-width="8" stroke-linecap="round">
+      <path d="M1040 520 L1150 572"/>
+      <path d="M1040 572 L1150 572"/>
+      <path d="M1040 624 L1150 572"/>
+      <path d="M1150 572 L1270 520"/>
+      <path d="M1150 572 L1270 624"/>
+      <path d="M1270 520 L1370 572"/>
+      <path d="M1270 624 L1370 572"/>
+    </g>
+    <g>
+      <circle cx="1040" cy="520" r="24" fill="#E6E5E2"/>
+      <circle cx="1040" cy="572" r="24" fill="#E6E5E2"/>
+      <circle cx="1040" cy="624" r="24" fill="#E6E5E2"/>
+      <circle cx="1150" cy="572" r="30" fill="#F26522"/>
+      <circle cx="1270" cy="520" r="24" fill="#F58A4E"/>
+      <circle cx="1270" cy="624" r="24" fill="#F58A4E"/>
+      <circle cx="1370" cy="572" r="30" fill="#1C1C1A"/>
+    </g>
+  </g>
+</svg>

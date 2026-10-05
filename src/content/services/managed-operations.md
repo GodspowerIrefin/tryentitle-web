@@ -4,7 +4,7 @@ description: Ongoing oversight that keeps the operation running well and improvi
 order: 4
 ---
 
-A lot of customer work is not the service itself — it is the coordination around it. Acknowledging a request, chasing a missing detail, sending a status update, booking the next step. Customer Operations handles that coordination so your team can spend its attention on the customer, not the admin trail behind them.
+A lot of customer work is not the service itself. It is the coordination around it. Acknowledging a request, chasing a missing detail, sending a status update, booking the next step. Customer Operations handles that coordination so your team can spend its attention on the customer, not the admin trail behind them.
 
 ## The symptoms it addresses
 
@@ -20,4 +20,4 @@ A lot of customer work is not the service itself — it is the coordination arou
 
 ## Where a human stays in the loop
 
-Anything that needs judgment — an unhappy customer, an unusual request, a real exception — is handed to a person with the history attached. The predictable messages send themselves; the conversations that matter stay human.
+Anything that needs judgment, whether an unhappy customer, an unusual request, or a real exception, is handed to a person with the history attached. The predictable messages send themselves; the conversations that matter stay human.

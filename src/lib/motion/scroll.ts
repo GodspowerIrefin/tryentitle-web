@@ -266,8 +266,7 @@ function release() {
 export function scrollToTarget(to: Element | number, offset = 0) {
   if (typeof window === 'undefined') return
 
-  const top =
-    typeof to === 'number' ? to : to.getBoundingClientRect().top + window.scrollY - offset
+  const top = typeof to === 'number' ? to : to.getBoundingClientRect().top + window.scrollY - offset
 
   if (!interceptInput) {
     window.scrollTo({ top, behavior: 'smooth' })

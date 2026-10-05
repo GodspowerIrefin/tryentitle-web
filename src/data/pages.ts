@@ -39,7 +39,7 @@ export const INDUSTRY_DETAIL_COPY = {
     title: 'Automated to the exception, then handed to a person.',
     systemsLabel: 'Systems this work moves between',
     humanLabel: 'Where a person stays in it',
-    note: 'System categories, not integrations we are claiming — we work with whatever you already run.',
+    note: 'System categories, not integrations we are claiming. We work with whatever you already run.',
   },
   services: {
     eyebrow: 'Services',

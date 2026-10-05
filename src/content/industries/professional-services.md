@@ -1,18 +1,18 @@
 ---
 title: Professional Services
-description: Proposals, onboarding, and status reporting that live in email threads pulled into a workflow that runs without chasing.
+description: Client intake, proposals, recurring reports, and billing connected into one workflow instead of four separate chores.
 ---
 
-A professional services firm agency, consultancy, studio sells its people's time, so every hour spent on internal admin is an hour that could have been billable. Proposals, onboarding, and reporting tend to live in email threads and shared drives, held together by someone remembering. We take on that coordination so your team stays on client work.
+Consultancies, agencies, and advisory firms sell time and expertise, then lose a lot of it to administration: re-entering client details, routing contracts, assembling the same report each month, reconciling billing. We take on the repeatable steps so your people spend their hours on client work.
 
 ## Workflows we take on
 
-- **Proposals and statements of work** — generating proposals and SOWs from a template and the deal details, and tracking them through signature.
-- **Client onboarding** — collecting the documents, access, and details a new engagement needs, checking the set is complete before kickoff.
-- **Time and invoicing** — assembling billable time into invoices on schedule and flagging the entries that need a person to confirm.
-- **Status reporting** — pulling project status together from where the work actually happens, instead of rebuilding it by hand each week.
-- **Inbound inquiries** — qualifying new leads on arrival so nothing sits in an inbox over a weekend.
+- **Client intake:** capturing a new client's details once and setting up the file, folder, and project.
+- **Proposal and contract routing:** generating documents from the deal terms and tracking them through review and signature.
+- **Recurring reporting:** assembling the weekly or monthly client report from your existing data on schedule.
+- **Billing sync:** moving time and project data into invoices and following up on late payments.
+- **Inbound inquiries:** responding to new leads on arrival and booking the discovery call.
 
 ## Where a human stays in the loop
 
-Scope, pricing, and client judgment stay with your team. The documents assemble and route themselves; a person approves anything that commits the firm, and a stalled onboarding or an unusual time entry is surfaced rather than passed through silently.
+Client relationships, scoping, pricing, and recommendations stay with your team. We assemble, route, and sync; a person reviews anything that goes to a client, and any exception or missing detail is surfaced rather than guessed.

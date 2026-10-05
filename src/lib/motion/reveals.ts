@@ -65,7 +65,10 @@ function arm(el: HTMLElement) {
     el.classList.add(`reveal-${variant}`)
   }
 
-  el.style.setProperty('--reveal-delay', `${Math.min(staggerIndex(el), MAX_STAGGER) * STAGGER_MS}ms`)
+  el.style.setProperty(
+    '--reveal-delay',
+    `${Math.min(staggerIndex(el), MAX_STAGGER) * STAGGER_MS}ms`,
+  )
   observer?.observe(el)
 }
 

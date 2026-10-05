@@ -2,17 +2,23 @@
 /**
  * ServiceHero — Bond band opening a service detail page.
  *
- * The same device as the home Hero: a full-bleed workspace photograph with an
- * inset paper panel carrying the breadcrumb, the service name, its outcome line,
- * and the booking pill. The two heroes are deliberately the same object — a
- * visitor arriving on a service page from search should land in the same room as
- * one who came through the front door.
+ * Type on the page's own paper: breadcrumb, the service name at display size,
+ * its outcome line, and the booking pill anchored bottom-right of the band.
  *
- * This replaced an ink band with a ghost-icon rail. That version put the page's
- * darkest surface directly under a dark header and spent its whole right-hand
- * column on a decorative watermark, so the first screen carried one column of
- * copy and a large empty square. The panel-on-photo layout gives the same copy a
- * frame and hands the rest of the width to the photograph.
+ * The band carries the home hero's device — the sheet scene — on its right at
+ * desktop widths, and holds the SERVICE's own formation rather than cycling.
+ * That is what the scene was built for: it takes an index and gives each
+ * service its own arrangement of sheets, so a visitor landing here from search
+ * meets the same object as one who came through the front door, stopped on the
+ * formation that belongs to this page. Below 960px the scene is dropped rather
+ * than stacked — exactly as the home hero does — so the pill stays above the
+ * fold on a phone.
+ *
+ * It previously ran a full-bleed workspace photograph with an inset paper panel
+ * floating on it. That borrowed a device from the home hero, but on this page it
+ * read as a card pasted onto stock photography — a texture that appears nowhere
+ * else on the site — and boxed the service name into a 40rem column while the
+ * rest of the width went to the picture. The name now has the whole band.
  *
  * Presentational — all copy arrives via props (PRD §11.3 rule 4).
  */
@@ -20,10 +26,9 @@ import { onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import Section from '@/components/primitives/Section'
 import Container from '@/components/primitives/Container'
-import Eyebrow from '@/components/primitives/Eyebrow'
 import Heading from '@/components/primitives/Heading'
 import Chip from '@/components/primitives/Chip'
-import Icon, { type IconName } from '@/components/primitives/Icon'
+import ServiceScene from '@/components/three/ServiceScene.vue'
 import BookingButton from '@/components/marketing/BookingButton'
 import { splitLines } from '@/lib/motion/split'
 
@@ -34,12 +39,14 @@ interface Crumb {
 
 defineProps<{
   breadcrumbs: Crumb[]
-  eyebrow: string
   title: string
-  /** The outcome, in the customer's terms — the panel's supporting line. */
+  /** The outcome, in the customer's terms — the band's supporting line. */
   headline: string
   chips: readonly string[]
-  icon: IconName
+  /** This service's position in SERVICES — picks its sheet formation. */
+  sceneIndex: number
+  /** How many services there are, so the scene can scale to the set. */
+  sceneCount: number
 }>()
 
 const revealed = ref(false)
@@ -60,19 +67,6 @@ onMounted(() => {
 
 <template>
   <Section as="section" tone="bond" class="service-hero" labelledby="service-title">
-    <div class="service-hero__media" aria-hidden="true">
-      <img
-        class="service-hero__photo"
-        src="/images/hero-tech.jpg"
-        alt=""
-        width="2400"
-        height="1598"
-        decoding="async"
-        fetchpriority="high"
-      />
-      <div class="service-hero__wash" />
-    </div>
-
     <Container class="service-hero__frame">
       <div ref="panel" class="panel" :class="{ 'is-revealed': revealed }">
         <nav class="crumbs panel__step" style="--i: 0" aria-label="Breadcrumb">
@@ -84,31 +78,28 @@ onMounted(() => {
           </ol>
         </nav>
 
-        <div class="panel__mark panel__step" style="--i: 1">
-          <span class="panel__tile" aria-hidden="true">
-            <Icon :name="icon" :size="22" />
-          </span>
-          <Eyebrow>{{ eyebrow }}</Eyebrow>
-        </div>
-
         <Heading
           id="service-title"
           :level="1"
           size="h1"
           class="panel__title panel__step"
-          style="--i: 2"
+          style="--i: 1"
         >
           {{ title }}
         </Heading>
 
-        <div class="panel__foot panel__step" style="--i: 3">
+        <div class="panel__visual" aria-hidden="true">
+          <ServiceScene :active-index="sceneIndex" :count="sceneCount" />
+        </div>
+
+        <div class="panel__foot panel__step" style="--i: 2">
           <p class="panel__headline">{{ headline }}</p>
           <div class="panel__actions">
             <BookingButton placement="service-hero" size="lg" data-magnetic />
           </div>
         </div>
 
-        <ul v-if="chips.length" class="panel__chips panel__step" style="--i: 4">
+        <ul v-if="chips.length" class="panel__chips panel__step" style="--i: 3">
           <li v-for="chip in chips" :key="chip">
             <Chip tone="seal" marker>{{ chip }}</Chip>
           </li>
@@ -125,61 +116,78 @@ onMounted(() => {
   position: relative;
   isolation: isolate;
   overflow: clip;
-  /* Sized by `min-height` like the home Hero — this is the floor that keeps the
-     panel off the band edges, not the section rhythm. */
-  min-height: min(72vh, 42rem);
+  /* The floor for the band, not the section rhythm. Lower than it was: with the
+     photograph and the card gone there is nothing in the middle of the band to
+     hold, and 72vh left a screen-deep gap between the service name and the rule
+     above the booking pill. This still gives the name a full opening screen. */
+  min-height: min(56vh, 32rem);
   padding-block: var(--section-rhythm-compact);
   display: flex;
-  align-items: center;
+  /* `stretch`, not `center`: the content column has to span the band's height
+     for the booking pill to sit on its bottom edge. */
+  align-items: stretch;
   background-color: var(--bond);
-}
-
-.service-hero__media {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.service-hero__photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-/* Paper wash — the panel sits on the bright left third, so the gradient is
-   heaviest there and lets the photograph breathe on the right. */
-.service-hero__wash {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(244, 243, 241, 0.78) 0%,
-      rgba(244, 243, 241, 0.32) 46%,
-      transparent 72%
-    ),
-    linear-gradient(180deg, rgba(244, 243, 241, 0.4) 0%, transparent 30%, rgba(244, 243, 241, 0.24) 100%);
 }
 
 .service-hero__frame {
   position: relative;
   z-index: 1;
   width: 100%;
+  display: flex;
 }
 
+/* The band's own content column — no card, no ground of its own. It sits
+   directly on the bond paper the rest of the page is printed on. */
 .panel {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: var(--space-5);
-  width: min(100%, 40rem);
-  padding: clamp(1.5rem, 3vw, 2.75rem);
-  background-color: color-mix(in srgb, var(--bond-raised) 94%, transparent);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 1.5rem;
-  box-shadow: 0 24px 60px rgba(15, 31, 26, 0.12);
-  backdrop-filter: blur(8px);
+}
+
+/* Phones get the type only — see the component note. */
+.panel__visual {
+  display: none;
+}
+
+@media (min-width: 960px) {
+  .panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+    grid-template-areas:
+      'crumbs crumbs'
+      'title  visual'
+      'foot   foot'
+      'chips  chips';
+    /* The title row takes the slack, so the foot stays on the band's floor. */
+    grid-template-rows: auto 1fr auto auto;
+    align-items: center;
+    column-gap: var(--space-8);
+  }
+
+  .panel > .crumbs {
+    grid-area: crumbs;
+    align-self: start;
+  }
+
+  .panel__title {
+    grid-area: title;
+  }
+
+  .panel__foot {
+    grid-area: foot;
+  }
+
+  .panel__chips {
+    grid-area: chips;
+  }
+
+  .panel__visual {
+    grid-area: visual;
+    display: block;
+    position: relative;
+    height: min(26rem, 46vh);
+  }
 }
 
 /* ─── Breadcrumb ─────────────────────────────────────────────────────── */
@@ -197,7 +205,10 @@ onMounted(() => {
 .crumbs li:not(:last-child)::after {
   content: '/';
   margin-inline-start: var(--space-2);
-  color: var(--rule-on-bond);
+  /* The rule colour is a hairline tint — at this size the separator all but
+     disappeared, so the trail read as two unrelated words. It takes the same
+     muted text colour as the crumbs themselves. */
+  color: var(--text-on-bond-muted);
 }
 
 .crumbs a {
@@ -209,28 +220,10 @@ onMounted(() => {
   color: var(--seal-ink);
 }
 
-/* ─── Panel content ──────────────────────────────────────────────────── */
-.panel__mark {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.panel__tile {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  flex: none;
-  border-radius: var(--radius-card);
-  background-color: var(--ink);
-  color: var(--seal);
-}
-
+/* ─── Band content ───────────────────────────────────────────────────── */
 .panel__title {
   color: var(--text-on-bond);
-  max-width: 14ch;
+  max-width: 18ch;
 }
 
 /*
@@ -312,13 +305,6 @@ onMounted(() => {
   .panel__actions {
     flex: none;
     align-self: flex-end;
-  }
-}
-
-@media (min-width: 1000px) {
-  .panel {
-    width: min(100%, 44rem);
-    padding: var(--space-8);
   }
 }
 

@@ -21,7 +21,12 @@ const hasProof = props.items.length > 0
 </script>
 
 <template>
-  <Section v-if="hasProof" tone="bond-raised" labelledby="proof-title" aria-label="What clients say">
+  <Section
+    v-if="hasProof"
+    tone="bond-raised"
+    labelledby="proof-title"
+    aria-label="What clients say"
+  >
     <Container>
       <Eyebrow id="proof-title">In their words</Eyebrow>
       <ul class="proof">
