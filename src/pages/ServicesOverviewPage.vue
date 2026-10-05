@@ -421,24 +421,40 @@ h3 {
 .nav__dots {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-left: 6px;
+  /* No gap: each dot already carries its own 24px of target around the mark,
+     so a gap here would only push them apart visually. */
+  margin-left: 0;
 }
 
+/*
+ * The button is a 24px square — WCAG 2.2 target size (2.5.8), which axe enforces
+ * as a serious violation. Only the ::before mark is painted, so the dots still
+ * read as 9px full stops while the thing you actually have to hit is finger
+ * sized. Sizing the button itself to 9px failed the a11y gate on /services.
+ */
 .nav__dot {
-  width: 9px;
-  height: 9px;
+  width: 24px;
+  height: 24px;
   padding: 0;
   border: 0;
+  background: none;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.nav__dot::before {
+  content: '';
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: var(--stone-300, var(--stone-200));
-  cursor: pointer;
   transition:
     background-color 0.2s,
     transform 0.2s;
 }
 
-.nav__dot.is-active {
+.nav__dot.is-active::before {
   background: var(--orange);
   transform: scale(1.35);
 }
