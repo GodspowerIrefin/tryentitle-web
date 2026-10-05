@@ -8,6 +8,12 @@ import { ROUTES } from './routes'
  * - FR3:  no dead or `#` internal links.
  * - FR18: the blog index renders an honest empty state rather than 404ing.
  */
+test.beforeEach(async ({ page }) => {
+  // Vercel Analytics only exists on Vercel deployments; stub it in tests
+  await page.route('**/_vercel/**', (route) =>
+    route.fulfill({ status: 200, contentType: 'application/javascript', body: '' }),
+  )
+})
 
 test.describe('every route', () => {
   for (const route of ROUTES) {
