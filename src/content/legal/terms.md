@@ -2,7 +2,7 @@
 title: Terms of Service
 description: The terms governing use of the TryEntitle website.
 updatedAt: '2026-08-05'
-reviewed: false
+reviewed: true
 ---
 
 ## Agreement

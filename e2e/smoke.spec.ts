@@ -8,11 +8,30 @@ import { ROUTES } from './routes'
  * - FR3:  no dead or `#` internal links.
  * - FR18: the blog index renders an honest empty state rather than 404ing.
  */
+test.beforeEach(async ({ page }) => {
+  // Vercel Analytics only exists on Vercel deployments; stub it in tests
+  await page.route('**/_vercel/**', (route) =>
+    route.fulfill({ status: 200, contentType: 'application/javascript', body: '' }),
+  )
+})
 
 test.describe('every route', () => {
   for (const route of ROUTES) {
     test(`${route} renders without console errors`, async ({ page }) => {
       const problems: string[] = []
+
+      /*
+       * Resources the browser asks for and does not get. Chromium reports these
+       * on the console as a bare "Failed to load resource: ... 404" with no URL,
+       * which is undiagnosable from a CI log — a 404 on every route failed here
+       * once and named nothing. The response listener records what was actually
+       * requested so the failure message can say which file is missing.
+       */
+      const failedRequests: string[] = []
+      page.on('response', (res) => {
+        if (res.status() >= 400) failedRequests.push(`${res.status()} ${res.url()}`)
+      })
+
       page.on('console', (msg) => {
         if (msg.type() === 'error' || msg.type() === 'warning') {
           // Ignore the headless software-GL driver's performance hints. These
@@ -20,7 +39,19 @@ test.describe('every route', () => {
           // without a real GPU (CI, headless) — not by the app or Three.js, and
           // never on real hardware. Every other warning/error still fails (NFR3).
           if (/GL Driver Message.*Performance/i.test(msg.text())) return
-          problems.push(`${msg.type()}: ${msg.text()}`)
+
+          /*
+           * Chrome's own DevTools probe, not a page asset. Chromium requests
+           * /.well-known/appspecific/com.chrome.devtools.json when it is driven
+           * over the DevTools protocol; a static host answers 404 and the
+           * browser logs it. Nothing on the site asks for it and no visitor ever
+           * triggers it, so it is browser noise rather than a site defect. Only
+           * this exact path is ignored — any other 404 still fails.
+           */
+          const from = msg.location()?.url ?? ''
+          if (from.includes('/.well-known/appspecific/com.chrome.devtools.json')) return
+
+          problems.push(`${msg.type()}: ${msg.text()}${from ? ` (${from})` : ''}`)
         }
       })
       page.on('pageerror', (err) => problems.push(`pageerror: ${err.message}`))
@@ -32,7 +63,14 @@ test.describe('every route', () => {
       await expect(page.locator('main')).toHaveCount(1)
       await expect(page.locator('h1')).toHaveCount(1)
 
-      expect(problems, `console output on ${route}`).toEqual([])
+      expect(
+        problems,
+        `console output on ${route}` +
+          (failedRequests.length
+            ? `
+failed requests: ${failedRequests.join(', ')}`
+            : ''),
+      ).toEqual([])
     })
   }
 })
@@ -45,7 +83,9 @@ test('no internal link is dead or a bare #', async ({ page }) => {
     const hrefs = await page
       .locator('a[href]')
       .evaluateAll((links) =>
-        links.map((l) => l.getAttribute('href') ?? '').filter((h) => h.startsWith('/') || h === '#'),
+        links
+          .map((l) => l.getAttribute('href') ?? '')
+          .filter((h) => h.startsWith('/') || h === '#'),
       )
     for (const href of hrefs) {
       expect(href, `bare "#" href found on ${route}`).not.toBe('#')

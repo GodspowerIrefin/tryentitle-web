@@ -21,7 +21,6 @@ import Container from '@/components/primitives/Container'
 import Prose from '@/components/primitives/Prose'
 import Icon from '@/components/primitives/Icon'
 import ServiceHero from '@/components/sections/ServiceHero'
-import UseCaseGrid from '@/components/sections/UseCaseGrid'
 import ClosingCta from '@/components/sections/ClosingCta'
 import SectionHeader from '@/components/sections/SectionHeader'
 import NotFoundPage from '@/pages/NotFoundPage.vue'
@@ -123,18 +122,6 @@ useHead(head)
         </div>
       </Container>
     </Section>
-
-    <UseCaseGrid
-      v-if="detail?.useCases.length"
-      :eyebrow="SERVICE_DETAIL_COPY.useCases.eyebrow"
-      :title="SERVICE_DETAIL_COPY.useCases.title"
-      :intro="SERVICE_DETAIL_COPY.useCases.intro"
-      :items="detail.useCases"
-      :problem-label="SERVICE_DETAIL_COPY.useCases.problemLabel"
-      :build-label="SERVICE_DETAIL_COPY.useCases.buildLabel"
-      :impacts-label="SERVICE_DETAIL_COPY.useCases.impactsLabel"
-      tone="bond-raised"
-    />
 
     <Section v-if="relatedIndustries.length" tone="bond" labelledby="related-industries-title">
       <Container>

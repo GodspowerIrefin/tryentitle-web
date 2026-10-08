@@ -58,7 +58,7 @@ useHead(head)
   <template v-if="post">
     <ArticleLayout
       :breadcrumbs="[{ label: 'Blog', to: '/blog' }, { label: post.frontmatter.title }]"
-      eyebrow="Article"
+      uppercase-title
       :title="post.frontmatter.title"
       :lead="post.frontmatter.description"
       :html="post.html"

@@ -92,8 +92,29 @@ function send(req, res, status, body, ext) {
   res.end(body)
 }
 
+/**
+ * Platform endpoints the host provides, not the build.
+ *
+ * `@vercel/analytics` loads `/_vercel/insights/script.js`. Vercel serves that
+ * from its own edge — it is never part of `dist`, so every page requested from
+ * this server logged a 404 in the console. That broke the Playwright smoke test
+ * (NFR3: no console errors) and Lighthouse's `errors-in-console` budget on all
+ * five audited URLs, for a request that cannot fail on the real host.
+ *
+ * Serving an empty script keeps this server honest to its purpose: it mimics the
+ * static host the site actually runs on. Suppressing the error in the two test
+ * suites instead would have blinded both of them to genuine 404s.
+ */
+const PLATFORM_STUBS = new Set(['/_vercel/insights/script.js', '/_vercel/speed-insights/script.js'])
+
 createServer(async (req, res) => {
   const url = new URL(req.url ?? '/', `http://localhost:${PORT}`)
+
+  if (PLATFORM_STUBS.has(url.pathname)) {
+    send(req, res, 200, Buffer.from('/* served by the host in production */'), '.js')
+    return
+  }
+
   const found = await resolve(url.pathname)
 
   if (found?.body) {

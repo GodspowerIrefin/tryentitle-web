@@ -49,7 +49,7 @@ useHead(head)
   <template v-if="doc">
     <ArticleLayout
       :breadcrumbs="[{ label: 'Legal' }, { label: doc.frontmatter.title }]"
-      eyebrow="Legal"
+      uppercase-title
       :title="doc.frontmatter.title"
       :html="doc.html"
       :toc="doc.toc"
