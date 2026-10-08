@@ -297,14 +297,30 @@ onMounted(() => {
     gap: var(--space-6);
   }
 
+  /*
+   * No measure cap on this row. The 20ch limit was a reading measure borrowed
+   * from body copy, but this line is a label sitting beside the booking pill —
+   * it broke "Know how the operation is performing" across two lines with the
+   * rest of the band empty beside it. The row already bounds it: the pill takes
+   * what it needs and the line takes the rest.
+   */
   .panel__headline {
     flex: 1;
-    max-width: 20ch;
+    max-width: none;
   }
 
   .panel__actions {
     flex: none;
     align-self: flex-end;
+  }
+}
+
+/* Where the band is wide enough for the longest headline to fit beside the
+   pill, hold it on one line. Below this it is allowed to wrap rather than
+   overflow. */
+@media (min-width: 1000px) {
+  .panel__headline {
+    white-space: nowrap;
   }
 }
 

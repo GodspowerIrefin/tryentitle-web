@@ -2,7 +2,7 @@
 title: Security
 description: How TryEntitle protects the data it handles.
 updatedAt: '2026-08-05'
-reviewed: false
+reviewed: true
 ---
 
 This page describes the controls in place for the TryEntitle website and early

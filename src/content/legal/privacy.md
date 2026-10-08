@@ -2,7 +2,7 @@
 title: Privacy Policy
 description: How TryEntitle collects, uses, and retains personal data.
 updatedAt: '2026-08-05'
-reviewed: false
+reviewed: true
 ---
 
 ## Scope
