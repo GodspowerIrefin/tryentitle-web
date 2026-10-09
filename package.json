@@ -29,6 +29,7 @@
     "@types/three": "^0.185.1",
     "@unhead/vue": "^2.1.16",
     "@vercel/analytics": "2.1.0-canary.5",
+    "@vercel/speed-insights": "^2.0.0",
     "gray-matter": "^4.0.3",
     "markdown-it": "^14.3.0",
     "markdown-it-anchor": "^9.2.1",
@@ -73,5 +74,10 @@
   },
   "engines": {
     "node": "^22.18.0 || >=24.12.0"
+  },
+  "overrides": {
+    "@vercel/speed-insights": {
+      "vue-router": "$vue-router"
+    }
   }
 }
